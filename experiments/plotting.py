@@ -63,7 +63,7 @@ def plot_silhouette_comparison_bar(df, vector_size=2, filename="fig_silhouette_b
     fig, ax = plt.subplots(figsize=(10, 6))
     bars1 = ax.bar(x - width/2, bow_scores, width, label='Student-Course Representation',
                    color=COLORS['bow'], alpha=0.85, edgecolor='white', linewidth=0.5)
-    bars2 = ax.bar(x + width/2, dw_scores, width, label='DeepWalk Embeddings',
+    bars2 = ax.bar(x + width/2, dw_scores, width, label='DeepWalk-SSP',
                    color=COLORS['deepwalk'], alpha=0.85, edgecolor='white', linewidth=0.5)
     
     # Add value labels on bars
@@ -114,7 +114,7 @@ def plot_silhouette_vs_vectorsize(df, filename="fig_silhouette_vs_vectorsize.png
     
     ax.errorbar(avg_scores['vector_size'], avg_scores['embeddings.silhouette_score'],
                 yerr=std_scores['embeddings.silhouette_score'],
-                marker='o', capsize=4, label='DeepWalk Embeddings',
+                marker='o', capsize=4, label='DeepWalk-SSP',
                 color=COLORS['deepwalk'], linewidth=2, markersize=8)
     
     ax.errorbar(avg_scores['vector_size'], avg_scores['BoW.silhouette_score'],
@@ -148,10 +148,10 @@ def plot_clustering_methods_comparison(df_all_results,
     fig, ax = plt.subplots(figsize=(12, 6))
     
     method_colors = {
-        'DeepWalk Embeddings kmeans': COLORS['kmeans'],
-        'DeepWalk Embeddings affinity': COLORS['affinity'],
-        'DeepWalk Embeddings gmm': COLORS['gmm'],
-        'DeepWalk Embeddings agglomerative': COLORS['agglomerative'],
+        'DeepWalk-SSP kmeans': COLORS['kmeans'],
+        'DeepWalk-SSP affinity': COLORS['affinity'],
+        'DeepWalk-SSP gmm': COLORS['gmm'],
+        'DeepWalk-SSP agglomerative': COLORS['agglomerative'],
         'Student-Course Representation kmeans': COLORS['kmeans'],
         'Student-Course Representation affinity': COLORS['affinity'],
         'Student-Course Representation gmm': COLORS['gmm'],

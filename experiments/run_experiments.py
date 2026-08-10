@@ -40,7 +40,7 @@ from experiments.core import (
 )
 from experiments.evaluation import (
     evaluate_clustering, compute_clustering_stability,
-    reduce_pca, reduce_tsne
+    reduce_pca, reduce_tsne, run_pca_kmeans
 )
 from experiments.plotting import (
     plot_silhouette_comparison_bar, plot_silhouette_vs_vectorsize,
@@ -561,7 +561,7 @@ def experiment_visualization():
         emb_pca, emb_var = reduce_pca(embeddings, n_components=2)
         plot_embedding_visualization(
             embeddings, emb_labels,
-            f"PCA of DeepWalk Embeddings (Course {i})",
+            f"PCA of DeepWalk-SSP Embeddings (Course {i})",
             f"exp_F_PCA_DeepWalk_course{i}.png",
             reduced_2d=emb_pca,
         )
@@ -583,7 +583,7 @@ def experiment_visualization():
         if embeddings.shape[1] == 2:
             plot_embedding_visualization(
                 embeddings, emb_labels,
-                f"DeepWalk Embeddings (Course {i})",
+                f"DeepWalk-SSP Embeddings (Course {i})",
                 f"exp_F_tSNE_DeepWalk_course{i}.png",
                 reduced_2d=embeddings,
                 axis_labels=('Embedding Dimension 1', 'Embedding Dimension 2'),
@@ -595,7 +595,7 @@ def experiment_visualization():
                 emb_tsne = reduce_tsne(embeddings, perplexity=min(20, embeddings.shape[0]-2), random_state=42)
                 plot_embedding_visualization(
                     embeddings, emb_labels,
-                    f"t-SNE of DeepWalk Embeddings (Course {i})",
+                    f"t-SNE of DeepWalk-SSP Embeddings (Course {i})",
                     f"exp_F_tSNE_DeepWalk_course{i}.png",
                     reduced_2d=emb_tsne,
                 )
@@ -693,6 +693,107 @@ def experiment_statistical_analysis(seed_stability):
     }
 
     with open(os.path.join(RESULTS_DIR, "exp_statistical_analysis.json"), "w") as f:
+        json.dump(stat_results, f, indent=2, cls=NumpyEncoder)
+
+    return stat_results
+
+
+# ============================================================
+# STEP 5b: Statistical Significance — DeepWalk vs PCA+KMeans
+# ============================================================
+def experiment_statistical_analysis_pca(seed_stability):
+    """Wilcoxon signed-rank test comparing DeepWalk-SSP vs PCA+KMeans."""
+    print_header("STEP 5b: Statistical Significance — DeepWalk vs PCA+KMeans")
+
+    # Load existing PCA+KMeans results
+    pca_path = os.path.join(RESULTS_DIR, "baseline_pca_kmeans.json")
+    if not os.path.exists(pca_path):
+        print("  WARNING: baseline_pca_kmeans.json not found. Run Step 8 first.")
+        return {}
+
+    with open(pca_path) as f:
+        pca_data = json.load(f)
+    # Index by course
+    pca_by_course = {int(c["course"]): c for c in pca_data}
+
+    stat_results = {}
+
+    for i in FILE_INDICES:
+        if str(i) not in seed_stability:
+            continue
+
+        dw_scores = np.array(seed_stability[str(i)]["silhouette"]["values"])
+
+        # PCA+KMeans: run with 20 seeds to get paired distribution
+        filepath = os.path.join(DATA_DIR, f"{i}.txt")
+        scm, _ = read_class(filepath)
+        pca_scores = []
+        for seed in range(NUM_SEEDS):
+            labels, reduced = run_pca_kmeans(
+                scm.astype(float), n_clusters=2, n_components=2,
+                random_state=seed, n_init=10,
+            )
+            sil = silhouette_score(reduced, labels)
+            pca_scores.append(sil)
+        pca_scores = np.array(pca_scores)
+
+        # Wilcoxon signed-rank test: DeepWalk > PCA
+        test = wilcoxon_signed_rank_test(dw_scores, pca_scores, alternative='greater')
+        r = compute_effect_size_r(test.get("statistic", 0), test.get("n", 0))
+        delta, delta_interp = compute_cliffs_delta(dw_scores, pca_scores)
+        diff = dw_scores - pca_scores
+        ci_mean, ci_lower, ci_upper = compute_bootstrap_ci(diff)
+
+        print(f"\n  Course {i}:")
+        print(f"    DeepWalk: {np.mean(dw_scores):.3f} +/- {np.std(dw_scores):.3f}")
+        print(f"    PCA+KMeans: {np.mean(pca_scores):.3f} +/- {np.std(pca_scores):.3f}")
+        print(f"    Wilcoxon: p={test.get('p_value', 0):.6f}, r={r:.3f}")
+        print(f"    Cliff's delta={delta:.3f} ({delta_interp})")
+        print(f"    95% CI for diff: [{ci_lower:.3f}, {ci_upper:.3f}]")
+
+        stat_results[str(i)] = {
+            "deepwalk_mean": float(np.mean(dw_scores)),
+            "deepwalk_std": float(np.std(dw_scores)),
+            "pca_mean": float(np.mean(pca_scores)),
+            "pca_std": float(np.std(pca_scores)),
+            "wilcoxon_stat": float(test.get("statistic", 0)),
+            "wilcoxon_p": float(test.get("p_value", 0)),
+            "effect_size_r": float(r),
+            "cliffs_delta": float(delta),
+            "cliffs_interp": delta_interp,
+            "ci_mean_diff": float(ci_mean),
+            "ci_lower": float(ci_lower),
+            "ci_upper": float(ci_upper),
+        }
+
+    # Aggregate
+    all_dw = [stat_results[str(c)]["deepwalk_mean"] for c in FILE_INDICES if str(c) in stat_results]
+    all_pca = [stat_results[str(c)]["pca_mean"] for c in FILE_INDICES if str(c) in stat_results]
+    agg_test = wilcoxon_signed_rank_test(all_dw, all_pca, alternative='greater')
+    agg_r = compute_effect_size_r(agg_test["statistic"], agg_test["n"])
+    agg_delta, agg_delta_interp = compute_cliffs_delta(all_dw, all_pca)
+    agg_diff = np.array(all_dw) - np.array(all_pca)
+    agg_ci_mean, agg_ci_lower, agg_ci_upper = compute_bootstrap_ci(agg_diff)
+
+    print(f"\n  AGGREGATE:")
+    print(f"    Mean DeepWalk: {np.mean(all_dw):.3f}")
+    print(f"    Mean PCA:      {np.mean(all_pca):.3f}")
+    print(f"    Wilcoxon: p={agg_test['p_value']:.6f}, r={agg_r:.3f}")
+    print(f"    95% CI for improvement: [{agg_ci_lower:.3f}, {agg_ci_upper:.3f}]")
+
+    stat_results["aggregate"] = {
+        "mean_deepwalk": float(np.mean(all_dw)),
+        "mean_pca": float(np.mean(all_pca)),
+        "mean_improvement": float(np.mean(agg_diff)),
+        "wilcoxon_p": float(agg_test["p_value"]),
+        "effect_size_r": float(agg_r),
+        "cliffs_delta": float(agg_delta),
+        "cliffs_interp": agg_delta_interp,
+        "ci_lower": float(agg_ci_lower),
+        "ci_upper": float(agg_ci_upper),
+    }
+
+    with open(os.path.join(RESULTS_DIR, "exp_statistical_analysis_pca.json"), "w") as f:
         json.dump(stat_results, f, indent=2, cls=NumpyEncoder)
 
     return stat_results
@@ -822,6 +923,9 @@ if __name__ == "__main__":
 
     # Step 5: Statistical analysis
     stat_results = experiment_statistical_analysis(seed_results)
+
+    # Step 5b: Statistical analysis (DeepWalk vs PCA+KMeans)
+    stat_pca_results = experiment_statistical_analysis_pca(seed_results)
 
     # Step 7: Practical improvements
     improvement_df = experiment_improvements()

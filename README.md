@@ -6,16 +6,18 @@ A Python framework for solving the student sectioning problem in course timetabl
 
 ## Key Results
 
-| Metric | Traditional (BoW) | DeepWalk-SSP | Improvement |
-|--------|-------------------|--------------|-------------|
-| Silhouette Score ↑ | 0.153 | 0.569 ± 0.032 | **+272%** |
-| Wilcoxon *p*-value | — | — | < 0.000001 |
-| Cliff's δ | — | — | 1.000 |
+| Metric | Traditional (BoW) | PCA+KMeans | DeepWalk-SSP | Improvement vs BoW |
+|--------|-------------------|------------|--------------|-------------------|
+| Silhouette Score ↑ | 0.153 | 0.460 | 0.579 | **+278%** |
+| Wilcoxon *p*-value (vs BoW) | — | — | — | < 0.000001 per course |
+| Wilcoxon *p*-value (vs PCA) | — | — | — | 0.047 aggregate |
+| Cliff's δ (vs BoW) | — | — | — | 1.000 |
 
 - Consistent improvement across 6 courses, 4 clustering algorithms, and 3 evaluation metrics
-- Statistical significance validated with Wilcoxon signed-rank tests (*p* < 0.000001 per course)
+- Statistical significance validated with Wilcoxon signed-rank tests
+- DeepWalk-SSP outperforms PCA+KMeans (aggregate *p* = 0.047, *r* = 0.728)
 - Clustering stability: ARI ≥ 0.917 for KMeans across 20 random seeds
-- Runtime: < 7 seconds per course
+- Runtime: < 9 seconds per course
 
 ## Repository Structure
 
@@ -33,10 +35,10 @@ Deepwalk-SSP/
 │   ├── stats.py                   # Wilcoxon tests, effect sizes, bootstrap CI
 │   └── run_experiments.py         # Complete experiment runner (all steps)
 ├── paper/                         # LaTeX source of the paper
-│   ├── elsarticle-template-harv.tex
+│   ├── sn-article.tex            # LaTeX source (Springer template)
+│   ├── sn-jnl.cls                # Springer document class
 │   ├── *.png, *.pdf              # Figures referenced in the paper
-│   ├── MyReferences.bib
-│   └── elsarticle-harv.bst
+│   └── MyReferences.bib
 ├── results/                       # Generated results and figures
 │   ├── exp_*.json                 # Experiment data (JSON)
 │   ├── exp_*.xlsx                 # Experiment data (Excel)

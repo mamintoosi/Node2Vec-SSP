@@ -22,6 +22,7 @@ import pickle
 
 import numpy as np
 import pandas as pd
+import networkx as nx
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -314,7 +315,6 @@ def generate_comparison_figure(pca_df, spectral_df, filename="baseline_compariso
 # Main
 # ============================================================
 if __name__ == "__main__":
-    import networkx as nx  # noqa: ensure available
 
     total_start = time.time()
 
