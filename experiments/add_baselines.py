@@ -35,9 +35,12 @@ sys.path.insert(0, PROJECT_ROOT)
 
 from experiments.config import (
     FILE_INDICES, DATA_DIR, RESULTS_DIR, FIGURES_DIR, COLORS,
-    PUBLICATION_STYLE, DEFAULT_PARAMS
+    PUBLICATION_STYLE, DEFAULT_PARAMS, NODE2VEC_PARAMS
 )
-from experiments.core import read_class, create_graph_from_bow, set_seed
+from experiments.core import (
+    read_class, create_graph_from_bow, set_seed,
+    run_pipeline, run_node2vec_pipeline
+)
 from experiments.evaluation import (
     compute_all_metrics, run_pca_kmeans, run_spectral, evaluate_clustering
 )
@@ -259,11 +262,135 @@ def experiment_spectral_clustering():
 
 
 # ============================================================
-# Generate Combined Comparison Figure
+# Baseline 3: Node2Vec on Co-enrollment Graph
 # ============================================================
-def generate_comparison_figure(pca_df, spectral_df, filename="baseline_comparison.png"):
+def experiment_node2vec(p=1.0, q=1.0):
     """
-    Bar chart comparing all baselines: BoW+KMeans, PCA+KMeans, Spectral, DeepWalk+KMeans.
+    Node2Vec with biased random walks on the co-enrollment graph.
+    Uses the same graph construction and Word2Vec training as DeepWalk,
+    but with biased random walks controlled by parameters p and q.
+
+    When p=q=1, Node2Vec reduces to DeepWalk (uniform transitions).
+    q < 1 biases toward BFS-like exploration (local structure).
+    q > 1 biases toward DFS-like exploration (global structure).
+    """
+    n_components = DEFAULT_PARAMS["vector_size"]  # d=2
+    n_clusters = DEFAULT_PARAMS["n_clusters"]
+    seed = 0
+
+    results = []
+
+    for file_idx in FILE_INDICES:
+        filepath = os.path.join(DATA_DIR, f"{file_idx}.txt")
+        scm, student_labels = read_class(filepath)
+        if scm is None:
+            print(f"  Course {file_idx}: FAILED to load")
+            continue
+
+        n_students = scm.shape[0]
+        n_courses = scm.shape[1]
+
+        print(f"\n  Course {file_idx}: {n_students} students, {n_courses} courses")
+
+        # Node2Vec pipeline with biased random walks
+        t0 = time.perf_counter()
+        n2v_result = run_node2vec_pipeline(
+            filepath,
+            vector_size=n_components,
+            walk_length=DEFAULT_PARAMS["walk_length"],
+            num_walks=DEFAULT_PARAMS["num_walks"],
+            window=DEFAULT_PARAMS["window"],
+            epochs=DEFAULT_PARAMS["epochs"],
+            p=p, q=q,
+            seed=seed,
+        )
+        t_n2v = time.perf_counter() - t0
+
+        if not n2v_result["success"]:
+            print(f"  Course {file_idx}: Node2Vec FAILED")
+            continue
+
+        # Evaluate clustering on Node2Vec embeddings
+        n2v_eval = evaluate_clustering(
+            n2v_result["embeddings"], n_clusters=n_clusters, random_state=seed
+        )
+        n2v_sil = n2v_eval["kmeans"]["metrics"]["silhouette"]
+        n2v_dbi = n2v_eval["kmeans"]["metrics"]["davies_bouldin"]
+        n2v_ch = n2v_eval["kmeans"]["metrics"]["calinski_harabasz"]
+        n2v_wcss = n2v_eval["kmeans"]["metrics"]["wcss"]
+
+        # Run DeepWalk for comparison
+        dw_result = run_pipeline(filepath, seed=seed)
+        if dw_result["success"]:
+            dw_eval = evaluate_clustering(
+                dw_result["embeddings"], n_clusters=n_clusters, random_state=seed
+            )
+            dw_sil = dw_eval["kmeans"]["metrics"]["silhouette"]
+        else:
+            dw_sil = np.nan
+
+        # Also run KMeans on BoW for comparison
+        bow_eval = evaluate_clustering(scm.astype(float), n_clusters=n_clusters, random_state=seed)
+        bow_sil = bow_eval["kmeans"]["metrics"]["silhouette"]
+
+        # PCA + KMeans
+        pca_labels, pca_reduced = run_pca_kmeans(
+            scm.astype(float), n_clusters=n_clusters,
+            n_components=n_components, random_state=seed,
+        )
+        pca_sil = n2v_eval["kmeans"]["metrics"]["silhouette"]  # Placeholder
+        pca_metrics = compute_all_metrics(pca_reduced, pca_labels)
+        pca_sil = pca_metrics["silhouette"]
+
+        results.append({
+            "course": file_idx,
+            "n_students": n_students,
+            "n_courses": n_courses,
+            "node2vec_silhouette": float(n2v_sil),
+            "node2vec_davies_bouldin": float(n2v_dbi),
+            "node2vec_calinski_harabasz": float(n2v_ch),
+            "node2vec_wcss": float(n2v_wcss),
+            "deepwalk_silhouette": float(dw_sil),
+            "bow_kmeans_silhouette": float(bow_sil),
+            "pca_kmeans_silhouette": float(pca_sil),
+            "node2vec_runtime_s": float(t_n2v),
+            "p": p, "q": q,
+        })
+
+        print(f"    Node2Vec (p={p}, q={q}): Silhouette={n2v_sil:.3f}, DBI={n2v_dbi:.3f}, "
+              f"CH={n2v_ch:.1f} (time: {t_n2v:.3f}s)")
+        print(f"    BoW+KMeans:              Silhouette={bow_sil:.3f}")
+        print(f"    PCA+KMeans:              Silhouette={pca_sil:.3f}")
+        print(f"    DeepWalk-SSP:            Silhouette={dw_sil:.3f}")
+        delta_vs_dw = n2v_sil - dw_sil
+        print(f"    Node2Vec vs DeepWalk:    {delta_vs_dw:+.3f}")
+
+    # Summary
+    print_subheader("Node2Vec Summary")
+    df = pd.DataFrame(results)
+    avg_n2v = df["node2vec_silhouette"].mean()
+    avg_dw = df["deepwalk_silhouette"].mean()
+    avg_bow = df["bow_kmeans_silhouette"].mean()
+    avg_pca = df["pca_kmeans_silhouette"].mean()
+    print(f"  Average Silhouette (Node2Vec p={p}, q={q}): {avg_n2v:.3f}")
+    print(f"  Average Silhouette (DeepWalk):               {avg_dw:.3f}")
+    print(f"  Average Silhouette (PCA+KMeans):             {avg_pca:.3f}")
+    print(f"  Average Silhouette (BoW+KMeans):             {avg_bow:.3f}")
+    print(f"  Node2Vec vs DeepWalk:   {avg_n2v - avg_dw:+.3f}")
+    print(f"  Node2Vec vs PCA+KMeans: {avg_n2v - avg_pca:+.3f}")
+    print(f"  Node2Vec vs BoW:        {avg_n2v - avg_bow:+.3f}")
+
+    return df
+
+
+# ============================================================
+# Generate Combined Comparison Figure (with Node2Vec)
+# ============================================================
+def generate_comparison_figure(pca_df, spectral_df, node2vec_df=None,
+                               filename="baseline_comparison.png"):
+    """
+    Bar chart comparing all baselines: BoW+KMeans, PCA+KMeans, Spectral, DeepWalk+KMeans,
+    and optionally Node2Vec+KMeans.
     """
     setup_style("publication")
 
@@ -275,35 +402,41 @@ def generate_comparison_figure(pca_df, spectral_df, filename="baseline_compariso
     spec_sils = [spectral_df[spectral_df["course"] == c]["spectral_silhouette_bow"].values[0] for c in courses]
     dw_sils = [pca_df[pca_df["course"] == c]["deepwalk_silhouette"].values[0] for c in courses]
 
+    # Determine number of methods
+    methods = ['BoW + KMeans', 'PCA + KMeans', 'Spectral Clustering', 'DeepWalk-SSP']
+    all_sils = [bow_sils, pca_sils, spec_sils, dw_sils]
+    all_colors = [COLORS['bow'], COLORS['pca_kmeans'], COLORS['spectral'], COLORS['deepwalk']]
+
+    if node2vec_df is not None:
+        n2v_sils = [node2vec_df[node2vec_df["course"] == c]["node2vec_silhouette"].values[0] for c in courses]
+        methods.append('Node2Vec')
+        all_sils.append(n2v_sils)
+        all_colors.append(COLORS['node2vec'])
+
+    n_methods = len(methods)
     x = np.arange(len(courses))
-    width = 0.2
+    width = 0.15
 
-    fig, ax = plt.subplots(figsize=(12, 6))
+    fig, ax = plt.subplots(figsize=(14, 6))
 
-    bars1 = ax.bar(x - 1.5 * width, bow_sils, width, label='BoW + KMeans',
-                   color=COLORS['bow'], alpha=0.85, edgecolor='white', linewidth=0.5)
-    bars2 = ax.bar(x - 0.5 * width, pca_sils, width, label='PCA + KMeans',
-                   color=COLORS['pca_kmeans'], alpha=0.85, edgecolor='white', linewidth=0.5)
-    bars3 = ax.bar(x + 0.5 * width, spec_sils, width, label='Spectral Clustering',
-                   color=COLORS['spectral'], alpha=0.85, edgecolor='white', linewidth=0.5)
-    bars4 = ax.bar(x + 1.5 * width, dw_sils, width, label='DeepWalk-SSP + KMeans',
-                   color=COLORS['deepwalk'], alpha=0.85, edgecolor='white', linewidth=0.5)
-
-    # Add value labels
-    for bars in [bars1, bars2, bars3, bars4]:
+    for i, (method, sils, color) in enumerate(zip(methods, all_sils, all_colors)):
+        offset = (i - (n_methods - 1) / 2) * width
+        bars = ax.bar(x + offset, sils, width, label=method,
+                      color=color, alpha=0.85, edgecolor='white', linewidth=0.5)
+        # Add value labels
         for bar in bars:
             height = bar.get_height()
             ax.annotate(f'{height:.3f}',
                         xy=(bar.get_x() + bar.get_width() / 2, height),
                         xytext=(0, 3), textcoords="offset points",
-                        ha='center', va='bottom', fontsize=7)
+                        ha='center', va='bottom', fontsize=6)
 
     ax.set_xlabel('Course')
     ax.set_ylabel('Silhouette Score ($\\uparrow$ higher is better)')
     ax.set_title('Baseline Comparison: Clustering Quality Across Six Courses')
     ax.set_xticks(x)
     ax.set_xticklabels([f'Course {i}' for i in courses])
-    ax.legend(loc='upper left', framealpha=0.9, fontsize=10)
+    ax.legend(loc='upper left', framealpha=0.9, fontsize=9)
     ax.set_ylim(0, 1.0)
     ax.yaxis.grid(True, alpha=0.3)
     ax.set_axisbelow(True)
@@ -336,9 +469,18 @@ if __name__ == "__main__":
                          orient="records", indent=2)
     print(f"\n  Saved: baseline_spectral.xlsx and .json")
 
-    # Generate comparison figure
+    # Run Baseline 3: Node2Vec
+    node2vec_df = experiment_node2vec(
+        p=NODE2VEC_PARAMS["p"], q=NODE2VEC_PARAMS["q"]
+    )
+    node2vec_df.to_excel(os.path.join(RESULTS_DIR, "baseline_node2vec.xlsx"), index=False)
+    node2vec_df.to_json(os.path.join(RESULTS_DIR, "baseline_node2vec.json"),
+                         orient="records", indent=2)
+    print(f"\n  Saved: baseline_node2vec.xlsx and .json")
+
+    # Generate comparison figure (with Node2Vec)
     print_header("Generating Comparison Figure")
-    generate_comparison_figure(pca_df, spectral_df)
+    generate_comparison_figure(pca_df, spectral_df, node2vec_df)
     print("  Saved: baseline_comparison.png")
 
     # ── Final Summary ────────────────────────────────────────────────────────
@@ -348,22 +490,24 @@ if __name__ == "__main__":
 
     # Combined summary table
     print_subheader("Combined Results (Silhouette Score, KMeans, seed=0)")
-    print(f"\n  {'Course':<10} {'BoW+KM':<10} {'PCA+KM':<10} {'Spectral':<10} {'DeepWalk':<10}")
-    print(f"  {'-'*50}")
+    print(f"\n  {'Course':<10} {'BoW+KM':<10} {'PCA+KM':<10} {'Spectral':<10} {'DeepWalk':<10} {'Node2Vec':<10}")
+    print(f"  {'-''*60}")
 
     for c in FILE_INDICES:
         bow = pca_df[pca_df["course"] == c]["bow_kmeans_silhouette"].values[0]
         pca = pca_df[pca_df["course"] == c]["pca_kmeans_silhouette"].values[0]
         spec = spectral_df[spectral_df["course"] == c]["spectral_silhouette_bow"].values[0]
         dw = pca_df[pca_df["course"] == c]["deepwalk_silhouette"].values[0]
-        print(f"  Course {c:<4} {bow:<10.3f} {pca:<10.3f} {spec:<10.3f} {dw:<10.3f}")
+        n2v = node2vec_df[node2vec_df["course"] == c]["node2vec_silhouette"].values[0]
+        print(f"  Course {c:<4} {bow:<10.3f} {pca:<10.3f} {spec:<10.3f} {dw:<10.3f} {n2v:<10.3f}")
 
-    print(f"  {'-'*50}")
+    print(f"  {'-'*60}")
     print(f"  {'Average':<10} "
           f"{pca_df['bow_kmeans_silhouette'].mean():<10.3f} "
           f"{pca_df['pca_kmeans_silhouette'].mean():<10.3f} "
           f"{spectral_df['spectral_silhouette_bow'].mean():<10.3f} "
-          f"{pca_df['deepwalk_silhouette'].mean():<10.3f}")
+          f"{pca_df['deepwalk_silhouette'].mean():<10.3f} "
+          f"{node2vec_df['node2vec_silhouette'].mean():<10.3f}")
 
     print(f"\n  Generated files in {RESULTS_DIR}:")
     for f in sorted(os.listdir(RESULTS_DIR)):

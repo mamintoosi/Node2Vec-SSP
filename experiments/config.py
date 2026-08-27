@@ -45,6 +45,23 @@ DEFAULT_PARAMS = {
     "n_clusters": 2,        # number of clusters for sectioning
 }
 
+# ── Default Node2Vec Parameters ──────────────────────────────────────────────
+NODE2VEC_PARAMS = {
+    "p": 1.0,              # Return parameter (same as DeepWalk when p=1)
+    "q": 1.0,              # In-out parameter (same as DeepWalk when q=1)
+    "vector_size": 2,       # Same embedding dimension as DeepWalk
+    "walk_length": 10,      # Same walk length as DeepWalk
+    "num_walks": 80,        # Same number of walks as DeepWalk
+    "window": 5,            # Same window size as DeepWalk
+    "epochs": 30,           # Same training epochs as DeepWalk
+    "n_clusters": 2,        # Same number of clusters as DeepWalk
+}
+
+# Node2Vec parameter settings to compare with DeepWalk
+# q < 1 favors BFS-like exploration (local structure)
+# q > 1 favors DFS-like exploration (global structure)
+NODE2VEC_Q_VALUES = [0.5, 1.0, 2.0, 4.0]
+
 # ── Parameter Ranges for Sensitivity Analysis ─────────────────────────────────
 VECTOR_SIZES = [1, 2, 3, 5, 10]
 WALK_LENGTHS = [5, 10, 20, 40, 80]
@@ -89,10 +106,12 @@ PUBLICATION_STYLE = {
 # Color palette for consistent plotting
 COLORS = {
     "deepwalk": "#2196F3",      # Blue
+    "node2vec": "#4CAF50",      # Green
     "bow": "#FF9800",           # Orange
     "pca_kmeans": "#795548",    # Brown
     "spectral": "#607D8B",      # Blue-grey
     "deepwalk_alpha": "#BBDEFB",
+    "node2vec_alpha": "#C8E6C9",
     "bow_alpha": "#FFE0B2",
     "kmeans": "#E91E63",
     "affinity": "#9C27B0",
