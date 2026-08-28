@@ -61,17 +61,22 @@ def cliffs_delta(x, y):
 
 
 def holm_correction(p_values):
+    """Holm (1979) step-down multiple-comparison correction.
+
+    1. Sort raw p-values ascending.
+    2. Multiply the i-th ordered p-value by (m - i) [0-based index].
+    3. Enforce monotonicity via cumulative maximum (forward pass).
+    4. Clamp to 1.0 and restore original order.
+    """
     p = np.array(p_values, dtype=float)
     m = len(p)
     order = np.argsort(p)
-    adjusted = np.zeros(m)
-    for rank, idx in enumerate(order):
-        adjusted[idx] = min(p[idx] * (m - rank), 1.0)
-    sorted_adj = adjusted[order]
-    for i in range(len(sorted_adj) - 2, -1, -1):
-        sorted_adj[i] = min(sorted_adj[i], sorted_adj[i + 1])
-    adjusted[order] = sorted_adj
-    return adjusted.tolist()
+    sorted_p = p[order]
+    adjusted = np.minimum(sorted_p * np.arange(m, 0, -1), 1.0)
+    adjusted = np.maximum.accumulate(adjusted)          # enforce monotonicity
+    result = np.empty(m)
+    result[order] = adjusted
+    return result.tolist()
 
 
 def main():

@@ -139,11 +139,11 @@ The effect is modest — all q values produce Silhouette scores well above 0.600
 | Comparison | Raw p | Holm-corrected p | Effect size r | Interpretation |
 |-----------|-------|------------------|---------------|----------------|
 | Node2Vec vs DeepWalk | 1.000 | 1.000 | 0.043 | Negligible |
-| Node2Vec vs BoW | 0.031 | 0.063 | 0.899 | Large |
-| Node2Vec vs PCA | 0.031 | 0.063 | 0.899 | Large |
-| Node2Vec vs Spectral | 0.031 | 0.063 | 0.899 | Large |
-| DeepWalk vs BoW | 0.031 | 0.063 | 0.899 | Large |
-| DeepWalk vs PCA | 0.031 | 0.063 | 0.899 | Large |
+| Node2Vec vs BoW | 0.031 | 0.1875 | 0.899 | Large |
+| Node2Vec vs PCA | 0.031 | 0.1875 | 0.899 | Large |
+| Node2Vec vs Spectral | 0.031 | 0.1875 | 0.899 | Large |
+| DeepWalk vs BoW | 0.031 | 0.1875 | 0.899 | Large |
+| DeepWalk vs PCA | 0.031 | 0.1875 | 0.899 | Large |
 
 **Important caveats:**
 - Only n = 6 courses. The minimum achievable two-sided Wilcoxon p-value is ~0.031 for n = 6.
@@ -255,13 +255,13 @@ All in `results/final_reexperiment/figures/` as PDF.
 
 ## 14. Commit Hash
 
-`08cd7a5` (previous commit) → new commit to be created after this report.
+Will be updated after Holm fix commit.
 
 ---
 
 ## 15. Push Status
 
-Push will be attempted after commit.
+Will be updated after push.
 
 ---
 

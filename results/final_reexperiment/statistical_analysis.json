@@ -20,7 +20,7 @@
     "wilcoxon_p": 0.03125,
     "effect_size_r": 0.8987170342729172,
     "cliffs_delta": 1.0,
-    "corrected_p": 0.0625,
+    "corrected_p": 0.1875,
     "significant": false
   },
   {
@@ -32,7 +32,7 @@
     "wilcoxon_p": 0.03125,
     "effect_size_r": 0.8987170342729172,
     "cliffs_delta": 1.0,
-    "corrected_p": 0.0625,
+    "corrected_p": 0.1875,
     "significant": false
   },
   {
@@ -44,7 +44,7 @@
     "wilcoxon_p": 0.03125,
     "effect_size_r": 0.8987170342729172,
     "cliffs_delta": 1.0,
-    "corrected_p": 0.0625,
+    "corrected_p": 0.1875,
     "significant": false
   },
   {
@@ -56,7 +56,7 @@
     "wilcoxon_p": 0.03125,
     "effect_size_r": 0.8987170342729172,
     "cliffs_delta": 1.0,
-    "corrected_p": 0.0625,
+    "corrected_p": 0.1875,
     "significant": false
   },
   {
@@ -68,7 +68,7 @@
     "wilcoxon_p": 0.03125,
     "effect_size_r": 0.8987170342729172,
     "cliffs_delta": 1.0,
-    "corrected_p": 0.0625,
+    "corrected_p": 0.1875,
     "significant": false
   }
 ]
