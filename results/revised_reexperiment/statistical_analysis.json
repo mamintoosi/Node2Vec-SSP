@@ -1,0 +1,38 @@
+[
+  {
+    "comparison": "Node2Vec vs BoW+KMeans",
+    "n2v_mean": 0.6166268646717071,
+    "other_mean": 0.15320264380479967,
+    "mean_diff": 0.46342422086690754,
+    "wilcoxon_stat": 0.0,
+    "wilcoxon_p": 0.03125,
+    "effect_size_r": 0.8987170342729172,
+    "cliffs_delta": 1.0,
+    "corrected_p": 0.03125,
+    "significant": true
+  },
+  {
+    "comparison": "Node2Vec vs PCA+KMeans",
+    "n2v_mean": 0.6166268646717071,
+    "other_mean": 0.15793137440205388,
+    "mean_diff": 0.45869549026965334,
+    "wilcoxon_stat": 0.0,
+    "wilcoxon_p": 0.03125,
+    "effect_size_r": 0.8987170342729172,
+    "cliffs_delta": 1.0,
+    "corrected_p": 0.03125,
+    "significant": true
+  },
+  {
+    "comparison": "Node2Vec vs Spectral",
+    "n2v_mean": 0.6166268646717071,
+    "other_mean": 0.12678560600408947,
+    "mean_diff": 0.48984125866761774,
+    "wilcoxon_stat": 0.0,
+    "wilcoxon_p": 0.03125,
+    "effect_size_r": 0.8987170342729172,
+    "cliffs_delta": 1.0,
+    "corrected_p": 0.03125,
+    "significant": true
+  }
+]

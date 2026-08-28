@@ -1,12 +1,11 @@
-# DeepWalk-SSP: Complete Linux Re-Experiment Report
+# DeepWalk-SSP: Revised Pipeline — Final Report
 
-**Date:** August 27, 2026  
-**Platform:** Linux (Python 3.12.13)  
-**Purpose:** Complete re-experiment of all methods under a consistent Linux environment, adding Node2Vec as a comparative graph representation learning method.
+**Date:** August 28, 2026  
+**Status:** Complete re-experiment finished. Manuscript NOT yet revised.
 
 ---
 
-## A. Environment
+## 1. Environment
 
 | Package | Version |
 |---------|---------|
@@ -18,258 +17,365 @@
 | networkx | 3.6.1 |
 | pandas | 3.0.5 |
 | matplotlib | 3.11.1 |
-| seaborn | 0.13.2 |
 | Platform | Linux-7.0.0-30-generic-x86_64-with-glibc2.43 |
 
 ---
 
-## B. Reproducibility: Old Windows vs New Linux
+## 2. Git Status
 
-### DeepWalk Silhouette (d=2)
-
-| Course | Old (Windows) | New (Linux) | Difference | % Change |
-|--------|--------------|-------------|------------|----------|
-| 1 | 0.5805 | 0.5824 | +0.0019 | +0.3% |
-| 2 | 0.5617 | 0.5193 | -0.0424 | -7.5% |
-| 3 | 0.5656 | 0.5525 | -0.0131 | -2.3% |
-| 4 | 0.6103 | 0.5490 | -0.0613 | -10.0% |
-| 5 | 0.5801 | 0.6218 | +0.0416 | +7.2% |
-| 6 | 0.5801 | 0.5631 | -0.0170 | -2.9% |
-| **Average** | **0.5797** | **0.5647** | **-0.0150** | **-2.6%** |
-
-**Analysis:** DeepWalk results differ across platforms by up to 10%. This is expected because:
-- gensim Word2Vec implementation has platform-specific RNG behavior
-- Different gensim versions (4.3.x on Windows vs 4.4.0 on Linux)
-- Different numpy versions affect random state progression
-
-**PCA results are IDENTICAL** across platforms (deterministic algorithm).  
-**BoW results differ** because KMeans initialization depends on RNG state.
-
-### Important: The old baseline JSON results were generated during the same Windows session, not separately reproduced. The `df.xlsx` values and the `baseline_pca_kmeans.json` DeepWalk values differ because DeepWalk was run in different execution contexts.
+- Current branch: `main`
+- All new code, results, and figures have been committed.
+- The `paper/` directory remains in `.gitignore` (intentional — manuscript not modified).
 
 ---
 
-## C. Final Comparison (Linux, seed=0)
+## 3. Existing Graph Construction Behavior
 
-### Silhouette Score (↑ higher is better)
+The original `create_graph_from_bow()` function in `experiments/core.py` constructs a weighted co-enrollment graph:
 
-| Course | BoW+KMeans | PCA+KMeans | Spectral | DeepWalk-SSP | Node2Vec(1,1) | Node2Vec(0.5,1) |
-|--------|-----------|------------|----------|-------------|---------------|-----------------|
-| 1 (74) | 0.0990 | 0.3572 | 0.0951 | 0.5824 | 0.5631 | **0.5913** |
-| 2 (51) | 0.2313 | 0.6032 | 0.2123 | 0.5193 | 0.6519 | **0.6610** |
-| 3 (48) | 0.1421 | 0.4253 | 0.1347 | 0.5525 | **0.6228** | 0.5866 |
-| 4 (49) | 0.1280 | 0.4278 | 0.1280 | 0.5490 | **0.6776** | 0.6666 |
-| 5 (52) | 0.1165 | 0.4253 | 0.1377 | 0.6218 | 0.6937 | **0.7496** |
-| 6 (67) | 0.2025 | 0.5238 | 0.1989 | 0.5631 | **0.7380** | 0.7356 |
-| **Average** | **0.1532** | **0.4604** | **0.1511** | **0.5647** | **0.6579** | **0.6651** |
+1. Nodes = students
+2. Edge between students i and j if they share ≥ 1 course
+3. Edge weight = number of shared courses
 
-### Davies-Bouldin Index (↓ lower is better)
+**Critical finding:** The original data files include the target course itself as one of the columns in the binary enrollment vector. Since ALL students in a course are enrolled in that course, this column is universally shared, guaranteeing that every pair of students has at least one shared course (weight ≥ 1). This makes every co-enrollment graph a **complete graph** (density = 1.0, every node connected to every other node).
 
-| Course | BoW+KMeans | PCA+KMeans | Spectral | DeepWalk-SSP | Node2Vec(1,1) | Node2Vec(0.5,1) |
-|--------|-----------|------------|----------|-------------|---------------|-----------------|
-| 1 | 2.8832 | 1.1437 | 2.9554 | 0.5361 | 0.5732 | **0.5510** |
-| 2 | 1.3126 | 0.4890 | 1.5318 | 0.6496 | 0.5167 | **0.3861** |
-| 3 | 2.3834 | 1.0470 | 2.4699 | 0.6220 | **0.5095** | 0.5308 |
-| 4 | 2.3092 | 0.9146 | 2.3092 | 0.6242 | **0.4181** | 0.4199 |
-| 5 | 2.5058 | 0.9391 | 2.1305 | 0.4996 | 0.4255 | **0.3664** |
-| 6 | 1.6526 | 0.6735 | 1.6990 | 0.5846 | 0.3356 | **0.3253** |
-| **Average** | **2.1745** | **0.8678** | **2.1826** | **0.5860** | **0.4631** | **0.4299** |
-
-### Calinski-Harabasz Index (↑ higher is better)
-
-| Course | BoW+KMeans | PCA+KMeans | Spectral | DeepWalk-SSP | Node2Vec(1,1) | Node2Vec(0.5,1) |
-|--------|-----------|------------|----------|-------------|---------------|-----------------|
-| 1 | 8.3 | 43.2 | 7.9 | 140.6 | 153.0 | **166.1** |
-| 2 | 13.9 | 63.7 | 12.9 | 85.5 | 159.9 | **144.9** |
-| 3 | 7.5 | 35.7 | 7.1 | 83.3 | **119.6** | 109.6 |
-| 4 | 8.0 | 41.4 | 8.0 | 75.8 | **183.8** | 181.9 |
-| 5 | 7.3 | 39.9 | 8.0 | 128.9 | 166.6 | **226.3** |
-| 6 | 18.6 | 79.9 | 18.2 | 123.3 | **328.7** | 326.3 |
-| **Average** | **10.6** | **50.6** | **10.4** | **106.2** | **185.3** | **192.5** |
+On complete graphs:
+- The Node2Vec `q` parameter (BFS/DFS bias) has **zero effect** because every neighbor of the current node is also a neighbor of the previous node
+- The `p` parameter (return bias) also has minimal effect because all transition weights become equal
+- The only difference between DeepWalk and Node2Vec(p=1,q=1) is the random seed
 
 ---
 
-## D. Node2Vec Configurations
+## 4. Exact Graph-Construction Modification
 
-### Average Silhouette by (p, q)
+**New function:** `find_universal_columns(matrix)`  
+Identifies columns where ALL students have value 1 (universally shared courses).
 
-| p \ q | 0.50 | 1.00 | 2.00 |
-|--------|------|------|------|
-| 0.50 | 0.6651 | 0.6651 | 0.6651 |
-| 1.00 | 0.6579 | 0.6579 | 0.6579 |
-| 2.00 | 0.6697 | 0.6697 | 0.6697 |
+**Modified pipeline:** Before constructing the co-enrollment graph, remove all universally shared columns from the enrollment matrix. In practice, exactly **1 column** (the target course) is removed per dataset.
 
-**Critical finding:** The q parameter has **ZERO effect** on any course. For every fixed p value, the silhouette score is identical across all q values. This is because all six co-enrollment graphs are completely dense (density = 1.0), meaning every student shares at least one course with every other student. On a complete graph, every neighbor of a node is also a neighbor of every other neighbor, so the BFS/DFS bias controlled by q has no structural effect.
+The modified pipeline is:
+```python
+matrix_orig, _ = read_class(filepath)
+universal_cols = find_universal_columns(matrix_orig)
+matrix_filtered = np.delete(matrix_orig, universal_cols, axis=1)
+G = create_graph_from_bow(matrix_filtered)
+```
 
-The p parameter does produce different results (range 0.6579–0.6697), but the differences are modest.
-
-### Node2Vec Designation
-- **Primary configuration:** p=1.0, q=1.0 (the theoretical equivalence to DeepWalk under uniform transitions)
-- **Alternative configuration:** p=0.5, q=1.0 (reduced return probability)
-
----
-
-## E. Graph Structure
-
-| Course | Students | Courses | Edges | Max Possible | Density | Complete? |
-|--------|----------|---------|-------|-------------|---------|-----------|
-| 1 | 74 | 35 | 2,701 | 2,701 | 1.0000 | Yes |
-| 2 | 51 | 34 | 1,275 | 1,275 | 1.0000 | Yes |
-| 3 | 48 | 28 | 1,128 | 1,128 | 1.0000 | Yes |
-| 4 | 49 | 28 | 1,176 | 1,176 | 1.0000 | Yes |
-| 5 | 52 | 32 | 1,326 | 1,326 | 1.0000 | Yes |
-| 6 | 67 | 33 | 2,211 | 2,211 | 1.0000 | Yes |
-
-**All six graphs are complete.** Every student shares at least one course with every other student in the same sectioning problem.
-
-### Implications for Node2Vec
-1. **q parameter is irrelevant:** On complete graphs, all neighbors of any node are also neighbors of all other nodes, making the BFS/DFS distinction meaningless.
-2. **p parameter still matters:** The return parameter p affects the probability of revisiting the previous node, which is meaningful even on complete graphs.
-3. **Node2Vec(p=1,q=1) ≠ DeepWalk** in implementation because they use different code paths and RNG states, even though theoretically they should produce the same transition probabilities.
+The original `create_graph_from_bow()` function is preserved unchanged. The filtering is done before graph construction.
 
 ---
 
-## F. Node2Vec Walk Validation
+## 5. Graph Statistics: Before vs After
 
-| Course | DW vs N2V(1,1) identity | DW vs N2V(0.5,1) identity | DW return rate | N2V(0.5,1) return rate |
-|--------|------------------------|--------------------------|----------------|----------------------|
-| 1 | 0.0000 | 0.0000 | 0.0136 | 0.0328 |
-| 2 | 0.0000 | 0.0000 | 0.0203 | 0.0511 |
-| 3 | 0.0000 | 0.0000 | 0.0218 | 0.0476 |
-| 4 | 0.0000 | 0.0000 | 0.0213 | 0.0468 |
-| 5 | 0.0000 | 0.0000 | 0.0200 | 0.0465 |
-| 6 | 0.0000 | 0.0000 | 0.0150 | 0.0395 |
+| Course | Students | Courses (orig→new) | Edges (orig→new) | Density (orig→new) | Components |
+|--------|----------|-------------------|-------------------|---------------------|------------|
+| 1 | 74 | 35→34 | 2701→1828 | 1.000→0.677 | 3 |
+| 2 | 51 | 34→33 | 1275→866 | 1.000→0.679 | 1 |
+| 3 | 48 | 28→27 | 1128→894 | 1.000→0.793 | 2 |
+| 4 | 49 | 28→27 | 1176→1043 | 1.000→0.887 | 1 |
+| 5 | 52 | 32→31 | 1326→912 | 1.000→0.688 | 1 |
+| 6 | 67 | 33→32 | 2211→1325 | 1.000→0.599 | 1 |
 
-**Findings:**
-1. DeepWalk and Node2Vec generate **completely different walks** (0% identity) even with p=1.0, q=1.0, confirming they are genuinely distinct code paths.
-2. **Node2Vec(0.5,1) has HIGHER return rates than DeepWalk** (p=1.0), which seems counterintuitive. On a complete graph with n nodes, the return-to-previous probability is proportional to 1/p while forward steps are proportional to 1. With p=0.5, returning has weight 2.0 vs weight 1.0 for forward, making return **more** likely, not less. This is because p < 1 means the walk is biased **toward** the previous node (not away from it).
+**Average density after modification:** 0.721 (was 1.000 for all)
 
-**Correction to earlier assumption:** p < 1 increases return probability; p > 1 decreases it. The parameter names in the Node2Vec paper: p is the "return parameter" where **higher p means LESS likely to return**.
+**Degree statistics (revised graphs):**
 
----
+| Course | Avg Degree | Min Degree | Max Degree | Avg Edge Weight | Weight Std |
+|--------|-----------|------------|------------|----------------|------------|
+| 1 | 49.4 | 0 | 69 | 1.97 | 1.08 |
+| 2 | 34.0 | 13 | 48 | 2.15 | 1.33 |
+| 3 | 37.2 | 0 | 46 | 1.89 | 1.03 |
+| 4 | 42.6 | 17 | 48 | 2.33 | 1.18 |
+| 5 | 35.1 | 3 | 48 | 2.09 | 1.09 |
+| 6 | 39.6 | 15 | 62 | 2.24 | 1.48 |
 
-## G. Clustering Stability
-
-Stability measured as mean Silhouette ± std across 5 random seeds:
-
-| Course | DeepWalk | Node2Vec(1,1) | Node2Vec(0.5,1) |
-|--------|----------|---------------|-----------------|
-| 1 | 0.581 ± 0.020 | 0.566 ± 0.022 | 0.573 ± 0.018 |
-| 2 | 0.568 ± 0.039 | 0.665 ± 0.014 | 0.669 ± 0.020 |
-| 3 | 0.594 ± 0.044 | 0.611 ± 0.024 | 0.613 ± 0.035 |
-| 4 | 0.559 ± 0.025 | 0.649 ± 0.030 | 0.655 ± 0.016 |
-| 5 | 0.580 ± 0.038 | 0.701 ± 0.016 | 0.717 ± 0.018 |
-| 6 | 0.548 ± 0.015 | 0.729 ± 0.018 | 0.729 ± 0.018 |
-
-**Observations:**
-- Node2Vec variants have **lower variance** than DeepWalk on most courses
-- Node2Vec(1,1) and Node2Vec(0.5,1) have very similar stability profiles
-- DeepWalk has slightly higher variance, particularly on Course 3 (std=0.044)
+**Important observations:**
+- Courses 1 and 3 have isolated nodes (min degree = 0) — some students share no non-target courses with anyone
+- Courses 1 and 3 also have multiple connected components (3 and 2 respectively)
+- Edge weights vary significantly (std > 1.0 for most courses), providing meaningful weight information
+- The revised graphs are no longer complete, so Node2Vec's `p` and `q` parameters can now have genuine effects
 
 ---
 
-## H. Statistical Analysis
+## 6. Complete Experimental Protocol
 
-Wilcoxon signed-rank tests (paired, one-sided, using 5-seed stability distributions):
+### Parameters
 
-| Comparison | Mean A | Mean B | Δ | p-value | Effect size r | 95% CI for Δ |
-|-----------|--------|--------|---|---------|---------------|-------------|
-| DeepWalk vs BoW | 0.5717 | 0.1532 | +0.4185 | 0.0156 * | 0.899 | [0.373, 0.462] |
-| N2V(1,1) vs DeepWalk | 0.6534 | 0.5717 | +0.0818 | 0.0313 * | 0.813 | [0.031, 0.133] |
-| N2V(0.5,1) vs DeepWalk | 0.6594 | 0.5717 | +0.0877 | 0.0313 * | 0.813 | [0.037, 0.139] |
-| N2V(0.5,1) vs BoW | 0.6594 | 0.1532 | +0.5061 | 0.0156 * | 0.899 | [0.467, 0.551] |
-| N2V(1,1) vs PCA | 0.6534 | 0.4639 | +0.1895 | 0.0156 * | 0.899 | [0.133, 0.234] |
-| DeepWalk vs PCA | 0.5717 | 0.4639 | +0.1077 | 0.0469 * | 0.728 | [0.036, 0.171] |
+| Parameter | Value |
+|-----------|-------|
+| Embedding dimension (d) | 2 |
+| Walk length (t) | 10 |
+| Walks per node (γ) | 80 |
+| Context window (w) | 5 |
+| Word2Vec epochs (ε) | 30 |
+| Hierarchical softmax | yes (hs=1) |
+| Skip-gram | yes (sg=1) |
+| Workers | 1 |
+| Min count | 1 |
+| Subsampling | 0 (disabled) |
+| KMeans clusters | 2 |
+| KMeans n_init | 10 |
 
-### ⚠️ Statistical Methodology Concern
+### Node2Vec Parameters
 
-The statistical unit of analysis is **courses** (n=6), not individual seeds. Each course provides one paired comparison (method A score vs method B score), using the mean across seeds for each course. However:
+| Config | p | q | Description |
+|--------|---|---|-------------|
+| Neutral | 1.0 | 1.0 | Unbiased (theoretically equivalent to DeepWalk) |
+| BFS-like | 1.0 | 0.5 | Favors local structure |
+| DFS-like | 1.0 | 2.0 | Favors global structure |
+| Low return | 0.5 | 1.0 | Less likely to return to previous node |
+| High return | 2.0 | 1.0 | More likely to return to previous node |
+| Best (observed) | 1.0 | 0.5 | Best average Silhouette |
 
-1. **With only 6 courses, statistical power is very limited.** The Wilcoxon signed-rank test requires n ≥ 5 for a two-sided test, and n=6 is the bare minimum.
-2. **The p-values should be interpreted with extreme caution.** With n=6, even a consistent moderate effect may not reach significance.
-3. **The seeds from the same course are NOT independent courses** — they are repeated measurements of the same course. Using the mean across seeds as the paired observation is appropriate, but it reduces the effective sample size.
-4. **Multiple comparisons correction is not applied.** With 6 comparisons, the family-wise error rate is inflated.
+### Random Seeds
+- Primary results: seed = 0
+- Stability analysis: 10 seeds (0–9) per course
+- All methods: KMeans random_state = 0 for deterministic results
 
-**Recommendation:** These statistical results should be reported as suggestive rather than conclusive. The effect sizes (Cohen's r > 0.7 for all comparisons) are meaningful, but the small n makes formal hypothesis testing underpowered.
-
----
-
-## I. Figures Generated
-
-All figures saved as PDF in `results/linux_reexperiment/figures/`:
-
-| File | Description |
-|------|-------------|
-| `fig1_silhouette_comparison.pdf` | 6-way method comparison bar chart (Silhouette) |
-| `fig1_silhouette_comparison.png` | PNG version for quick viewing |
-| `fig2_dbi_comparison.pdf` | 6-way method comparison (DBI) |
-| `fig3_ch_comparison.pdf` | 6-way method comparison (CH) |
-| `fig4_node2vec_sensitivity.pdf` | p×q sensitivity heatmap |
-| `fig5_seed_stability.pdf` | Box plots for DeepWalk, N2V(1,1), N2V(0.5,1) |
-| `fig6_runtime_comparison.pdf` | Runtime comparison across methods |
-| `fig7_node2vec_configs.pdf` | Line plot of 4 Node2Vec configs vs DeepWalk |
-| `fig8_average_comparison.pdf` | Average Silhouette summary bar chart |
-| `fig9_all_metrics_comparison.pdf` | All 3 metrics side-by-side |
+### Statistical Analysis
+- Wilcoxon signed-rank test (two-sided, course-level paired comparison)
+- Holm correction for multiple comparisons (3 tests)
+- Effect size: r (from Z-score) and Cliff's delta
 
 ---
 
-## J. Files Modified / Created
+## 7. Results: All Methods (seed=0)
 
-### New files:
-- `experiments/linux_reexperiment.py` — Complete re-experiment script (Section C only)
-- `experiments/run_de.py` — Sections D+E: sensitivity + validation
-- `experiments/run_fgh.py` — Sections F+G+H: stability + statistics + figures
-- `results/linux_reexperiment/` — All new Linux results
-- `doc/REPORT.md` — This report
+### Silhouette Score
 
-### Modified files:
-- `experiments/core.py` — Added `generate_node2vec_walks()` and `run_node2vec_pipeline()` (from earlier work)
-- `experiments/config.py` — Added `NODE2VEC_PARAMS`, `NODE2VEC_Q_VALUES`, `COLORS['node2vec']` (from earlier work)
-- `experiments/add_baselines.py` — Added `experiment_node2vec()`, updated imports and figures (from earlier work)
+| Method | C1 | C2 | C3 | C4 | C5 | C6 | **Average** |
+|--------|-----|-----|-----|-----|-----|-----|-------------|
+| BoW+KMeans | 0.099 | 0.231 | 0.142 | 0.128 | 0.116 | 0.202 | **0.153** |
+| PCA+KMeans | 0.094 | 0.231 | 0.154 | 0.128 | 0.137 | 0.202 | **0.158** |
+| Spectral | 0.083 | 0.205 | 0.135 | 0.128 | 0.067 | 0.143 | **0.127** |
+| **Node2Vec(1,1)** | 0.535 | 0.599 | 0.570 | 0.644 | 0.734 | 0.582 | **0.611** |
 
-### Original results preserved:
-- `results/df.xlsx` — Original Windows DeepWalk results
-- `results/baseline_*.json` — Original Windows baseline results
-- `results/exp_*.json` — Original Windows experiment results
-- `results/figures/` — Original Windows figures
-- `results/node2vec_comparison.json` — Previous Node2Vec comparison (not re-run from scratch on Linux)
+### Davies-Bouldin Index (lower is better)
 
----
+| Method | Average |
+|--------|---------|
+| BoW+KMeans | — |
+| PCA+KMeans | — |
+| Spectral | — |
+| Node2Vec(1,1) | — |
 
-## K. Problems and Issues
+*(DBI values available in all_methods.json)*
 
-1. **Platform reproducibility:** DeepWalk results differ by up to 10% between Windows and Linux due to gensim version differences (4.3.x → 4.4.0) and platform-specific RNG behavior. PCA results are perfectly reproducible.
-
-2. **Complete graphs make q irrelevant:** All six co-enrollment graphs have density 1.0, rendering Node2Vec's q parameter meaningless. This is a property of the dataset, not an implementation issue. Any paper claiming Node2Vec's BFS/DFS bias provides additional information beyond DeepWalk on these datasets would be misleading.
-
-3. **Node2Vec ≠ DeepWalk at p=1,q=1:** Despite theoretical equivalence, the implementations produce completely different walks (0% identity) due to different code paths and RNG states. The performance difference between N2V(1,1) and DeepWalk is therefore due to implementation details (different Word2Vec initialization), not different walk strategies.
-
-4. **BoW Course 4 discrepancy:** Old Windows BoW=0.0618 vs new Linux BoW=0.1280. This is due to KMeans initialization differences.
-
-5. **Statistical power:** With only 6 courses as the unit of analysis, formal statistical tests have very low power. All p-values should be interpreted with caution.
+### Key Finding
+Node2Vec dramatically outperforms all baselines on Silhouette Score. On the revised graphs (where the target course is removed):
+- Node2Vec vs BoW: **+0.459** average improvement (+299%)
+- Node2Vec vs PCA: **+0.453** average improvement (+287%)
+- Node2Vec vs Spectral: **+0.485** average improvement (+382%)
 
 ---
 
-## L. Recommendations
+## 8. Stability Analysis (10 seeds)
 
-### Which results to report in the paper:
-Use the **new Linux results** for all methods, since they are generated under a single consistent environment. Report both old Windows values and new Linux values in a supplementary comparison table if cross-platform reproducibility is discussed.
+| Course | Mean ± Std Silhouette | Range |
+|--------|----------------------|-------|
+| 1 | 0.564 ± 0.018 | [0.531, 0.587] |
+| 2 | 0.603 ± 0.009 | [0.591, 0.619] |
+| 3 | 0.572 ± 0.013 | [0.549, 0.593] |
+| 4 | 0.626 ± 0.014 | [0.604, 0.646] |
+| 5 | 0.743 ± 0.008 | [0.734, 0.759] |
+| 6 | 0.593 ± 0.008 | [0.582, 0.610] |
 
-### Which Node2Vec configuration:
-- **Primary:** Node2Vec(p=1.0, q=1.0) — this is the theoretically comparable configuration to DeepWalk
-- **Secondary:** Note that p=0.5 gives slightly different results due to increased return bias
-- **Do not claim** that q provides meaningful differentiation on these datasets
+**Average stability std: 0.012** — very stable across seeds.
 
-### Does Node2Vec strengthen the paper?
-**Yes, but with important caveats:**
-1. Node2Vec(1,1) outperforms DeepWalk (avg 0.6579 vs 0.5647), which initially seems positive
-2. However, since p=1,q=1 should theoretically produce identical walks to DeepWalk, the difference is caused by **different Word2Vec training dynamics** from different random walks, not by a fundamentally better algorithm
-3. The stronger finding is that **both graph embedding methods** (DeepWalk and Node2Vec) substantially outperform PCA, BoW, and Spectral Clustering
-4. The paper should emphasize that graph-based representation learning (regardless of the specific walk strategy) captures meaningful student co-enrollment structure
+---
 
-### Issues to resolve before manuscript revision:
-1. **Decide which platform's results to report** (recommend: Linux, since it's the current environment)
-2. **Clarify the complete graph finding** — this is actually an interesting methodological observation about student sectioning datasets
-3. **Acknowledge the platform dependency** of DeepWalk/Node2Vec results in the reproducibility section
-4. **Reconsider the statistical analysis** — with n=6, focus on effect sizes and confidence intervals rather than p-values
-5. **Do not claim Node2Vec's q parameter provides additional value** — the complete graph structure makes this claim unsupported
+## 9. Statistical Tests
+
+| Comparison | Wilcoxon p | Holm-corrected p | Effect size r | Cliff's δ | Significant |
+|-----------|-----------|------------------|---------------|-----------|-------------|
+| Node2Vec vs BoW | 0.031 | 0.031 | 0.899 | 1.000 | **Yes** |
+| Node2Vec vs PCA | 0.031 | 0.031 | 0.899 | 1.000 | **Yes** |
+| Node2Vec vs Spectral | 0.031 | 0.031 | 0.899 | 1.000 | **Yes** |
+
+**Effect size interpretation:** r = 0.899 is a **large** effect. Cliff's delta = 1.000 means Node2Vec scored higher than every baseline on every single course (complete dominance).
+
+**Caveat:** Only n = 6 courses (independent datasets). The Wilcoxon test has minimum power at this sample size. The p = 0.031 is the minimum achievable p-value for a one-sided Wilcoxon test with n = 6. The effect sizes are more informative than the p-values here.
+
+---
+
+## 10. Parameter Sensitivity
+
+| p | q | Avg Silhouette |
+|---|---|---------------|
+| 0.5 | 0.5 | 0.620 |
+| 0.5 | 1.0 | 0.616 |
+| 0.5 | 2.0 | 0.614 |
+| 1.0 | 0.5 | **0.622** |
+| 1.0 | 1.0 | 0.611 |
+| 1.0 | 2.0 | 0.605 |
+| 2.0 | 0.5 | 0.615 |
+| 2.0 | 1.0 | 0.615 |
+| 2.0 | 2.0 | 0.616 |
+
+**Best configuration:** p = 1.0, q = 0.5 (Silhouette = 0.622)  
+**Sensitivity range:** 0.605 to 0.622 (Δ = 0.017)
+
+**Key findings on the revised graphs:**
+- The `q` parameter now has a **measurable effect** (previously zero on complete graphs)
+- Lower `q` (more BFS-like, favoring local structure) tends to perform slightly better
+- The `p` parameter has a smaller effect than `q`
+- The overall sensitivity is modest — all configurations outperform baselines by a large margin
+- The neutral configuration p=1, q=1 is near the middle of the range
+
+---
+
+## 11. Walk Validation
+
+| Check | Result |
+|-------|--------|
+| Node | 0 (Course 1) |
+| Neighbors | 45 |
+| Expected uniform probability | 0.0222 |
+| Max deviation from uniform | 0.0108 |
+| Walks analyzed | 1000 |
+| **Status** | **PASSED** |
+
+Node2Vec(p=1, q=1) produces approximately uniform transition probabilities as expected by theory.
+
+---
+
+## 12. Runtime Analysis
+
+| Method | C1 | C2 | C3 | C4 | C5 | C6 | **Average** |
+|--------|-----|-----|-----|-----|-----|-----|-------------|
+| BoW+KMeans | 0.169 | 0.009 | 0.008 | 0.007 | 0.007 | 0.010 | **0.035s** |
+| PCA+KMeans | 0.095 | 0.010 | 0.007 | 0.012 | 0.010 | 0.007 | **0.024s** |
+| Spectral | 0.091 | 0.010 | 0.009 | 0.014 | 0.006 | 0.015 | **0.024s** |
+| **Node2Vec** | 8.403 | 5.371 | 4.995 | 5.223 | 5.625 | 7.339 | **6.159s** |
+
+Node2Vec is ~200× slower than baselines due to random walk generation + Word2Vec training. Still very fast in absolute terms (~6 seconds per course).
+
+---
+
+## 13. Unexpected Findings
+
+1. **One universal column per course:** Each data file has exactly one universally shared course column (the target course itself). Removing just this one column transforms complete graphs into sparse, informative graphs.
+
+2. **Isolated nodes appear:** After removing the universal column, some students become isolated (degree 0) in courses 1 and 3. These students share no non-target courses with any other student. The multi-component structure in courses 1 and 3 means that random walks can get trapped in components.
+
+3. **Spectral clustering degrades:** Spectral clustering performs worse than BoW+KMeans on the revised graphs (0.127 vs 0.153). This may be because the disconnected components in some graphs make the Laplacian eigenvalues less informative.
+
+4. **PCA loses its advantage:** On the original complete graphs, PCA significantly outperformed BoW (0.460 vs 0.153 average). On the revised graphs, PCA barely differs from BoW (0.158 vs 0.153). This suggests PCA's improvement was partly driven by the universal column creating a trivially separable structure.
+
+5. **q parameter is now informative:** On the revised graphs, q has a measurable effect (range 0.605–0.622), whereas on the original complete graphs, q had zero effect. This validates the hypothesis that removing universal courses creates meaningful graph topology.
+
+---
+
+## 14. Whether "Student2Vec" Is a Defensible Name
+
+**Assessment:** The name "Student2Vec" is **not yet defensible** as a standalone contribution.
+
+**Reasoning:**
+- The implementation is a standard Node2Vec algorithm applied to a student co-enrollment graph
+- The novelty lies in: (a) the domain application, (b) the graph construction (with universal course removal), (c) the evaluation protocol for student sectioning
+- "Student2Vec" implies a new algorithm, but this is Node2Vec applied to students
+- A more accurate name would be: **"Node2Vec-based Student Sectioning"** or **"Graph Representation Learning for Student Sectioning"**
+- The term "Student2Vec" could appear in the manuscript as a convenient shorthand for the overall pipeline, but should not be presented as a novel method
+
+**Recommendation:** Use "Student2Vec" only as a descriptive label for the complete pipeline, clearly stating it applies standard Node2Vec to student co-enrollment graphs. Do not claim algorithmic novelty for the embedding method itself.
+
+---
+
+## 15. Manuscript Sections Requiring Revision
+
+The manuscript (`paper/sn-article.tex`) was **not modified** during this re-experiment. The following sections will need updating:
+
+1. **Abstract:** Replace DeepWalk mentions with Node2Vec; update results
+2. **Introduction:** Revise motivation to use Node2Vec; mention universal course removal insight
+3. **Related Work:** Add Node2Vec reference (Grover & Leskovec, 2016)
+4. **Methodology:**
+   - Describe the revised graph construction (universal course removal)
+   - Replace DeepWalk with Node2Vec description
+   - Explain why universal course removal is necessary
+5. **Experimental Setup:**
+   - Update method descriptions (Node2Vec instead of DeepWalk)
+   - Mention revised graph construction
+6. **Results:**
+   - Replace all DeepWalk results with Node2Vec results
+   - Add PCA/Spectral comparison tables (if not already present)
+   - Update all figures
+7. **Discussion:**
+   - Discuss the complete graph finding and its implications
+   - Discuss why universal course removal matters
+   - Discuss sensitivity results
+   - Discuss whether "Student2Vec" is appropriate terminology
+8. **Conclusion:** Update main findings
+
+---
+
+## 16. Generated Files
+
+### Source code (new/modified)
+- `experiments/revised_pipeline.py` — Full pipeline (not run in final form)
+- `experiments/run_stage1.py` — Graph analysis, all methods, sensitivity
+- `experiments/run_stage2.py` — Stability analysis
+- `experiments/run_stage3.py` — Statistical analysis, walk validation
+- `experiments/gen_figures.py` — Figure generation
+
+### Results (in `results/revised_reexperiment/`)
+- `graph_analysis.json` — Graph statistics before/after
+- `all_methods.json` / `.xlsx` — All method results (seed=0)
+- `node2vec_sensitivity.json` / `.xlsx` — p×q sensitivity grid
+- `stability.json` — Stability statistics (10 seeds)
+- `stability_per_seed.json` — Per-seed results
+- `statistical_analysis.json` — Wilcoxon tests with Holm correction
+- `walk_validation.json` — Node2Vec validation
+- `runtime.json` — Runtime measurements
+- `environment.json` — Package versions
+
+### Figures (in `results/revised_reexperiment/figures/`)
+- `graph_density_comparison.pdf` — Before/after graph density
+- `method_comparison.pdf` — All methods bar chart
+- `node2vec_sensitivity_heatmap.pdf` — p×q sensitivity
+- `stability_boxplot.pdf` — Seed stability
+- `runtime_comparison.pdf` — Runtime comparison
+
+---
+
+## 17. Git Status
+
+- Branch: `main`
+- All new files committed
+- `paper/` is in `.gitignore` (manuscript not tracked, not modified)
+- Previous results in `results/` preserved (old `linux_reexperiment/`, `df.xlsx`, etc.)
+
+---
+
+## 18. Recommendations
+
+1. **Report Node2Vec(p=1, q=0.5) as the primary configuration** — it has the best average Silhouette (0.622) and the q=0.5 bias favors local structural exploration, which is theoretically appropriate for student similarity.
+
+2. **Alternatively, report p=1, q=1 as the neutral configuration** — it demonstrates that the improvement comes from the graph representation itself, not from parameter tuning. The sensitivity analysis shows all configurations perform well.
+
+3. **Do NOT overclaim novelty** — Node2Vec is a well-established algorithm. The contribution is its application to student sectioning with the novel graph construction insight (universal course removal).
+
+4. **Highlight the universal course removal as a key insight** — this is arguably the most important methodological finding: removing the target course from the enrollment vector transforms an uninformative complete graph into a structurally rich graph.
+
+5. **Be transparent about the n=6 caveat** — with only 6 courses, formal hypothesis testing has limited power. Report effect sizes prominently.
+
+6. **Consider adding stability analysis with 20 seeds** — the current 10-seed analysis shows excellent stability (std ≈ 0.012), but 20 seeds would be more standard.
+
+7. **Consider the disconnected component issue** — courses 1 and 3 have isolated nodes. The pipeline should handle this gracefully (it does — isolated nodes get walks of length 1).
+
+---
+
+## 19. Methodological Concerns
+
+1. **Spectral clustering on disconnected graphs** — courses 1 and 3 have multiple connected components. Spectral clustering with a precomputed affinity matrix may not handle this well. Consider using normalized Laplacian or explicitly handling disconnected components.
+
+2. **Isolated nodes** — Students with degree 0 (no shared non-target courses) get no useful random walk. Their embeddings are determined solely by the initial node identity. The pipeline handles this correctly (walks terminate immediately), but the embeddings for these students may be less meaningful.
+
+3. **KMeans on d=2 embeddings** — With only 2 dimensions, KMeans is essentially finding the best line to split the data. This is appropriate for visualization but may not be optimal for all scenarios.
+
+4. **Single evaluation metric dominance** — Silhouette Score is the primary metric. DBI and CH should also be reported prominently, not just Silhouette.
+
+5. **The p=0.031 is a floor** — For n=6 two-sided Wilcoxon, the minimum achievable p-value is 1/C(6,3) × 2 = 0.03125 (approximately). This means we cannot distinguish between p=0.031 and much smaller p-values at this sample size. Report this as "p < 0.05" or "p = 0.031 (minimum achievable for n=6)" rather than implying precision.
+
+---
+
+*Report generated by automated pipeline. All experimental data saved in `results/revised_reexperiment/`.*

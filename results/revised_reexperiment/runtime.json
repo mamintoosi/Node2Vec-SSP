@@ -1,0 +1,122 @@
+[
+  {
+    "course": 1,
+    "method": "BoW+KMeans",
+    "t_total": 0.16940369899384677
+  },
+  {
+    "course": 1,
+    "method": "PCA+KMeans",
+    "t_total": 0.09526272100629285
+  },
+  {
+    "course": 1,
+    "method": "Spectral",
+    "t_total": 0.09084462300234009
+  },
+  {
+    "course": 1,
+    "method": "Node2Vec",
+    "t_total": 8.402703961008228
+  },
+  {
+    "course": 2,
+    "method": "BoW+KMeans",
+    "t_total": 0.008546971002942882
+  },
+  {
+    "course": 2,
+    "method": "PCA+KMeans",
+    "t_total": 0.009750561992404982
+  },
+  {
+    "course": 2,
+    "method": "Spectral",
+    "t_total": 0.010476151001057588
+  },
+  {
+    "course": 2,
+    "method": "Node2Vec",
+    "t_total": 5.3706753099831985
+  },
+  {
+    "course": 3,
+    "method": "BoW+KMeans",
+    "t_total": 0.007947499994770624
+  },
+  {
+    "course": 3,
+    "method": "PCA+KMeans",
+    "t_total": 0.007070644001942128
+  },
+  {
+    "course": 3,
+    "method": "Spectral",
+    "t_total": 0.008920043997932225
+  },
+  {
+    "course": 3,
+    "method": "Node2Vec",
+    "t_total": 4.994631868015858
+  },
+  {
+    "course": 4,
+    "method": "BoW+KMeans",
+    "t_total": 0.006646003006608225
+  },
+  {
+    "course": 4,
+    "method": "PCA+KMeans",
+    "t_total": 0.011972729989793152
+  },
+  {
+    "course": 4,
+    "method": "Spectral",
+    "t_total": 0.013813282988849096
+  },
+  {
+    "course": 4,
+    "method": "Node2Vec",
+    "t_total": 5.223394407017622
+  },
+  {
+    "course": 5,
+    "method": "BoW+KMeans",
+    "t_total": 0.00699381300364621
+  },
+  {
+    "course": 5,
+    "method": "PCA+KMeans",
+    "t_total": 0.010382117005065084
+  },
+  {
+    "course": 5,
+    "method": "Spectral",
+    "t_total": 0.006198315997608006
+  },
+  {
+    "course": 5,
+    "method": "Node2Vec",
+    "t_total": 5.62529201801226
+  },
+  {
+    "course": 6,
+    "method": "BoW+KMeans",
+    "t_total": 0.009785212998394854
+  },
+  {
+    "course": 6,
+    "method": "PCA+KMeans",
+    "t_total": 0.007300837998627685
+  },
+  {
+    "course": 6,
+    "method": "Spectral",
+    "t_total": 0.015212534999591298
+  },
+  {
+    "course": 6,
+    "method": "Node2Vec",
+    "t_total": 7.339414507980109
+  }
+]
