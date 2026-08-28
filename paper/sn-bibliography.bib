@@ -1,0 +1,392 @@
+@article{Niu2021SOOP,
+  author = {Niu, Songjie and Zhou, Dongyan},
+  title = {SOOP: Efficient Distributed Graph Computation Supporting Second-Order Random Walks},
+  journal = {Journal of Computer Science and Technology},
+  year = {2021},
+  volume = {36},
+  number = {5},
+  pages = {985--1001},
+  doi = {10.1007/s11390-021-1234-y},
+  url = {https://doi.org/10.1007/s11390-021-1234-y},
+  issn = {1860-4749},
+  abstract = {The second-order random walk has recently been shown to effectively improve the accuracy in graph analysis tasks. Existing work mainly focuses on centralized second-order random walk (SOW) algorithms. SOW algorithms rely on edge-to-edge transition probabilities to generate next random steps. However, it is prohibitively costly to store all the probabilities for large-scale graphs, and restricting the number of probabilities to consider can negatively impact the accuracy of graph analysis tasks. In this paper, we propose and study an alternative approach, SOOP (second-order random walks with on-demand probability computation), that avoids the space overhead by computing the edge-to-edge transition probabilities on demand during the random walk. However, the same probabilities may be computed multiple times when the same edge appears multiple times in SOW, incurring extra cost for redundant computation and communication. We propose two optimization techniques that reduce the complexity of computing edge-to-edge transition probabilities to generate next random steps, and reduce the cost of communicating out-neighbors for the probability computation, respectively. Our experiments on real-world and synthetic graphs show that SOOP achieves orders of magnitude better performance than baseline precompute solutions, and it can efficiently computes SOW algorithms on billion-scale graphs.}
+}
+
+@article{Cen2024NetworkEmbedding,
+  author = {Cen, Ke-Ting and Shen, Hua-Wei and Cao, Qi and Xu, Bing-Bing and Cheng, Xue-Qi},
+  title = {Identity-Preserving Adversarial Training for Robust Network Embedding},
+  journal = {Journal of Computer Science and Technology},
+  year = {2024},
+  volume = {39},
+  number = {1},
+  pages = {177--191},
+  doi = {10.1007/s11390-023-2256-4},
+  url = {https://doi.org/10.1007/s11390-023-2256-4},
+  issn = {1860-4749},
+  abstract = {Network embedding, as an approach to learning low-dimensional representations of nodes, has been proved extremely useful in many applications, e.g., node classification and link prediction. Unfortunately, existing network embedding models are vulnerable to random or adversarial perturbations, which may degrade the performance of network embedding when being applied to downstream tasks. To achieve robust network embedding, researchers introduce adversarial training to regularize the embedding learning process by training on a mixture of adversarial examples and original examples. However, existing methods generate adversarial examples heuristically, failing to guarantee the imperceptibility of generated adversarial examples, and thus limit the power of adversarial training. In this paper, we propose a novel method Identity-Preserving Adversarial Training (IPAT) for network embedding, which generates imperceptible adversarial examples with explicit identity-preserving regularization. We formalize such identity-preserving regularization as a multi-class classification problem where each node represents a class, and we encourage each adversarial example to be discriminated as the class of its original node. Extensive experimental results on real-world datasets demonstrate that our proposed IPAT method significantly improves the robustness of network embedding models and the generalization of the learned node representations on various downstream tasks.}
+}
+
+@article{Yang2024CAGCN,
+  author = {Yang, Jun and Sheng, Yi-Qiang and Wang, Jin-Lin and Ni, Hong},
+  title = {CAGCN: Centrality-Aware Graph Convolution Network for Anomaly Detection in Industrial Control Systems},
+  journal = {Journal of Computer Science and Technology},
+  year = {2024},
+  volume = {39},
+  number = {4},
+  pages = {967--983},
+  doi = {10.1007/s11390-022-2149-y},
+  url = {https://doi.org/10.1007/s11390-022-2149-y},
+  issn = {1860-4749},
+  abstract = {In industrial control systems, the utilization of deep learning based methods achieves improvements for anomaly detection. However, most current methods ignore the association of inner components in industrial control systems. In industrial control systems, an anomaly component may affect the neighboring components; therefore, the connective relationship can help us to detect anomalies effectively. In this paper, we propose a centrality-aware graph convolution network (CAGCN) for anomaly detection in industrial control systems. Unlike the traditional graph convolution network (GCN) model, we utilize the concept of centrality to enhance the ability of graph convolution networks to deal with the inner relationship in industrial control systems. Our experiments show that compared with GCN, our CAGCN has a better ability to utilize this relationship between components in industrial control systems. The performances of the model are evaluated on the Secure Water Treatment (SWaT) dataset and the Water Distribution (WADI) dataset, the two most common industrial control systems datasets in the field of industrial anomaly detection. The experimental results show that our CAGCN achieves better results on precision, recall, and F1 score than the state-of-the-art methods.}
+}
+
+@article{Muller2010,
+  author  = {Tom{\'a}{\v{s}} M{\"u}ller and Keith Murray},
+  title   = {Comprehensive approach to student sectioning},
+  journal = {Annals of Operations Research},
+  year    = {2010},
+  volume  = {181},
+  number  = {1},
+  pages   = {249--269},
+  doi     = {10.1007/s10479-010-0735-9},
+  url     = {https://doi.org/10.1007/s10479-010-0735-9},
+  issn    = {1572-9338},
+  abstract = {Student sectioning is the problem of assigning students to particular sections of courses they request while respecting constraints such as course structures, section limits, and reserved spaces. Students may also provide preferences on class times and course alternatives. In this paper, three approaches to this problem are examined and combined in order to tackle it on a practical level: student sectioning during course timetabling, batch sectioning after a complete timetable is developed, and online sectioning for making additional changes to student schedules. An application and some practical results of the proposed solutions based on actual data are also included.}
+}
+
+@article{Amintoosi2007FishSchool,
+  title   = {A Fish School Clustering Algorithm: Applied to Student Sectioning Problem},
+  author  = {M. Amintoosi and M. Fathy and N. Mozayani and A.T. Rahmani},
+  journal = {Dynamics of Continuous Discrete \& Impulse Systems, series B: Applications and Algorithms},
+  year    = {2007},
+  month   = {December},
+  note    = {Post Proceeding of LSMS2007, Life System Modeling and Simulation 2007, China},
+  pages   = {696-699},
+  volume  = {2}
+}
+
+@article{KAZEMI2020101794,
+title = {Content-based Node2Vec for representation of papers in the scientific literature},
+journal = {Data \& Knowledge Engineering},
+volume = {127},
+pages = {101794},
+year = {2020},
+issn = {0169-023X},
+author = {B. Kazemi and A. Abhari},
+keywords = {Distributed representation, Artificial neural networks, Node2Vec, Link prediction},
+abstract = {Lower-dimensional representation of scientific text has attracted much attention among researchers due to its impact on many data mining and recommendation tasks. This paper studies two main research streams in scientific literature representation. First, both local and distributed representation viewpoints are reviewed and their advantages and disadvantages in lower dimensional representation are discussed. The paper then proposes a novel hybrid distributed technique for text representation. Using scientific articles as the major source of textual information, both the article’s content and citation network are used to build a distributed and universal lower dimensional representation. The superiority of the new technique to the traditional methods is then justified in predicting the existence of links in large citation graphs.}
+}
+
+@article{XU2022102024,
+title = {A random walk sampling on knowledge graphs for semantic-oriented statistical tasks},
+journal = {Data \& Knowledge Engineering},
+volume = {140},
+pages = {102024},
+year = {2022},
+issn = {0169-023X},
+author = {Xiaoliang Xu and Qifan Hong and Yuxiang Wang and Jiahui Jin and Xinle Xuan and Tao Fu},
+keywords = {Knowledge graph, Random walk sampling, Approximate estimation},
+abstract = {A knowledge graph (KG) manages large-scale and real-world facts as a big graph in a schema-flexible manner, which has recently attracted considerable attention . It is very common that users deploy some statistical tasks on a KG to achieve the latent information of interest. There are two types of the statistical tasks, that are, topology-oriented and semantic-oriented statistical tasks. Many efforts have been made for the former one (e.g., finding the average degree of a KG). The basic idea is concluded as: estimating an approximate statistical result based on a random sample collected through a topology-aware KG sampling approach. Unfortunately, this method cannot be directly deployed to support semantic-oriented statistical tasks (e.g., achieving the average fuel economy of cars produced in Germany), because the topology-aware sampling does not consider the semantics of a KG (or we say the sample is collected only based on the topological information of a KG, while excluding the semantics of a KG), hence leading to a low-quality random sample and would significantly affect the accuracy. In this paper, we propose a semantic-aware random walk sampling on KGs to quickly and accurately collect samples that match the semantic constraint of the semantic-oriented statistical task, and obtain an approximate statistical result by well-designed unbiased estimators. Moreover, we propose an optimization on our semantic-aware sampling to improve the sampling efficiency. Finally, extensive experiments were conducted on our method, which confirmed the effectiveness and efficiency of our approach.}
+}
+
+@article{LOZANO202136,
+title = {Network embedding from the line graph: Random walkers and boosted classification},
+journal = {Pattern Recognition Letters},
+volume = {143},
+pages = {36-42},
+year = {2021},
+issn = {0167-8655},
+doi = {https://doi.org/10.1016/j.patrec.2020.12.018},
+url = {https://www.sciencedirect.com/science/article/pii/S0167865521000027},
+author = {Miguel Angel Lozano and Francisco Escolano and Manuel Curado and Edwin R. Hancock},
+keywords = {Network embedding, SGNS, Line graph, Spectral theory},
+abstract = {In this paper, we propose to embed edges instead of nodes using state-of-the-art neural/factorization methods (DeepWalk, node2vec, NetMF). These methods produce latent representations based on co-ocurrence statistics by simulating fixed-length random walks and then taking bags-of-vectors as the input to the Skip Gram Learning with Negative Sampling (SGNS). We commence by expressing commute times embedding as matrix factorization, and thus relating this embedding to those of DeepWalk and node2vec. Recent results showing formal links between all these methods via the spectrum of graph Laplacian, are then extended to understand the results obtained by SGNS when we embed edges instead of nodes. Since embedding edges is equivalent to embedding nodes in the line graph, we proceed to combine both existing formal characterizations of the line graphs and empirical evidence in order to explain why this embedding dramatically outperforms its nodal counterpart in multi-label classification tasks.}
+}
+
+@article{HALIM2021101281,
+title = {Clustering of graphs using pseudo-guided random walk},
+journal = {Journal of Computational Science},
+volume = {51},
+pages = {101281},
+year = {2021},
+issn = {1877-7503},
+author = {Zahid Halim and Hussain Mahmood Sargana and  Aadam and  Uzma and Muhammad Waqas},
+keywords = {Graph clustering, Random walk, Efficient clustering, Community detection},
+abstract = {Clustering is an unsupervised learning task that models data as coherent groups. Multiple approaches have been proposed in the past to cluster large volumes of data. Graphs provide a logical mapping of many real-world datasets rich enough to reflect various peculiarities of numerous domains. Apart from k-means, k-medoid, and other well-known clustering algorithms, utilization of random walk-based approaches to cluster data is a prominent area of data mining research. Markov clustering algorithm and limited random walk-based clustering are the prominent techniques that utilize the concept of random walk. The main goal of this work is to address the task of clustering graphs using an efficient random walk-based method. A novel walk approach in a graph is presented here that determines the weight of the edges and the degree of the nodes. This information is utilized by the pseudo-guidance model to guide the random walk procedure. This work introduces the friends-of-friends concept during the random walk process so that the edges’ weights are determined utilizing an inclusive criterion. This concept enables a random walk to be initiated from the highest degree node. The random walk continues until the walking agent cannot find any unvisited neighbor(s). The agent walks to its neighbors if it finds a weight of one or more, otherwise the agent’s stopping criteria is met. The nodes visited in this walk form a cluster. Once a walk comes to halt, the visited nodes are removed from the original graph and the next walk starts in the remaining graph. This process continues until all nodes of the graph are traversed. The focus of this work remains random walk-based clustering of graphs. The proposed approach is evaluated using 18 real-world benchmark datasets utilizing six cluster validity indices, namely Davies-Bouldin index (DBI), Dunn index (DI), Silhouette coefficient (SC), Calinski-Harabasz index (CHI), modularity index, and normalized cut. This proposal is compared with seven closely related approaches from the same domain, namely, limited random walk, pairwise clustering, personalized page rank clustering, GAKH (genetic algorithm krill herd) graph clustering, mixing time of random walks, density-based clustering of large probabilistic graphs, and Walktrap. Experiments suggest better performance of this work based on the evaluation metrics.}
+}
+
+@article{CHEN2022101825,
+title = {Semantic-aware network embedding via optimized random walk and paragaraph2vec},
+journal = {Journal of Computational Science},
+volume = {63},
+pages = {101825},
+year = {2022},
+issn = {1877-7503},
+author = {Lei Chen and Yuan Li and Xingye Deng and Zhaohua Liu and Mingyang Lv and Tingqin He},
+keywords = {Semantic-aware, Random walk, Paragraph2vec},
+abstract = {The Deepwalk-based network embedding algorithm, which was inspired by the word2vec model, can quickly and efficiently learn a low-dimensional vector representation for each node in a complex network. However, the success of word2vec in natural language environments relies heavily on ubiquitous contextual semantics, and the Deepwalk model is less accurate than other deep models due to ignoring contextual semantics in complex networks. To solve this challenge, a semantic-aware network embedding algorithm is proposed in this paper, simply called SANE, via optimized random walk and paragaraph2vec. In the SANE, a semantic-aware random walk strategy is designed to unsupervised generate many semantic-bearing node sequences from a complex network as a training set. Then, based on the training set, the paragraph2vec model is optimized by considering both global semantics and local semantics for learning more accurate low-dimensional node feature representations. Experiments on multiple tasks and multiple networks show the advantages of our SANE algorithm.}
+}
+
+@article{LUO2024123304,
+title = {Link prediction in multilayer networks using weighted reliable local random walk algorithm},
+journal = {Expert Systems with Applications},
+volume = {247},
+pages = {123304},
+year = {2024},
+issn = {0957-4174},
+author = {Zhiping Luo and Jian Yin and Guangquan Lu and Mohammad Reza Rahimi},
+keywords = {Link prediction, Local random walk, Multilayer networks, Reliable routes, Weighted links, Social networks},
+}
+
+
+@article{Qi2024Weighted,
+title = {Weighted Jump in Random Walk graph sampling},
+journal = {Neurocomputing},
+volume = {586},
+pages = {127581},
+year = {2024},
+issn = {0925-2312},
+author = {Xiao Qi},
+keywords = {Random walk, Graph sampling, Data mining, Social networks},
+abstract = {Graph sampling is a challenging problem in network analysis due to the complex structures of networks. Currently, a series of graph sampling algorithms based on random walks achieve good results in graph sampling tasks. However, the existing methods often reduce the conductance of graphs, causing the sampler to stay in the same node for a long time. This results in undersampling. In this paper, we propose a novel Weighted Jump Random Walk (WJRW) algorithm to generate representative samples. We design a parameter in the WJRW algorithm that can adjust the proportions of random walk and random jump in every step. According to the issue of repeated sample nodes in the Generalized Maximum Degree (GMD) method and the problem of large deviations in the Simple Random Walk (SRW), WJRW addresses the weaknesses of the GMD method and enhances the diffusion of a random walker on graphs, leading to a more representative sample. Then, WJRW addresses the issue of large deviations in SRW and enhances the efficiency of the unbiased estimator. By generating smoother stationary distributions. Numerical experiments with extensive real-world networks verify that our method achieves higher accuracy than classical and state-of-the-art methods in estimating distribution estimation.}
+}
+
+@article{ZHANG2023110255,
+title = {Network representation learning via improved random walk with restart},
+journal = {Knowledge-Based Systems},
+volume = {263},
+pages = {110255},
+year = {2023},
+issn = {0950-7051},
+author = {Yanan Zhang and Jian Shen and Ruisheng Zhang and Zhili Zhao},
+keywords = {Network representation learning, Random walk with restart, Attention mechanism, Dimensionality reduction},
+abstract = {Real-world networks are usually sparse and high-dimensional representations that occupy considerable storage space and increase the computational complexity when performing network tasks. Recently, various methods of network representation learning that can effectively learn dense and low-dimensional network representations have been proposed. However, while these methods consider either the global or local structure of the network, the structures are not considered comprehensively. To address this problem, we propose a novel network representation learning method based on random walk with restart (NRL-RWR), which effectively captures the global and local structures of a network by means of an improved random walk with restart strategy. First, the random walk with restart is improved by an attention mechanism that assigns weights to edges by measuring the similarity between nodes. Second, the improved random walk with restart strategy has the ability to obtain the probability distribution of nodes, and always returns to the starting position with a certain probability in the process of walking, so that more global and local structures of the network can be retained. Finally, we construct an objective function based on Kullback–Leibler divergence, and we adopt negative sampling and edge sampling to optimize the objective function and reduce the computational complexity of network representation learning. Experimental results based on six real-world networks show that NRL-RWR outperforms state-of-the-art network representation learning methods in obtaining low-dimensional vector representations of networks.}
+}
+
+@article{WANG2022107996,
+title = {An efficient approach for multiple probabilistic inferences with Deepwalk based Bayesian network embedding},
+journal = {Knowledge-Based Systems},
+volume = {239},
+pages = {107996},
+year = {2022},
+issn = {0950-7051},
+author = {Jiahui Wang and Kun Yue and Liang Duan and Zhiwei Qi and Shaojie Qiao},
+keywords = {Bayesian network, Probabilistic inference, Network embedding, Random walk},
+abstract = {As a classical probabilistic graphic model, Bayesian network (BN) is widely used for representing and inferring dependence relationships with uncertainties. However, multiple probabilistic inferences on BN are quite inefficient, since each probabilistic inference on BN is extremely time-consuming and meanwhile the intermediate results cannot be reused. It is necessary to improve the overall efficiency of multiple probabilistic inferences on the same BN by incorporating an easy-to-calculate inference method and an easy-to-reuse technique for common calculations in multiple inference tasks. In this paper, we first propose a Deepwalk based method for BN embedding, as a specification of general graph embedding, which preserves both the graphical structure and conditional probabilities in BN. We then provide the algorithm to approximate probabilistic inferences via the distance among embeddings. We finally present an efficient approach to multiple probabilistic inferences. Extensive experiments illustrate that our proposed method is effective for BN embedding, and outperforms other state-of-the-art competitors by improving the inference efficiency with several orders of magnitude.}
+}
+
+@article{Citationwalk2023,
+  title    = {Citationwalk: Network representation learning with scientific documents},
+  journal  = {Expert Systems with Applications},
+  volume   = {227},
+  pages    = {120372},
+  year     = {2023},
+  issn     = {0957-4174},
+  author   = {Juhyun Lee and Sangsung Park and Junseok Lee},
+  keywords = {Network, Representation learning, Node embedding, Link embedding, Document network},
+  abstract = {A network is a structure that can represent an organic relationship of observations. Network representation learning has the advantage of extracting latent features in a network. In recent years, various algorithms have been developed to embed network representation in a low-dimensional feature space. Conventional algorithms learn a sequence of vertices that are randomly searched from a network and convert a vertex into a vector. This study focused on the representation learning of document networks. Thus, this study proposes a scalable network representation learning algorithm that preserves the structure and content of the document network and reduces data sparsity. To do this, we used the shortest walks to extract a sequence of vertices that reflected semantic similarity from a network. The shortest walk is a method for finding several shortest paths that connect similar vertices. After this, the sequence of vertices was inputted into the language model, assuming that the sequence was a sentence. Scientific papers and patent datasets provided empirical evidence for the validity of our approach. The former, the bibliography network of scientific paper, consists of 17,716 nodes and 105,734 edges. The latter is a patent describing a technology for energy, representing a network of 24,894 nodes and 28,314 edges. The results showed that the proposed algorithm exhibited the lowest error of the tested methods in multi-class classification and link prediction tasks. The results of these tasks provided evidence that our algorithm is suitable for extracting feature representations of document networks.}
+}
+
+@incollection{Lovasz1996,
+  added-at  = {2011-03-14T01:04:48.000+0100},
+  address   = {Budapest},
+  author    = {Lov\'asz, L.},
+  booktitle = {Combinatorics, Paul Erd\H{o}s is Eighty},
+  editor    = {{Mikl\'os}, D. and {S\'os}, V. T. and {Sz\H{o}nyi}, T.},
+  groups    = {public},
+  keywords  = {networks structure dynamics},
+  pages     = {353-398},
+  publisher = {J\'anos Bolyai Mathematical Society},
+  timestamp = {2011-08-28T03:09:14.000+0200},
+  title     = {Random Walks on Graphs: A Survey},
+  username  = {lantiq},
+  volume    = 2,
+  year      = 1996
+}
+
+
+@inproceedings{mikolov2013efficient,
+  author    = {Tom{\'{a}}s Mikolov and
+               Kai Chen and
+               Greg Corrado and
+               Jeffrey Dean},
+  title     = {Efficient Estimation of Word Representations in Vector Space},
+  booktitle = {1st International Conference on Learning Representations, {ICLR} 2013,
+               Scottsdale, Arizona, USA, May 2-4, 2013, Workshop Track Proceedings},
+  year      = {2013}
+}
+
+@inproceedings{perozzi2014deepwalk,
+  author    = {B. Perozzi and R. Al-Rfou and S. Skiena},
+  title     = {DeepWalk: Online learning of social representations},
+  booktitle = {Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+  year      = {2014},
+  pages     = {701--710}
+}
+
+@article{Dostert2016,
+  author  = {Dostert, M. and Politz, A. and Schmitz, H.},
+  title   = {A complexity analysis and an algorithmic approach to student sectioning in existing timetables},
+  journal = {Journal of Scheduling},
+  year    = {2016},
+  volume  = {19},
+  number  = {3},
+  pages   = {285--293},
+  month   = {Jun},
+  issn    = {1099-1425}
+}
+
+
+@inproceedings{Eikelder2001Some,
+  author    = {Ten Eikelder, H. M. M.
+               and Willemen, R. J.},
+  editor    = {Burke, Edmund
+               and Erben, Wilhelm},
+  title     = {Some Complexity Aspects of Secondary School Timetabling Problems},
+  booktitle = {Practice and Theory of Automated Timetabling III},
+  year      = {2001},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {18--27},
+  abstract  = {We consider timetabling problems of secondary schools,in which the students can choose their own curricula. Besides finding a time slot and classroom assignment,every student must be assigned to a subject group for each subject in his curriculum. This problem is NP-hard for several independent reasons. In this paper we investigate the borderline between ``easy'' and ``hard'' subproblems. In particular, we show that the addition of blocks of size two,i.e. two lessons to be taught at consecutive time slots,or the addition of a constraint on the subject group size changes a subproblem from polynomially solvable to NP-hard.},
+  isbn      = {978-3-540-44629-3}
+}
+
+@inproceedings{Carter2001Comprehensive,
+  author    = {Carter, Michael W.},
+  editor    = {Burke, Edmund
+               and Erben, Wilhelm},
+  title     = {A Comprehensive Course Timetabling and Student Scheduling System at the University of Waterloo},
+  booktitle = {Practice and Theory of Automated Timetabling III},
+  year      = {2001},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {64--82},
+  abstract  = {This paper describes a comprehensive course timetabling and student scheduling system that was developed for the University of Waterloo between 1979 and 1985. The system is based on a ``demand-driven'' philosophy where students first chose their courses, and the system tries to find the best timetable to maximize the number of satisfied requests. The problem is first decomposed into small manageable sub-problems. Each sub-problem is solved in sequence using a greedy heuristic to assign times to sections, and a Lagrangian relaxation algorithm to assign classrooms. Timetable representatives from each department have interactive access to make final modifications. Finally, each student is individually assigned to the combination of course sections that maximizes timetable satisfaction and balances section sizes. The system has been used successfully for 15 years.},
+  isbn      = {978-3-540-44629-3}
+}
+
+@inproceedings{ghanat2020impact,
+  author    = {Simon T. Ghanat and Nandan Shetty},
+  title     = {Impact of Laboratory Section Size on Student Perception of Learning in Materials Laboratory Course},
+  booktitle = {2020 ASEE Southeastern Section Conference},
+  year      = {2020},
+  publisher = {American Society for Engineering Education},
+  note      = {Accessed: 2024-10-08}
+}
+
+@inproceedings{Kaul2017,
+  author      = {Sudhir Kaul and Bill Yang and Robert Scott Pierce and Wesley L. Stone},
+  title       = {Impact of Class Size on Student Perception of Learning and Learning Outcomes in Project-Based Learning},
+  booktitle   = {Proceedings of the 2017 American Society for Engineering Education Annual Conference},
+  year        = {2017},
+  publisher   = {American Society for Engineering Education},
+  institution = {Western Carolina University}
+}
+
+@article{Müller2010,
+  author   = {Müller, Tomáš and Murray, Keith},
+  title    = {Comprehensive approach to student sectioning},
+  journal  = {Annals of Operations Research},
+  volume   = {181},
+  number   = {1},
+  pages    = {249--269},
+  year     = {2010},
+  month    = {Dec},
+  abstract = {Student sectioning is the problem of assigning students to particular sections of courses they request while respecting constraints such as course structures, section limits, and reserved spaces. Students may also provide preferences on class times and course alternatives. In this paper, three approaches to this problem are examined and combined in order to tackle it on a practical level: student sectioning during course timetabling, batch sectioning after a complete timetable is developed, and online sectioning for making additional changes to student schedules. An application and some practical results of the proposed solutions based on actual data are also included.},
+  issn     = {1572-9338}
+}
+
+@article{Alvarez-Valdes2000,
+  author   = {Ramon Alvarez-Valdes and Enric Crespo and Jose M. Tamarit},
+  title    = {Assigning students to course sections using tabu search},
+  journal  = {Annals of Operations Research},
+  year     = {2000},
+  volume   = {96},
+  number   = {1},
+  pages    = {1--16},
+  month    = {Nov},
+  abstract = {In this paper we describe a new student registration system which has been developed at the University of Valencia, Spain. The system has two steps. First, the students make a computer-aided course selection from the courses available at the University. Thereafter, an assignment procedure allocates students to sections in order to respect two criteria: to provide the students with satisfactory schedules and to get balanced section enrollments.},
+  issn     = {1572-9338}
+}
+
+@book{zaki2020data,
+  title={Data Mining and Machine Learning: Fundamental Concepts and Algorithms},
+  author={Zaki, M.J. and Meira, W. and Meira, W.},
+  isbn={9781108473989},
+  lccn={2019037294},
+  year={2020},
+  publisher={Cambridge University Press}
+}
+
+@article{feldman1990optimization,
+  author  = {R. Feldman and M. C. Golumbic},
+  title   = {Optimization algorithms for student scheduling via constraint satisfaction},
+  journal = {The Computer Journal},
+  volume  = {33},
+  number  = {4},
+  pages   = {356--364},
+  year    = {1990}
+}
+
+
+@article{Schindl2019,
+  author  = {David Schindl},
+  title   = {Optimal student sectioning on mandatory courses with various sections numbers},
+  journal = {Annals of Operations Research},
+  year    = {2019},
+  volume  = {275},
+  number  = {1},
+  pages   = {209--221},
+  month   = {April},
+  issn    = {1572-9338}
+}
+
+
+@inproceedings{Amintoosi2005Feature,
+  author    = {Amintoosi, Mahmood
+               and Haddadnia, Javad},
+  editor    = {Burke, Edmund
+               and Trick, Michael},
+  title     = {Feature Selection in a Fuzzy Student Sectioning Algorithm},
+  booktitle = {Practice and Theory of Automated Timetabling V},
+  year      = {2005},
+  publisher = {Springer Berlin Heidelberg},
+  address   = {Berlin, Heidelberg},
+  pages     = {147--160},
+  isbn      = {978-3-540-32421-8},
+  note      = {Lecture Notes in Computer Science (LNTCS,volume 3616)}
+}
+
+@inproceedings{Amintoosi2004Fuzzy,
+  title     = {Fuzzy Student Sectioning},
+  author    = {M. Amintoosi and H. Sadoghi Yazdi and J. Haddadnnia},
+  booktitle = {PATAT04: Practice and Theory of Automated Timetabling},
+  year      = {2004},
+  address   = {USA},
+  month     = {Aug},
+  pages     = {421-424}
+}
+
+@article{hertz1998constructing,
+  title    = {Constructing a course schedule by solving a series of assignment type problems},
+  journal  = {European Journal of Operational Research},
+  volume   = {108},
+  number   = {3},
+  pages    = {585-603},
+  year     = {1998},
+  issn     = {0377-2217},
+  author   = {Alain Hertz and Vincent Robert},
+  keywords = {Course scheduling, Assignment type problems}
+}
+
+@article{aubin1989large,
+  title   = {A large scale timetabling problem},
+  journal = {Computers \& Operations Research},
+  volume  = {16},
+  number  = {1},
+  pages   = {67-77},
+  year    = {1989},
+  issn    = {0305-0548},
+  author  = {Jean Aubin and Jacques A. Ferland}
+}

@@ -1,0 +1,24 @@
+\begin{thebibliography}{1}
+
+\bibitem{Cen2024NetworkEmbedding}
+Ke-Ting Cen, Hua-Wei Shen, Qi~Cao, Bing-Bing Xu, and Xue-Qi Cheng.
+\newblock Identity-preserving adversarial training for robust network
+  embedding.
+\newblock {\em Journal of Computer Science and Technology}, 39(1):177--191,
+  2024.
+
+\bibitem{Niu2021SOOP}
+Songjie Niu and Dongyan Zhou.
+\newblock Soop: Efficient distributed graph computation supporting second-order
+  random walks.
+\newblock {\em Journal of Computer Science and Technology}, 36(5):985--1001,
+  2021.
+
+\bibitem{Yang2024CAGCN}
+Jun Yang, Yi-Qiang Sheng, Jin-Lin Wang, and Hong Ni.
+\newblock Cagcn: Centrality-aware graph convolution network for anomaly
+  detection in industrial control systems.
+\newblock {\em Journal of Computer Science and Technology}, 39(4):967--983,
+  2024.
+
+\end{thebibliography}
