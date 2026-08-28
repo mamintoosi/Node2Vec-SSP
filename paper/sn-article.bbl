@@ -183,6 +183,20 @@ pp. \bfpage{701}--\blpage{710}
 \endbibitem
 
 %%% 10
+\bibitem[\protect\citeauthoryear{Kazemi and Abhari}{2020}]{KAZEMI2020101794}
+\begin{barticle}
+\bauthor{\bsnm{Kazemi}, \binits{B.}},
+\bauthor{\bsnm{Abhari}, \binits{A.}}:
+\batitle{Content-based node2vec for representation of papers in the scientific
+  literature}.
+\bjtitle{Data \& Knowledge Engineering}
+\bvolume{127},
+\bfpage{101794}
+(\byear{2020})
+\end{barticle}
+\endbibitem
+
+%%% 11
 \bibitem[\protect\citeauthoryear{Feldman and
   Golumbic}{1990}]{feldman1990optimization}
 \begin{barticle}
@@ -194,20 +208,6 @@ pp. \bfpage{701}--\blpage{710}
 \bvolume{33}(\bissue{4}),
 \bfpage{356}--\blpage{364}
 (\byear{1990})
-\end{barticle}
-\endbibitem
-
-%%% 11
-\bibitem[\protect\citeauthoryear{Kazemi and Abhari}{2020}]{KAZEMI2020101794}
-\begin{barticle}
-\bauthor{\bsnm{Kazemi}, \binits{B.}},
-\bauthor{\bsnm{Abhari}, \binits{A.}}:
-\batitle{Content-based node2vec for representation of papers in the scientific
-  literature}.
-\bjtitle{Data \& Knowledge Engineering}
-\bvolume{127},
-\bfpage{101794}
-(\byear{2020})
 \end{barticle}
 \endbibitem
 
@@ -295,7 +295,7 @@ In: \bbtitle{1st International Conference on Learning Representations, {ICLR}
 \bauthor{\bsnm{Meira}, \binits{W.}}:
 \bbtitle{Data Mining and Machine Learning: Fundamental Concepts and
   Algorithms}.
-\bpublisher{Cambridge University Press}
+\bpublisher{Cambridge University Press}, \blocation{???}
 (\byear{2020})
 \end{bbook}
 \endbibitem

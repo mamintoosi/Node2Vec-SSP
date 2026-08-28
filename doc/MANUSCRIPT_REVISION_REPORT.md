@@ -226,3 +226,26 @@ The manuscript has been updated to accurately reflect the validated experimental
 3. **Review the revised tables and figures** for visual consistency
 4. **Consider whether to include individual course breakdowns** for DBI and CH in addition to averages
 5. **Add a formal limitations section** if required by the journal
+
+## 13. Figure Regeneration (Additional Step)
+
+All 8 publication figures have been regenerated from the final experimental results:
+
+| Figure | Format | Location |
+|--------|--------|----------|
+| baseline_comparison | PDF + PNG | paper/, results/final_reexperiment/figures/ |
+| method_comparison_all_metrics | PDF + PNG | paper/, results/final_reexperiment/figures/ |
+| method_comparison_silhouette | PDF + PNG | paper/, results/final_reexperiment/figures/ |
+| node2vec_vs_deepwalk | PDF + PNG | paper/, results/final_reexperiment/figures/ |
+| sensitivity_heatmap | PDF + PNG | paper/, results/final_reexperiment/figures/ |
+| stability_boxplot | PDF + PNG | paper/, results/final_reexperiment/figures/ |
+| graph_density_comparison | PDF + PNG | paper/, results/final_reexperiment/figures/ |
+| runtime_comparison | PDF + PNG | paper/, results/final_reexperiment/figures/ |
+
+## 14. LaTeX Compilation
+
+The manuscript compiles successfully with pdflatex + bibtex (20 pages, no errors).
+
+## 15. Updated Commit
+
+Commit hash updated after figure regeneration.
