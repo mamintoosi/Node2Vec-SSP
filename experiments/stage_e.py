@@ -170,7 +170,7 @@ def main():
         from sklearn.decomposition import PCA
         reduced = PCA(n_components=2, random_state=0).fit_transform(m.astype(float))
         pl = cluster_kmeans(reduced, seed=0)
-        pca_scores.append(float(silhouette_score(m.astype(float), pl)))
+        pca_scores.append(float(silhouette_score(reduced, pl)))  # Evaluate in PCA space, matching Table 1
         G = cd["graph"]
         adj = nx.to_numpy_array(G, nodelist=sorted(G.nodes()))
         sl = cluster_spectral(adj, seed=0)

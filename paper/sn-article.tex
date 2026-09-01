@@ -379,18 +379,32 @@ provides a continuous representation of all students.
 The important distinction from the original enrollment representation is that each vector $z_i$ is learned from the structural context of student $s_i$ in the entire co-enrollment network. Consequently, the representation can capture indirect and higher-order similarities between students.
 
 \begin{algorithm}[t]
-\caption{GenerateRandomWalks}
+\caption{GenerateRandomWalks (Node2Vec)}
 \label{alg:random_walk}
 \begin{algorithmic}[1]
-\Require Graph $G$, walk length $t$, number of walks per node $\gamma$
+\Require Graph $G=(V,E,W)$, walk length $t$, number of walks per node $\gamma$, return parameter $p$, in-out parameter $q$
 \Ensure A list $\mathcal{W}$ containing all sequences of random walks
 \State $\mathcal{W} \gets []$ \Comment{Initialize list to store walks}
 \For{each graph node as $start$}   
     \For{$k = 1$ to $\gamma$} \Comment{Number of walks per node}
         \State $walk \gets [start]$ \Comment{Start the walk at the current node}
+        \State $prev \gets \text{null}$, $cur \gets start$
         \For{$j = 1$ to $t$} \Comment{Walk length}
-            \State $start \gets$ randomly chosen node from list of neighbors of $start$ 
-                \State $walk \gets walk + [start]$ \Comment{Append next node to walk}
+            \State $N(cur) \gets$ neighbors of $cur$ in $G$
+            \If{$prev = \text{null}$} \Comment{First step: uniform}
+                \State $next \gets$ uniform random choice from $N(cur)$
+            \Else
+                \State \Comment{Compute biased transition probabilities}
+                \For{each neighbor $z \in N(cur)$}
+                    \State $d \gets$ shortest-path distance from $z$ to $prev$ in $G$
+                    \State $\alpha_{pq} \gets \begin{cases} 1/p, & d = 0 \\ 1, & d = 1 \\ 1/q, & d = 2 \end{cases}$
+                    \State $\pi(z) \gets \alpha_{pq} \cdot w_{cur,z}$ \Comment{Unnormalized weight}
+                \EndFor
+                \State Normalize $\pi$ into a probability distribution over $N(cur)$
+                \State $next \gets$ sample from $N(cur)$ according to $\pi$
+            \EndIf
+            \State $walk \gets walk + [next]$ \Comment{Append next node to walk}
+            \State $prev \gets cur$, $cur \gets next$
         \EndFor
         \State $\mathcal{W} \gets \mathcal{W} + [walk]$ \Comment{Store the walk}
     \EndFor
@@ -401,14 +415,16 @@ The important distinction from the original enrollment representation is that ea
 
 \begin{algorithm}[t]
 \begin{algorithmic}[1]
-\Require graph $G(V,E)$ constructed from student-course matrix, where students are its nodes. The input parameters are:\newline
+\Require graph $G(V,E,W)$ constructed from student-course matrix, where students are its nodes. The input parameters are:\newline
+return parameter $p$\newline
+in-out parameter $q$\newline
 walk length $t$\newline
 number of walks per node $\gamma$\newline
 embedding size $d$\newline
 window size $w$\newline 
 epochs $\epsilon$
 \Ensure matrix of vertex (student) representations $\Phi \in \mathbb{R}^{|V| \times d}$
-    \State $\mathcal{W} \gets$ GenerateRandomWalks($G, t, \gamma$) \Comment{Algorithm~\ref{alg:random_walk}}
+    \State $\mathcal{W} \gets$ GenerateRandomWalks($G, t, \gamma, p, q$) \Comment{Algorithm~\ref{alg:random_walk}}
     \State $\Phi \gets$  TrainWord2Vec($\mathcal{W}, d, w, \epsilon$) \Comment{Sect.~\ref{subsec:deepwalk}}
     \State \Return $\Phi$ 
 \end{algorithmic}
@@ -803,7 +819,7 @@ For the conventional Student-Course representation, which is defined in a higher
 \hfill
 \begin{subfigure}{0.48\textwidth}
 \centering
-\includegraphics[width=\textwidth]{exp_F_tSNE_DeepWalk_course5.png}
+\includegraphics[width=\textwidth]{exp_F_tSNE_Node2Vec_course5.png}
 \caption{Node2Vec embeddings ($d=2$).}
 \label{fig:tsne_c5_dw}
 \end{subfigure}

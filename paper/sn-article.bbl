@@ -183,17 +183,18 @@ pp. \bfpage{701}--\blpage{710}
 \endbibitem
 
 %%% 10
-\bibitem[\protect\citeauthoryear{Kazemi and Abhari}{2020}]{KAZEMI2020101794}
-\begin{barticle}
-\bauthor{\bsnm{Kazemi}, \binits{B.}},
-\bauthor{\bsnm{Abhari}, \binits{A.}}:
-\batitle{Content-based node2vec for representation of papers in the scientific
-  literature}.
-\bjtitle{Data \& Knowledge Engineering}
-\bvolume{127},
-\bfpage{101794}
-(\byear{2020})
-\end{barticle}
+\bibitem[\protect\citeauthoryear{Grover and
+  Leskovec}{2016}]{node2vec_grover2016}
+\begin{bchapter}
+\bauthor{\bsnm{Grover}, \binits{A.}},
+\bauthor{\bsnm{Leskovec}, \binits{J.}}:
+\bctitle{node2vec: Scalable feature learning for networks}.
+In: \bbtitle{Proceedings of the 22nd ACM SIGKDD International Conference on
+  Knowledge Discovery and Data Mining},
+pp. \bfpage{855}--\blpage{864}
+(\byear{2016}).
+\doiurl{10.1145/2939672.2939754}
+\end{bchapter}
 \endbibitem
 
 %%% 11
