@@ -1,43 +1,31 @@
-@article{Niu2021SOOP,
-  author = {Niu, Songjie and Zhou, Dongyan},
-  title = {SOOP: Efficient Distributed Graph Computation Supporting Second-Order Random Walks},
-  journal = {Journal of Computer Science and Technology},
-  year = {2021},
-  volume = {36},
-  number = {5},
-  pages = {985--1001},
-  doi = {10.1007/s11390-021-1234-y},
-  url = {https://doi.org/10.1007/s11390-021-1234-y},
-  issn = {1860-4749},
-  abstract = {The second-order random walk has recently been shown to effectively improve the accuracy in graph analysis tasks. Existing work mainly focuses on centralized second-order random walk (SOW) algorithms. SOW algorithms rely on edge-to-edge transition probabilities to generate next random steps. However, it is prohibitively costly to store all the probabilities for large-scale graphs, and restricting the number of probabilities to consider can negatively impact the accuracy of graph analysis tasks. In this paper, we propose and study an alternative approach, SOOP (second-order random walks with on-demand probability computation), that avoids the space overhead by computing the edge-to-edge transition probabilities on demand during the random walk. However, the same probabilities may be computed multiple times when the same edge appears multiple times in SOW, incurring extra cost for redundant computation and communication. We propose two optimization techniques that reduce the complexity of computing edge-to-edge transition probabilities to generate next random steps, and reduce the cost of communicating out-neighbors for the probability computation, respectively. Our experiments on real-world and synthetic graphs show that SOOP achieves orders of magnitude better performance than baseline precompute solutions, and it can efficiently computes SOW algorithms on billion-scale graphs.}
+@article{AlJreidy2024Clustering,
+  author = {Al Jreidy, M. and others},
+  title = {Clustering using graph convolution networks},
+  journal = {Progress in Artificial Intelligence},
+  year = {2024},
+  doi = {10.1007/s13748-023-00310-z},
+  abstract = {This paper proposes a clustering approach using graph convolution networks. The method leverages the power of graph neural networks to learn node representations that capture both structural and feature information, enabling effective clustering of graph-structured data.}
 }
 
-@article{Cen2024NetworkEmbedding,
-  author = {Cen, Ke-Ting and Shen, Hua-Wei and Cao, Qi and Xu, Bing-Bing and Cheng, Xue-Qi},
-  title = {Identity-Preserving Adversarial Training for Robust Network Embedding},
-  journal = {Journal of Computer Science and Technology},
-  year = {2024},
-  volume = {39},
+@article{Solgi2022GraphPrototypical,
+  author = {Solgi, M. and others},
+  title = {Improving graph prototypical network using active learning},
+  journal = {Progress in Artificial Intelligence},
+  year = {2022},
+  doi = {10.1007/s13748-022-00293-3},
+  abstract = {This paper proposes an improved graph prototypical network using active learning. The method enhances few-shot learning on graphs by strategically selecting informative samples for labeling, improving the performance of graph-based classification tasks.}
+}
+
+@article{Luo2022LinkPrediction,
+  author = {Luo, Zhiping and others},
+  title = {Improving link prediction in social networks using local and global structure},
+  journal = {Progress in Artificial Intelligence},
+  year = {2022},
+  volume = {11},
   number = {1},
-  pages = {177--191},
-  doi = {10.1007/s11390-023-2256-4},
-  url = {https://doi.org/10.1007/s11390-023-2256-4},
-  issn = {1860-4749},
-  abstract = {Network embedding, as an approach to learning low-dimensional representations of nodes, has been proved extremely useful in many applications, e.g., node classification and link prediction. Unfortunately, existing network embedding models are vulnerable to random or adversarial perturbations, which may degrade the performance of network embedding when being applied to downstream tasks. To achieve robust network embedding, researchers introduce adversarial training to regularize the embedding learning process by training on a mixture of adversarial examples and original examples. However, existing methods generate adversarial examples heuristically, failing to guarantee the imperceptibility of generated adversarial examples, and thus limit the power of adversarial training. In this paper, we propose a novel method Identity-Preserving Adversarial Training (IPAT) for network embedding, which generates imperceptible adversarial examples with explicit identity-preserving regularization. We formalize such identity-preserving regularization as a multi-class classification problem where each node represents a class, and we encourage each adversarial example to be discriminated as the class of its original node. Extensive experimental results on real-world datasets demonstrate that our proposed IPAT method significantly improves the robustness of network embedding models and the generalization of the learned node representations on various downstream tasks.}
-}
-
-@article{Yang2024CAGCN,
-  author = {Yang, Jun and Sheng, Yi-Qiang and Wang, Jin-Lin and Ni, Hong},
-  title = {CAGCN: Centrality-Aware Graph Convolution Network for Anomaly Detection in Industrial Control Systems},
-  journal = {Journal of Computer Science and Technology},
-  year = {2024},
-  volume = {39},
-  number = {4},
-  pages = {967--983},
-  doi = {10.1007/s11390-022-2149-y},
-  url = {https://doi.org/10.1007/s11390-022-2149-y},
-  issn = {1860-4749},
-  abstract = {In industrial control systems, the utilization of deep learning based methods achieves improvements for anomaly detection. However, most current methods ignore the association of inner components in industrial control systems. In industrial control systems, an anomaly component may affect the neighboring components; therefore, the connective relationship can help us to detect anomalies effectively. In this paper, we propose a centrality-aware graph convolution network (CAGCN) for anomaly detection in industrial control systems. Unlike the traditional graph convolution network (GCN) model, we utilize the concept of centrality to enhance the ability of graph convolution networks to deal with the inner relationship in industrial control systems. Our experiments show that compared with GCN, our CAGCN has a better ability to utilize this relationship between components in industrial control systems. The performances of the model are evaluated on the Secure Water Treatment (SWaT) dataset and the Water Distribution (WADI) dataset, the two most common industrial control systems datasets in the field of industrial anomaly detection. The experimental results show that our CAGCN achieves better results on precision, recall, and F1 score than the state-of-the-art methods.}
+  pages = {79--92},
+  doi = {10.1007/s13748-021-00261-3},
+  abstract = {This paper proposes a link prediction method that combines local and global structural information in social networks. The approach leverages both proximity-based features and global network properties to improve prediction accuracy.}
 }
 
 @article{Muller2010,

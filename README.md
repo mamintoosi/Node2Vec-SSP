@@ -1,21 +1,22 @@
-# DeepWalk-SSP: Graph Representation Learning for Student Sectioning
+# Node2Vec for Student Sectioning: Graph Representation Learning for Educational Data Mining
 
-A Python framework for solving the student sectioning problem in course timetabling using graph representation learning. The framework constructs student co-enrollment graphs and applies random-walk-based embedding (DeepWalk) to learn low-dimensional student representations that encode higher-order proximity patterns, producing substantially better clustering inputs than traditional binary enrollment matrices.
+A Python framework for solving the student sectioning problem in course timetabling using graph representation learning. The framework constructs student co-enrollment graphs and applies Node2Vec to learn low-dimensional student representations that encode higher-order proximity patterns, producing substantially better clustering inputs than traditional binary enrollment matrices.
 
 **Paper:** "Revisiting the Student Sectioning Problem through Graph Representation Learning" 
 
 ## Key Results
 
-| Metric | Traditional (BoW) | PCA+KMeans | DeepWalk-SSP | Improvement vs BoW |
+| Metric | Traditional (BoW) | PCA+KMeans | Node2Vec (p=1,q=1) | Improvement vs BoW |
 |--------|-------------------|------------|--------------|-------------------|
-| Silhouette Score ↑ | 0.153 | 0.460 | 0.579 | **+278%** |
-| Wilcoxon *p*-value (vs BoW) | — | — | — | < 0.000001 per course |
-| Wilcoxon *p*-value (vs PCA) | — | — | — | 0.047 aggregate |
+| Silhouette Score ↑ | 0.153 | 0.460 | 0.611 | **+299%** |
+| Wilcoxon *p*-value (vs BoW) | — | — | — | 0.031 (raw) |
+| Wilcoxon *p*-value (vs PCA) | — | — | — | 0.031 (raw) |
 | Cliff's δ (vs BoW) | — | — | — | 1.000 |
+| Cliff's δ (vs PCA) | — | — | — | 0.833 |
 
 - Consistent improvement across 6 courses, 4 clustering algorithms, and 3 evaluation metrics
 - Statistical significance validated with Wilcoxon signed-rank tests
-- DeepWalk-SSP outperforms PCA+KMeans (aggregate *p* = 0.047, *r* = 0.728)
+- Node2Vec outperforms PCA+KMeans (Cliff's δ = 0.833)
 - Clustering stability: ARI ≥ 0.917 for KMeans across 20 random seeds
 - Runtime: < 9 seconds per course
 
