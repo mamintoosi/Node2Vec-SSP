@@ -66,8 +66,8 @@ Deepwalk-SSP/
 ## Installation
 
 ```bash
-git clone https://github.com/mamintoosi/Deepwalk-SSP.git
-cd Deepwalk-SSP
+git clone https://github.com/mamintoosi/Node2Vec-SSP.git
+cd Node2Vec-SSP
 pip install numpy scipy networkx gensim scikit-learn matplotlib seaborn pandas openpyxl
 ```
 
@@ -128,7 +128,8 @@ If you use this code in your research, please cite:
   title={Revisiting the Student Sectioning Problem through Graph Representation Learning},
   author={Amintoosi, Mahmood},
   year={2026},
-  publisher={Springer}
+  publisher={Springer},
+  url={https://github.com/mamintoosi/Node2Vec-SSP}
 }
 ```
 
