@@ -26,19 +26,15 @@
     every node/.style={font=\sffamily}
 ]
 
-% Title
-%\node[font=\sffamily\bfseries\Large, text=darkgray] (title) at (0, 14) {Graphical Abstract};
-%{DeepWalk for Student Sectioning};
-
 % ============================================================
 % STAGE 1: Student-Course Matrix (Top)
 % ============================================================
 \node[font=\sffamily\bfseries, text=darkgray] at (-4.5, 12.5) {Input};
 
-% Matrix background (width = 5, same as other boxes)
+% Matrix background
 \fill[lightorange!50, rounded corners=3pt] (-7, 9.0) rectangle (-2, 12.2);
 
-% Students (plain text, aligned with matrix rows)
+% Students
 \node[font=\sffamily\tiny, text=blue1] at (-6.5, 11.6) {S1};
 \node[font=\sffamily\tiny, text=blue1] at (-6.5, 11.1) {S2};
 \node[font=\sffamily\tiny, text=blue1] at (-6.5, 10.6) {S3};
@@ -46,14 +42,14 @@
 \node[font=\sffamily\tiny, text=blue1] at (-6.5, 9.6) {S5};
 \node[font=\sffamily\tiny, text=blue1] at (-6.5, 9.1) {S6};
 
-% Course labels (with dots for more courses)
+% Course labels
 \node[font=\sffamily\tiny, text=gray1] at (-5.7, 12.0) {C1};
 \node[font=\sffamily\tiny, text=gray1] at (-5.0, 12.0) {C2};
 \node[font=\sffamily\tiny, text=gray1] at (-4.3, 12.0) {C3};
 \node[font=\sffamily\tiny, text=gray1] at (-3.6, 12.0) {C4};
 \node[font=\sffamily\tiny, text=gray1] at (-2.9, 12.0) {\dots};
 
-% Matrix entries (1s and 0s)
+% Matrix entries
 \node[font=\sffamily\tiny, text=blue1] at (-5.7, 11.6) {1};
 \node[font=\sffamily\tiny, text=gray1] at (-5.0, 11.6) {0};
 \node[font=\sffamily\tiny, text=blue1] at (-4.3, 11.6) {1};
@@ -103,7 +99,7 @@
 % Graph background
 \fill[lightorange!70, rounded corners=3pt] (-7, 4.5) rectangle (-2, 7.9);
 
-% Nodes (students as circles) - positioned in a circle layout
+% Nodes
 \node[circle, fill=blue1, text=white, minimum size=0.6cm, font=\sffamily\small] (s1) at (-5.5, 7.2) {S1};
 \node[circle, fill=blue1, text=white, minimum size=0.6cm, font=\sffamily\small] (s2) at (-3.5, 7.2) {S2};
 \node[circle, fill=blue1, text=white, minimum size=0.6cm, font=\sffamily\small] (s3) at (-6.2, 5.9) {S3};
@@ -111,7 +107,7 @@
 \node[circle, fill=blue1, text=white, minimum size=0.6cm, font=\sffamily\small] (s5) at (-3.2, 5.2) {S5};
 \node[circle, fill=blue1, text=white, minimum size=0.6cm, font=\sffamily\small] (s6) at (-2.8, 6.5) {S6};
 
-% Edges (connecting nodes properly)
+% Edges
 \draw[lightblue, thick] (s1) -- (s2);
 \draw[lightblue, thick] (s1) -- (s3);
 \draw[lightblue, thick] (s1) -- (s4);
@@ -121,14 +117,14 @@
 \draw[lightblue, thick] (s4) -- (s5);
 \draw[lightblue, thick] (s5) -- (s6);
 
-% Random walk path (highlighted)
+% Random walk path
 \draw[-{Stealth[length=2mm]}, orange1, very thick, dashed] (s1) -- (s3);
 \draw[-{Stealth[length=2mm]}, orange1, very thick, dashed] (s3) -- (s4);
 \draw[-{Stealth[length=2mm]}, orange1, very thick, dashed] (s4) -- (s5);
 
 \node[font=\sffamily\small, text=darkgray] at (-4.5, 4.2) {Nodes:Students, Edges:Shared Courses};
 
-% Arrow from Student Graph to DeepWalk (rightward)
+% Arrow to Node2Vec
 \draw[-{Stealth[length=3mm]}, blue1, thick] (-2.0, 5.5) -- (0.0, 5.5);
 
 % ============================================================
@@ -136,7 +132,7 @@
 % ============================================================
 \node[font=\sffamily\bfseries, text=darkgray] at (2.5, 8.1) {Node2Vec};
 
-% DeepWalk background
+% Node2Vec background
 \fill[lightgreen!70, rounded corners=3pt] (0, 4.5) rectangle (5, 7.9);
 
 % Walk sequences
@@ -174,7 +170,7 @@
 
 \node[font=\sffamily\small, text=darkgray] at (2.5, 4.2) {Learn Node Embeddings};
 
-% Arrow from DeepWalk to 2D Embeddings (downward)
+% Arrow to 2D Embeddings
 \draw[-{Stealth[length=3mm]}, blue1, thick] (2.5, 3.9) -- (2.5, 3.3);
 
 % ============================================================
@@ -192,16 +188,14 @@
 \node[font=\sffamily\tiny, text=gray1] at (0.5, 2.7) {Dim 2};
 \node[font=\sffamily\tiny, text=gray1] at (4.7, 0) {Dim 1};
 
-% Cluster 1 (blue) - top left
+% Cluster 1 (blue)
 \node[circle, fill=blue1, text=white, minimum size=0.4cm, font=\sffamily\tiny] at (1.2, 1.9) {S1};
 \node[circle, fill=blue1, text=white, minimum size=0.4cm, font=\sffamily\tiny] at (1.8, 2.2) {S4};
 \node[circle, fill=blue1, text=white, minimum size=0.4cm, font=\sffamily\tiny] at (1.5, 1.5) {S3};
-%\node[circle, fill=blue1, text=white, minimum size=0.4cm, font=\sffamily\tiny] at (2.2, 1.7) {S4};
 
-% Cluster 2 (orange) - bottom right
+% Cluster 2 (orange)
 \node[circle, fill=orange1, text=white, minimum size=0.4cm, font=\sffamily\tiny] at (3.2, 0.9) {S5};
 \node[circle, fill=orange1, text=white, minimum size=0.4cm, font=\sffamily\tiny] at (3.8, 1.2) {S6};
-%\node[circle, fill=orange1, text=white, minimum size=0.4cm, font=\sffamily\tiny] at (3.5, 0.5) {S2};
 \node[circle, fill=orange1, text=white, minimum size=0.4cm, font=\sffamily\tiny] at (4.1, 0.7) {S2};
 
 % Cluster labels
@@ -210,21 +204,21 @@
 
 \node[font=\sffamily\small, text=darkgray] at (2.5, -0.6) {Separable Clusters};
 
-% Arrow from 2D Embeddings to Results (leftward)
+% Arrow to Results
 \draw[-{Stealth[length=3mm]}, blue1, thick] (0.0, 1.2) -- (-2.0, 1.2);
 
 % ============================================================
 % STAGE 5: Improved Clustering Results (Bottom Left)
 % ============================================================
-\node[font=\sffamily\bfseries, text=darkgray] at (-4.5, 3.1) {Results};
+\node[font=\sffamily\bfseries, text=darkgray] at (-4.5, 3.1) {Key Results};
 
 % Results background
 \fill[gray!10, rounded corners=3pt] (-7, -0.3) rectangle (-2, 2.9);
 
 % Result metrics
-\node[font=\sffamily\small, text=darkgray, align=left] at (-4.5, 2.2) {\textbf{Key Result:}};
+\node[font=\sffamily\small, text=darkgray, align=left] at (-4.5, 2.2) {\textbf{Silhouette: 0.611}};
 
-\node[draw=green1, thick, rounded corners=2pt, fill=white, minimum width=4cm, minimum height=0.7cm, font=\sffamily\small] at (-4.5, 1.5) {\textbf{Silhouette: +278\%}};
+\node[draw=green1, thick, rounded corners=2pt, fill=white, minimum width=4cm, minimum height=0.7cm, font=\sffamily\small] at (-4.5, 1.5) {\textbf{+33\% vs. PCA}};
 
 \node[font=\sffamily\small, text=darkgray, align=left] at (-4.5, 0.7) {Section sizes: Comparable};
 

@@ -1,4 +1,4 @@
-# Node2Vec for Student Sectioning: Graph Representation Learning for Educational Data Mining
+# Revisiting Student Sectioning via Node2Vec: A Graph Representation Learning Framework
 
 A Python framework for solving the student sectioning problem in course timetabling using graph representation learning. The framework constructs student co-enrollment graphs and applies Node2Vec to learn low-dimensional student representations that encode higher-order proximity patterns, producing substantially better clustering inputs than traditional binary enrollment matrices.
 
@@ -125,10 +125,10 @@ If you use this code in your research, please cite:
 
 ```bibtex
 @article{amintoosi2026graph,
-  title={Revisiting the Student Sectioning Problem through Graph Representation Learning},
+  title={Revisiting Student Sectioning via Node2Vec: A Graph Representation Learning Framework},
   author={Amintoosi, Mahmood},
   year={2026},
-  publisher={Springer},
+  publisher={Submitted},
   url={https://github.com/mamintoosi/Node2Vec-SSP}
 }
 ```
