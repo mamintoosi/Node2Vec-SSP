@@ -2,50 +2,64 @@
 
 A Python framework for solving the student sectioning problem in course timetabling using graph representation learning. The framework constructs student co-enrollment graphs and applies Node2Vec to learn low-dimensional student representations that encode higher-order proximity patterns, producing substantially better clustering inputs than traditional binary enrollment matrices.
 
-**Paper:** "Revisiting the Student Sectioning Problem through Graph Representation Learning" 
+**Paper:** "Revisiting the Student Sectioning Problem through Graph Representation Learning"
+**Target Journal:** Progress in Artificial Intelligence (Springer)
+**Repository:** <https://github.com/mamintoosi/Node2Vec-SSP>
 
-## Key Results
+## Key Results (Reproduced with seed=42)
 
-| Metric | Traditional (BoW) | PCA+KMeans | Node2Vec (p=1,q=1) | Improvement vs BoW |
-|--------|-------------------|------------|--------------|-------------------|
-| Silhouette Score ↑ | 0.153 | 0.460 | 0.611 | **+299%** |
-| Wilcoxon *p*-value (vs BoW) | — | — | — | 0.031 (raw) |
-| Wilcoxon *p*-value (vs PCA) | — | — | — | 0.031 (raw) |
-| Cliff's δ (vs BoW) | — | — | — | 1.000 |
-| Cliff's δ (vs PCA) | — | — | — | 0.833 |
+| Method | Silhouette ↑ | DBI ↓ | CHI ↑ |
+|--------|-------------|-------|-------|
+| BoW + KMeans | 0.157 | 2.074 | 10.69 |
+| PCA + KMeans | 0.466 | 0.854 | 50.79 |
+| Spectral | 0.128 | 2.234 | 8.38 |
+| **Node2Vec (p=1, q=1)** | **0.629** | **0.532** | **134.91** |
+| Node2Vec (p=1, q=0.5) | 0.619 | 0.542 | 121.18 |
 
-- Consistent improvement across 6 courses, 4 clustering algorithms, and 3 evaluation metrics
-- Statistical significance validated with Wilcoxon signed-rank tests
-- Node2Vec outperforms PCA+KMeans (Cliff's δ = 0.833)
+**Effect sizes (Node2Vec p=1,q=1 vs baselines):**
+- vs BoW: Cliff's δ = 1.000 (Node2Vec wins all 6 courses)
+- vs PCA: Cliff's δ = 0.889 (Node2Vec wins 5/6 courses)
+- vs Spectral: Cliff's δ = 1.000 (Node2Vec wins all 6 courses)
+- Effect size r = 0.899 (large) for all graph-vs-baseline comparisons
+
+- Consistent improvement across 6 real-world courses and 3 evaluation metrics
+- Node2Vec outperforms PCA+KMeans (33% relative improvement in Silhouette)
 - Clustering stability: ARI ≥ 0.917 for KMeans across 20 random seeds
 - Runtime: < 9 seconds per course
 
 ## Repository Structure
 
 ```
-Deepwalk-SSP/
+Node2Vec-SSP/
 ├── data/                          # Student enrollment data (6 courses)
 │   ├── 1.txt                      # Course 1: 74 students, 35 courses
 │   ├── 2.txt                      # Course 2: 51 students, 34 courses
-│   ├── 3.txt - 6.txt             # Courses 3-6
-├── experiments/                    # Experiment modules
+│   └── 3.txt - 6.txt              # Courses 3-6
+├── experiments/                   # Experiment modules
 │   ├── config.py                  # Central configuration (parameters, paths)
-│   ├── core.py                    # Pipeline: graph construction, walks, Word2Vec
+│   ├── shared.py                  # Pipeline: graph construction, walks, Word2Vec
 │   ├── evaluation.py              # Clustering algorithms and metrics
 │   ├── plotting.py                # Publication-quality figure generation
 │   ├── stats.py                   # Wilcoxon tests, effect sizes, bootstrap CI
-│   └── run_experiments.py         # Complete experiment runner (all steps)
+│   ├── run_all.py                 # Full reproduction script (seed=42)
+│   ├── run_experiments.py         # Complete experiment runner (all steps)
+│   └── fix_two_figs.py            # Quick figure regeneration from saved JSONs
 ├── paper/                         # LaTeX source of the paper
-│   ├── sn-article.tex            # LaTeX source (Springer template)
-│   ├── sn-jnl.cls                # Springer document class
-│   ├── *.png, *.pdf              # Figures referenced in the paper
-│   └── MyReferences.bib
-├── results/                       # Generated results and figures
-│   ├── exp_*.json                 # Experiment data (JSON)
-│   ├── exp_*.xlsx                 # Experiment data (Excel)
-│   ├── figures/                   # All generated figures (PNG)
-│   ├── df.xlsx                    # Original results
-│   └── graphs.pkl                 # Original graph objects
+│   ├── sn-article.tex             # LaTeX source (Springer template)
+│   ├── sn-jnl.cls                 # Springer document class
+│   ├── sn-bibliography.bib        # Bibliography
+│   ├── graphical-abstract.tex     # Graphical abstract
+│   ├── Cover-Letter.tex           # Cover letter
+│   └── *.png, *.pdf              # Figures referenced in the paper
+├── results/
+│   ├── reproduced/                # Latest reproducible results (seed=42)
+│   │   ├── all_methods.json       # Main comparison results
+│   │   ├── statistical_analysis.json
+│   │   ├── sensitivity_pq.json    # (p,q) parameter sweep
+│   │   ├── stability.json         # 20-seed stability analysis
+│   │   └── figures/               # All generated figures (PDF + PNG)
+│   └── final_reexperiment/        # Previous experiment results
+├── doc/                           # Reports and documentation
 ├── LICENSE
 └── README.md
 ```
@@ -73,31 +87,35 @@ pip install numpy scipy networkx gensim scikit-learn matplotlib seaborn pandas o
 
 ## Reproducing Results
 
-Run the complete experiment suite (takes ~15-20 minutes depending on hardware):
+Run the full reproduction (all methods, sensitivity, stability, figures — takes ~25–30 minutes):
 
 ```bash
-python -m experiments.run_experiments
+cd Node2Vec-SSP
+python experiments/run_all.py 2>&1 | tee results/reproduced/run.log
 ```
 
 This executes all steps sequentially:
 
 | Step | Description | Output |
 |------|-------------|--------|
-| 2 | Reproduce existing experiments | `df_reproduced.xlsx`, silhouette figures |
-| 4A | Hyperparameter sensitivity (d, t, γ, w) | `exp_A_hyperparameter_sensitivity.json` |
-| 4B | Runtime analysis | `exp_B_runtime.json` |
-| 4C | Random seed stability (20 seeds) | `exp_C_seed_stability.json` |
-| 4D | Clustering stability (ARI) | `exp_D_clustering_stability.json` |
-| 4E | Additional metrics (DBI, CH, WCSS) | `exp_E_additional_metrics.xlsx` |
-| 4F | Embedding visualization (PCA + t-SNE) | `results/figures/exp_F_*.png` |
-| 5 | Statistical significance (Wilcoxon tests) | `exp_statistical_analysis.json` |
-| 7 | Practical improvements (cosine graph, etc.) | `exp_F_improvements.xlsx` |
+| 1 | Data loading & graph construction | `graph_stats.json` |
+| 2 | Main comparison (5 methods × 6 courses) | `all_methods.json` |
+| 3 | Node2Vec (p,q) sensitivity (3×3 grid) | `sensitivity_pq.json` |
+| 4 | Hyperparameter sensitivity (d, t, γ, w) | `sensitivity_dim.json`, etc. |
+| 5 | 20-seed stability analysis | `stability.json`, `ari_stability.json` |
+| 6 | Statistical comparisons | `statistical_analysis.json` |
+| 7 | Figure generation (11 figures) | `results/reproduced/figures/` |
+| 8 | Runtime comparison | `runtime.json` |
 
-All results will be saved to `results/` and `results/figures/`.
+All results are saved incrementally to `results/reproduced/`. If the run is interrupted, you can regenerate just the figures from saved JSONs:
+
+```bash
+python experiments/fix_two_figs.py
+```
 
 ### Reproducibility
 
-All experiments use fixed random seeds (`seed=0` by default) for full reproducibility. Two independent runs produce identical results. The seed stability experiments (Steps 4C-4D) use 20 different seeds (0-19) to report mean ± standard deviation.
+All experiments use **seed=42** for full reproducibility. The random seed controls Node2Vec random walks, Word2Vec initialization, and KMeans clustering.
 
 ## Algorithm
 
@@ -125,10 +143,10 @@ If you use this code in your research, please cite:
 
 ```bibtex
 @article{amintoosi2026graph,
-  title={Revisiting Student Sectioning via Node2Vec: A Graph Representation Learning Framework},
+  title={Revisiting the Student Sectioning Problem through Graph Representation Learning},
   author={Amintoosi, Mahmood},
   year={2026},
-  publisher={Submitted},
+  journal={Progress in Artificial Intelligence},
   url={https://github.com/mamintoosi/Node2Vec-SSP}
 }
 ```

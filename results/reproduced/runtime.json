@@ -1,0 +1,152 @@
+[
+  {
+    "course": 1,
+    "method": "BoW+KMeans",
+    "tt": 0.040156178998586256
+  },
+  {
+    "course": 1,
+    "method": "PCA+KMeans",
+    "tt": 0.008534349002729869
+  },
+  {
+    "course": 1,
+    "method": "Spectral",
+    "tt": 0.011534207998920465
+  },
+  {
+    "course": 1,
+    "method": "Node2Vec(1,1)",
+    "tt": 7.900228707003407
+  },
+  {
+    "course": 1,
+    "method": "Node2Vec(1,0.5)",
+    "tt": 7.907962648001558
+  },
+  {
+    "course": 2,
+    "method": "BoW+KMeans",
+    "tt": 0.007612137000251096
+  },
+  {
+    "course": 2,
+    "method": "PCA+KMeans",
+    "tt": 0.011323088998324238
+  },
+  {
+    "course": 2,
+    "method": "Spectral",
+    "tt": 0.010063935002108337
+  },
+  {
+    "course": 2,
+    "method": "Node2Vec(1,1)",
+    "tt": 5.117523361997883
+  },
+  {
+    "course": 2,
+    "method": "Node2Vec(1,0.5)",
+    "tt": 5.119467370001075
+  },
+  {
+    "course": 3,
+    "method": "BoW+KMeans",
+    "tt": 0.007950037001137389
+  },
+  {
+    "course": 3,
+    "method": "PCA+KMeans",
+    "tt": 0.007788316001096973
+  },
+  {
+    "course": 3,
+    "method": "Spectral",
+    "tt": 0.009779485997569282
+  },
+  {
+    "course": 3,
+    "method": "Node2Vec(1,1)",
+    "tt": 4.826761462001741
+  },
+  {
+    "course": 3,
+    "method": "Node2Vec(1,0.5)",
+    "tt": 4.786783332001505
+  },
+  {
+    "course": 4,
+    "method": "BoW+KMeans",
+    "tt": 0.011860455000714865
+  },
+  {
+    "course": 4,
+    "method": "PCA+KMeans",
+    "tt": 0.01207361500200932
+  },
+  {
+    "course": 4,
+    "method": "Spectral",
+    "tt": 0.01183231599861756
+  },
+  {
+    "course": 4,
+    "method": "Node2Vec(1,1)",
+    "tt": 5.197462263000489
+  },
+  {
+    "course": 4,
+    "method": "Node2Vec(1,0.5)",
+    "tt": 5.0584800109973
+  },
+  {
+    "course": 5,
+    "method": "BoW+KMeans",
+    "tt": 0.007953238000482088
+  },
+  {
+    "course": 5,
+    "method": "PCA+KMeans",
+    "tt": 0.007766290997096803
+  },
+  {
+    "course": 5,
+    "method": "Spectral",
+    "tt": 0.008926431997679174
+  },
+  {
+    "course": 5,
+    "method": "Node2Vec(1,1)",
+    "tt": 5.320759387002909
+  },
+  {
+    "course": 5,
+    "method": "Node2Vec(1,0.5)",
+    "tt": 5.291464638001344
+  },
+  {
+    "course": 6,
+    "method": "BoW+KMeans",
+    "tt": 0.007732964000751963
+  },
+  {
+    "course": 6,
+    "method": "PCA+KMeans",
+    "tt": 0.008190947999537457
+  },
+  {
+    "course": 6,
+    "method": "Spectral",
+    "tt": 0.011377662998711457
+  },
+  {
+    "course": 6,
+    "method": "Node2Vec(1,1)",
+    "tt": 7.092928435005888
+  },
+  {
+    "course": 6,
+    "method": "Node2Vec(1,0.5)",
+    "tt": 7.100667886003066
+  }
+]
