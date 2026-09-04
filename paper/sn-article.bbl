@@ -58,7 +58,8 @@ pp. \bfpage{421}--\blpage{424}
 \endbibitem
 
 %%% 2
-\bibitem[\protect\citeauthoryear{Amintoosi and Haddadnia}{2005}]{Amintoosi2005Feature}
+\bibitem[\protect\citeauthoryear{Amintoosi and
+  Haddadnia}{2005}]{Amintoosi2005Feature}
 \begin{bchapter}
 \bauthor{\bsnm{Amintoosi}, \binits{M.}},
 \bauthor{\bsnm{Haddadnia}, \binits{J.}}:
@@ -75,18 +76,22 @@ pp. \bfpage{147}--\blpage{160}.
 \endbibitem
 
 %%% 3
-\bibitem[\protect\citeauthoryear{Amintoosi et~al.}{2007}]{Amintoosi2007FishSchool}
+\bibitem[\protect\citeauthoryear{Amintoosi
+  et~al.}{2007}]{Amintoosi2007FishSchool}
 \begin{barticle}
 \bauthor{\bsnm{Amintoosi}, \binits{M.}},
 \bauthor{\bsnm{Fathy}, \binits{M.}},
 \bauthor{\bsnm{Mozayani}, \binits{N.}},
 \bauthor{\bsnm{Rahmani}, \binits{A.T.}}:
-\batitle{A fish school clustering algorithm: Applied to student sectioning problem}.
-\bjtitle{Dynamics of Continuous Discrete \& Impulse Systems, series B: Applications and Algorithms}
+\batitle{A fish school clustering algorithm: Applied to student sectioning
+  problem}.
+\bjtitle{Dynamics of Continuous Discrete \& Impulse Systems, series B:
+  Applications and Algorithms}
 \bvolume{2},
 \bfpage{696}--\blpage{699}
 (\byear{2007}).
-\bcomment{Post Proceeding of LSMS2007, Life System Modeling and Simulation 2007, China}
+\bcomment{Post Proceeding of LSMS2007, Life System Modeling and Simulation
+  2007, China}
 \end{barticle}
 \endbibitem
 
@@ -104,11 +109,13 @@ pp. \bfpage{147}--\blpage{160}.
 \endbibitem
 
 %%% 5
-\bibitem[\protect\citeauthoryear{Hertz and Robert}{1998}]{hertz1998constructing}
+\bibitem[\protect\citeauthoryear{Hertz and
+  Robert}{1998}]{hertz1998constructing}
 \begin{barticle}
 \bauthor{\bsnm{Hertz}, \binits{A.}},
 \bauthor{\bsnm{Robert}, \binits{V.}}:
-\batitle{Constructing a course schedule by solving a series of assignment type problems}.
+\batitle{Constructing a course schedule by solving a series of assignment type
+  problems}.
 \bjtitle{European Journal of Operational Research}
 \bvolume{108}(\bissue{3}),
 \bfpage{585}--\blpage{603}
@@ -120,7 +127,8 @@ pp. \bfpage{147}--\blpage{160}.
 \bibitem[\protect\citeauthoryear{Carter}{2001}]{Carter2001Comprehensive}
 \begin{bchapter}
 \bauthor{\bsnm{Carter}, \binits{M.W.}}:
-\bctitle{A comprehensive course timetabling and student scheduling system at the university of waterloo}.
+\bctitle{A comprehensive course timetabling and student scheduling system at
+  the university of waterloo}.
 In: \beditor{\bsnm{Burke}, \binits{E.}},
 \beditor{\bsnm{Erben}, \binits{W.}} (eds.)
 \bbtitle{Practice and Theory of Automated Timetabling III},
@@ -132,7 +140,8 @@ pp. \bfpage{64}--\blpage{82}.
 \endbibitem
 
 %%% 7
-\bibitem[\protect\citeauthoryear{Alvarez-Valdes et~al.}{2000}]{Alvarez-Valdes2000}
+\bibitem[\protect\citeauthoryear{Alvarez-Valdes
+  et~al.}{2000}]{Alvarez-Valdes2000}
 \begin{barticle}
 \bauthor{\bsnm{Alvarez-Valdes}, \binits{R.}},
 \bauthor{\bsnm{Crespo}, \binits{E.}},
@@ -166,19 +175,22 @@ pp. \bfpage{64}--\blpage{82}.
 \bauthor{\bsnm{Al-Rfou}, \binits{R.}},
 \bauthor{\bsnm{Skiena}, \binits{S.}}:
 \bctitle{Deepwalk: Online learning of social representations}.
-In: \bbtitle{Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+In: \bbtitle{Proceedings of the 20th ACM SIGKDD International Conference on
+  Knowledge Discovery and Data Mining},
 pp. \bfpage{701}--\blpage{710}
 (\byear{2014})
 \end{bchapter}
 \endbibitem
 
 %%% 10
-\bibitem[\protect\citeauthoryear{Grover and Leskovec}{2016}]{node2vec_grover2016}
+\bibitem[\protect\citeauthoryear{Grover and
+  Leskovec}{2016}]{node2vec_grover2016}
 \begin{bchapter}
 \bauthor{\bsnm{Grover}, \binits{A.}},
 \bauthor{\bsnm{Leskovec}, \binits{J.}}:
 \bctitle{node2vec: Scalable feature learning for networks}.
-In: \bbtitle{Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining},
+In: \bbtitle{Proceedings of the 22nd ACM SIGKDD International Conference on
+  Knowledge Discovery and Data Mining},
 pp. \bfpage{855}--\blpage{864}
 (\byear{2016}).
 \doiurl{10.1145/2939672.2939754}
@@ -186,11 +198,13 @@ pp. \bfpage{855}--\blpage{864}
 \endbibitem
 
 %%% 11
-\bibitem[\protect\citeauthoryear{Feldman and Golumbic}{1990}]{feldman1990optimization}
+\bibitem[\protect\citeauthoryear{Feldman and
+  Golumbic}{1990}]{feldman1990optimization}
 \begin{barticle}
 \bauthor{\bsnm{Feldman}, \binits{R.}},
 \bauthor{\bsnm{Golumbic}, \binits{M.C.}}:
-\batitle{Optimization algorithms for student scheduling via constraint satisfaction}.
+\batitle{Optimization algorithms for student scheduling via constraint
+  satisfaction}.
 \bjtitle{The Computer Journal}
 \bvolume{33}(\bissue{4}),
 \bfpage{356}--\blpage{364}
@@ -211,7 +225,8 @@ pp. \bfpage{855}--\blpage{864}
 \endbibitem
 
 %%% 13
-\bibitem[\protect\citeauthoryear{Al~Jreidy et~al.}{2024}]{AlJreidy2024Clustering}
+\bibitem[\protect\citeauthoryear{Al~Jreidy
+  et~al.}{2024}]{AlJreidy2024Clustering}
 \begin{barticle}
 \bauthor{\bsnm{Al~Jreidy}, \binits{M.}}, \betal:
 \batitle{Clustering using graph convolution networks}.
@@ -222,7 +237,8 @@ pp. \bfpage{855}--\blpage{864}
 \endbibitem
 
 %%% 14
-\bibitem[\protect\citeauthoryear{Solgi et~al.}{2022}]{Solgi2022GraphPrototypical}
+\bibitem[\protect\citeauthoryear{Solgi
+  et~al.}{2022}]{Solgi2022GraphPrototypical}
 \begin{barticle}
 \bauthor{\bsnm{Solgi}, \binits{M.}}, \betal:
 \batitle{Improving graph prototypical network using active learning}.
@@ -236,7 +252,8 @@ pp. \bfpage{855}--\blpage{864}
 \bibitem[\protect\citeauthoryear{Luo et~al.}{2022}]{Luo2022LinkPrediction}
 \begin{barticle}
 \bauthor{\bsnm{Luo}, \binits{Z.}}, \betal:
-\batitle{Improving link prediction in social networks using local and global structure}.
+\batitle{Improving link prediction in social networks using local and global
+  structure}.
 \bjtitle{Progress in Artificial Intelligence}
 \bvolume{11}(\bissue{1}),
 \bfpage{79}--\blpage{92}
@@ -253,7 +270,8 @@ pp. \bfpage{855}--\blpage{864}
 \bauthor{\bsnm{Corrado}, \binits{G.}},
 \bauthor{\bsnm{Dean}, \binits{J.}}:
 \bctitle{Efficient estimation of word representations in vector space}.
-In: \bbtitle{1st International Conference on Learning Representations, {ICLR} 2013, Scottsdale, Arizona, USA, May 2-4, 2013, Workshop Track Proceedings}
+In: \bbtitle{1st International Conference on Learning Representations, {ICLR}
+  2013, Scottsdale, Arizona, USA, May 2-4, 2013, Workshop Track Proceedings}
 (\byear{2013})
 \end{bchapter}
 \endbibitem
@@ -264,8 +282,10 @@ In: \bbtitle{1st International Conference on Learning Representations, {ICLR} 20
 \bauthor{\bsnm{Zaki}, \binits{M.J.}},
 \bauthor{\bsnm{Meira}, \binits{W.}},
 \bauthor{\bsnm{Meira}, \binits{W.}}:
-\bbtitle{Data Mining and Machine Learning: Fundamental Concepts and Algorithms}.
-\bpublisher{Cambridge University Press}, \blocation{???}
+\bbtitle{Data Mining and Machine Learning: Fundamental Concepts and
+  Algorithms}.
+\bpublisher{Cambridge University Press},
+\blocation{University of Cambridge}
 (\byear{2020})
 \end{bbook}
 \endbibitem

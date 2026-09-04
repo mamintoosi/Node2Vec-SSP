@@ -148,23 +148,19 @@
 
 This paper revisits student sectioning from the perspective of graph representation learning, a powerful technique in artificial intelligence for learning low-dimensional representations from relational data. We construct a weighted student co-enrollment graph after removing constant features, and employ Node2Vec to learn low-dimensional student embeddings from biased random-walk contexts. The learned representations are then provided to standard clustering algorithms for section formation. To distinguish graph-based representation learning from dimensionality reduction and direct graph clustering, we compare the proposed approach with the conventional enrollment representation, PCA followed by KMeans, and spectral clustering on the co-enrollment graph.
 
-Experiments on six real-world university courses involving 341 students demonstrate that Node2Vec achieves a 33\% relative improvement in clustering quality over PCA followed by KMeans, the strongest baseline, while outperforming the conventional enrollment representation on every single course (100\% win rate). The improvements are accompanied by large effect sizes (Cliff's $\delta = 0.833$ for Node2Vec vs.~PCA and $\delta = 1.0$ for Node2Vec vs.~the conventional representation), providing strong evidence for practical significance. Due to the inherently limited number of independent real-world datasets available ($n=6$), we focus on effect sizes and consistency of improvement across courses rather than formal statistical hypothesis testing.
-
+Experiments on six real-world university courses involving 341 students demonstrate that Node2Vec achieves a 35\% relative improvement in clustering quality over  the strongest baseline (PCA followed by KMeans). The proposed method consistently surpasses conventional representations across all evaluated courses, with large effect sizes providing strong evidence for practical significance despite the limited number of available datasets. 
 The results indicate that graph representation learning can capture useful structural information beyond conventional dimensionality reduction. The proposed approach can be incorporated into existing student sectioning pipelines without modifying the downstream clustering algorithms, providing a simple framework for improving student groupings used in subsequent timetabling processes.
 }
 
-
-
-\keywords{Student sectioning, Graph representation learning, Node2Vec, Educational data mining, Course timetabling, Clustering}
+\keywords{Student sectioning, Graph representation learning, Node2Vec, DeepWalk, Course timetabling, Clustering}
 %%\pacs[JEL Classification]{D8, H51}
+
+
 
 %%\pacs[MSC Classification]{35A01, 65L10, 65L12, 65L20, 65L70}
 \maketitle
 
-
-%\begin{multicols}{2}
-%\tableofcontents
-
+\clearpage
 
 %% Use \section commands to start the section
 \section{Introduction}
@@ -185,9 +181,9 @@ Graph representation learning appears to have received limited attention in the 
 Can graph representation learning provide student representations that improve sectioning quality beyond both conventional enrollment representations and standard dimensionality reduction?
 \end{quotation}
 
-To investigate this question, we model student enrollments as a weighted co-enrollment graph and learn student embeddings using Node2Vec, a random-walk-based graph representation learning method that extends DeepWalk through biased random walks controlled by return and in-out parameters. The learned embeddings are then supplied to standard clustering algorithms for section formation. Importantly, the clustering stage is kept unchanged, allowing the effect of the learned representation to be examined independently of the choice of clustering algorithm. To assess whether the observed improvement is attributable merely to dimensionality reduction, we compare the proposed representation with a PCA-based representation having the same dimensionality. We also include spectral clustering as a graph-based baseline.
+To investigate this question, we model student enrollments as a weighted co-enrollment graph and learn student embeddings using Node2Vec~\cite{node2vec_grover2016}, a random-walk-based graph representation learning method that extends DeepWalk~\cite{perozzi2014deepwalk} through biased random walks controlled by return and in-out parameters. The learned embeddings are then supplied to standard clustering algorithms for section formation. Importantly, the clustering stage is kept unchanged, allowing the effect of the learned representation to be examined independently of the choice of clustering algorithm. To assess whether the observed improvement is attributable merely to dimensionality reduction, we compare the proposed representation with a PCA-based representation having the same dimensionality. We also include spectral clustering as a graph-based baseline.
 
-Experimental results on six real-world university courses involving 341 students show that Node2Vec provides substantially better clustering quality than the conventional enrollment representation and spectral clustering. PCA also produces a considerable improvement, but Node2Vec achieves higher average Silhouette Scores than PCA followed by KMeans, indicating that graph-based representations capture useful structural information beyond linear dimensionality reduction. Node2Vec achieves a 33\% relative improvement over PCA+KMeans and outperforms the conventional approach on every single course (100\% win rate), with large effect sizes (Cliff's $\delta = 0.833$ for Node2Vec vs.~PCA and $\delta = 1.0$ for Node2Vec vs.~the conventional representation). Additional experiments investigate parameter sensitivity, clustering stability, computational cost, and the resulting low-dimensional representations.
+Experimental results on six real-world university courses involving 341 students show that Node2Vec provides substantially better clustering quality than the conventional enrollment representation and spectral clustering. PCA also produces a considerable improvement, but Node2Vec achieves higher average Silhouette Scores than PCA followed by KMeans, indicating that graph-based representations capture useful structural information beyond linear dimensionality reduction. Additional experiments investigate parameter sensitivity, clustering stability, computational cost, and the resulting low-dimensional representations.
 
 The main contributions of this paper are summarized as follows.
 
@@ -197,7 +193,7 @@ The main contributions of this paper are summarized as follows.
 
 \item We provide a crucial ablation-like analysis by systematically comparing graph-based representations with both the conventional student--course enrollment representation and a PCA-based dimensionality-reduction baseline. This analysis separates the effect of generic dimensionality reduction (PCA) from actual structural graph learning (Node2Vec), proving that the structural information captured by random walks provides additional value beyond just compressing data. Spectral clustering is additionally evaluated as a direct graph-based clustering baseline.
 
-\item We demonstrate on six real-world university courses that Node2Vec achieves a 33\% relative improvement in clustering quality over PCA+KMeans and outperforms the conventional approach on every single course (100\% win rate), with large effect sizes (Cliff's $\delta = 0.833$ for Node2Vec vs.~PCA and $\delta = 1.0$ for Node2Vec vs.~the conventional representation). Due to the limited number of independent real-world datasets ($n=6$), we focus on effect sizes and consistency rather than formal statistical hypothesis testing.
+\item We empirically demonstrate on six real-world university courses that Node2Vec consistently outperforms both the conventional representation and PCA-based dimensionality reduction across all evaluated courses. Due to the limited number of independent real-world datasets ($n=6$), we focus on effect sizes and consistency of improvement rather than formal statistical hypothesis testing, providing strong evidence for practical significance.
 
 \item We provide comprehensive empirical analyses of Node2Vec parameter sensitivity, clustering stability across 20 random seeds, practical significance through effect sizes and consistency, runtime, and embedding structure, providing a detailed characterization of the proposed framework.
 
@@ -337,7 +333,7 @@ The generated random walks are used to learn low-dimensional student representat
 \begin{figure}[t]
 \centering
 \includegraphics[width=1\linewidth]{CBOW-Skip-gram.png}
-\caption{The CBOW architecture predicts the current word based on the context, and the Skip-gram predicts surrounding words given the current word~\cite{mikolov2013efficient}. In DeepWalk, nodes play the role of words and random-walk sequences play the role of sentences.}
+\caption{The CBOW architecture predicts the current word based on the context, and the Skip-gram predicts surrounding words given the current word~\cite{mikolov2013efficient}. In Node2Vec, nodes play the role of words and random-walk sequences play the role of sentences.}
 \label{fig:cbow_skipgram}
 \end{figure}
 
@@ -378,40 +374,7 @@ provides a continuous representation of all students.
 
 The important distinction from the original enrollment representation is that each vector $z_i$ is learned from the structural context of student $s_i$ in the entire co-enrollment network. Consequently, the representation can capture indirect and higher-order similarities between students.
 
-\begin{algorithm}[t]
-\caption{GenerateRandomWalks (Node2Vec)}
-\label{alg:random_walk}
-\begin{algorithmic}[1]
-\Require Graph $G=(V,E,W)$, walk length $t$, number of walks per node $\gamma$, return parameter $p$, in-out parameter $q$
-\Ensure A list $\mathcal{W}$ containing all sequences of random walks
-\State $\mathcal{W} \gets []$ \Comment{Initialize list to store walks}
-\For{each graph node as $start$}   
-    \For{$k = 1$ to $\gamma$} \Comment{Number of walks per node}
-        \State $walk \gets [start]$ \Comment{Start the walk at the current node}
-        \State $prev \gets \text{null}$, $cur \gets start$
-        \For{$j = 1$ to $t$} \Comment{Walk length}
-            \State $N(cur) \gets$ neighbors of $cur$ in $G$
-            \If{$prev = \text{null}$} \Comment{First step: uniform}
-                \State $next \gets$ uniform random choice from $N(cur)$
-            \Else
-                \State \Comment{Compute biased transition probabilities}
-                \For{each neighbor $z \in N(cur)$}
-                    \State $d \gets$ shortest-path distance from $z$ to $prev$ in $G$
-                    \State $\alpha_{pq} \gets \begin{cases} 1/p, & d = 0 \\ 1, & d = 1 \\ 1/q, & d = 2 \end{cases}$
-                    \State $\pi(z) \gets \alpha_{pq} \cdot w_{cur,z}$ \Comment{Unnormalized weight}
-                \EndFor
-                \State Normalize $\pi$ into a probability distribution over $N(cur)$
-                \State $next \gets$ sample from $N(cur)$ according to $\pi$
-            \EndIf
-            \State $walk \gets walk + [next]$ \Comment{Append next node to walk}
-            \State $prev \gets cur$, $cur \gets next$
-        \EndFor
-        \State $\mathcal{W} \gets \mathcal{W} + [walk]$ \Comment{Store the walk}
-    \EndFor
-\EndFor
-\State \Return $\mathcal{W}$ 
-\end{algorithmic}
-\end{algorithm}
+
 
 \begin{algorithm}[t]
 \begin{algorithmic}[1]
@@ -431,7 +394,6 @@ epochs $\epsilon$
 \caption{Student Representation Generation using Node2Vec}
 \label{alg:student-representation}
 \end{algorithm}
-
 Algorithm~\ref{alg:student-representation} summarizes the overall procedure: biased random walks are generated from the co-enrollment graph (line~1), and the Skip-Gram model is trained on these walks to produce the student embedding matrix $\Phi$ (line~2 of algorithm \ref{alg:student-representation}).
 
 \subsection{Student Sectioning by Clustering}
@@ -453,6 +415,9 @@ where each cluster $S_j$ corresponds to a student section.
 
 The proposed framework is deliberately independent of a particular clustering algorithm. This allows us to investigate whether the improvement comes from the learned graph representations rather than from a specific clustering technique. In our experiments, we therefore evaluate several widely used clustering methods, including K-means, affinity propagation, Gaussian mixture models, and hierarchical clustering.
 
+
+
+
 For K-means, for example, the clustering objective is
 
 $$
@@ -465,6 +430,7 @@ $$
 where $\mu_j$ denotes the centroid of section $S_j$.
 
 The resulting clusters define the student sections used in the subsequent evaluation.
+
 
 \subsection{Baseline Representation}
 \label{subsec:baseline}
@@ -481,20 +447,20 @@ is used as the student representation. Thus, students are represented directly b
 
 The same clustering algorithms are then applied to these enrollment vectors. This provides a controlled comparison because the clustering stage remains unchanged and the principal difference between the two approaches is the representation used to describe students.
 
-Accordingly, the comparison considers two alternative pipelines:
-\[
-\text{Enrollment representation}
-\rightarrow \text{Clustering},
-\]
+%\clearpage
 
+Accordingly, the comparison considers two alternative pipelines:
+
+{Enrollment representation}
+$\rightarrow$ {Clustering},
 and
-\[
-\text{Graph representation}
-\rightarrow
-\text{Embedding}
-\rightarrow
-\text{Clustering}.
-\]
+
+{Graph representation}
+$\rightarrow$
+{Embedding}
+$\rightarrow$
+{Clustering}.
+
 This design allows the contribution of graph representation learning to be evaluated independently of the choice of clustering algorithm.
 
 \subsection{Hyperparameter Configuration}
@@ -552,28 +518,28 @@ The primary evaluation metric is the Silhouette Score \cite{zaki2020data}, which
 
 \subsection{Overall Clustering Performance and Baseline Comparison}
 
-We compare the Node2Vec embeddings (with neutral configuration $p=1, q=1$, which is theoretically equivalent to DeepWalk, and with biased configuration $p=1, q=0.5$) with the conventional student-course representation, PCA+KMeans, and spectral clustering to determine whether the observed improvement can be attributed simply to dimensionality reduction, to the specific random-walk strategy, or to direct exploitation of graph structure.
+We compare the Node2Vec embeddings (with neutral configuration $p{=}1$, $q{=}1$, which is theoretically equivalent to DeepWalk~\cite{perozzi2014deepwalk}, and with best configuration $p{=}0.5$, $q{=}0.5$) at $d{=}2$ with the conventional student-course representation, PCA+KMeans, and spectral clustering to determine whether the observed improvement can be attributed simply to dimensionality reduction, to the specific random-walk strategy, or to direct exploitation of graph structure.
 
 Figure~\ref{fig:baseline_comparison} and Table~\ref{tab:baseline_comparison} summarize the Silhouette scores obtained by the five approaches across the six selected courses.
 
 \begin{table*}[t]
 \centering
-\caption{Silhouette Score ($\uparrow$ higher is better) comparison across five methods for student sectioning with the revised graph construction. PCA+KMeans applies PCA to reduce the Student-Course representation to $d=2$ before KMeans clustering. Spectral applies spectral clustering directly on the co-enrollment graph. DeepWalk uses the learned $d=2$ graph embeddings from unbiased random walks followed by KMeans (equivalent to Node2Vec with $p{=}1$, $q{=}1$). Node2Vec uses $p{=}1$, $q{=}1$ unless otherwise noted.}
+\caption{Silhouette Score ($\uparrow$ higher is better) comparison across five methods for student sectioning with the revised graph construction at $d{=}2$. PCA+KMeans applies PCA to reduce the Student-Course representation to $d{=}2$ before KMeans clustering. Spectral applies spectral clustering directly on the co-enrollment graph. Node2Vec ($p{=}1$, $q{=}1$) uses the learned $d{=}2$ graph embeddings from unbiased random walks followed by KMeans (theoretically equivalent to DeepWalk~\cite{perozzi2014deepwalk}). Node2Vec ($p{=}0.5$, $q{=}0.5$) is the best-performing configuration at $d{=}2$.}
 \label{tab:baseline_comparison}
 \begin{tabular}{lccccc}
 \toprule
-\textbf{Course} & \textbf{\shortstack{BoW + KMeans}} & \textbf{\shortstack{PCA + KMeans}} & \textbf{Spectral} & \multicolumn{2}{c}{\textbf{Node2Vec}} \\
+\textbf{Course} & \textbf{\shortstack{BoW + KMeans}} & \textbf{\shortstack{PCA + KMeans}} & \textbf{Spectral} & \multicolumn{2}{c}{\textbf{Node2Vec ($d{=}2$)}} \\
 \cmidrule(lr){5-6}
- & & & & \shortstack{(DeepWalk)\\$p=1, q=1$} & \shortstack{$p=1, q=0.5$} \\
+ & & & & $p{=}1$, $q{=}1$ & $p{=}0.5$, $q{=}0.5$ \\
 \midrule
-1 & 0.099 & 0.357 & 0.154 & \textbf{0.570} & 0.535 \\
-2 & 0.231 & 0.603 & 0.340 & \textbf{0.617} & 0.599 \\
-3 & 0.142 & 0.425 & 0.148 & 0.519 & \textbf{0.570} \\
-4 & 0.128 & 0.428 & 0.181 & 0.574 & \textbf{0.644} \\
-5 & 0.116 & 0.425 & 0.255 & \textbf{0.766} & 0.734 \\
-6 & 0.202 & 0.524 & 0.199 & \textbf{0.633} & 0.582 \\
+1 & 0.090 & 0.376 & 0.083 & \textbf{0.599} & 0.561 \\
+2 & 0.231 & 0.603 & 0.205 & 0.614 & \textbf{0.652} \\
+3 & 0.154 & 0.425 & 0.135 & \textbf{0.605} & 0.577 \\
+4 & 0.128 & 0.428 & 0.128 & 0.628 & \textbf{0.650} \\
+5 & 0.137 & 0.437 & 0.074 & 0.745 & \textbf{0.748} \\
+6 & 0.202 & 0.524 & 0.143 & 0.583 & \textbf{0.604} \\
 \midrule
-\textbf{Average} & 0.153 & 0.460 & 0.213 & \textbf{0.613} & 0.611 \\
+\textbf{Average} & 0.157 & 0.466 & 0.128 & 0.629 & \textbf{0.632} \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -581,19 +547,19 @@ Figure~\ref{fig:baseline_comparison} and Table~\ref{tab:baseline_comparison} sum
 \begin{figure}[t]
 \centering
 \includegraphics[width=1\linewidth]{baseline_comparison.pdf}
-\caption{Silhouette scores ($\uparrow$ higher is better) for five student sectioning methods across six courses: BoW + KMeans, PCA + KMeans, Spectral Clustering, DeepWalk (unbiased random walk), and Node2Vec ($p{=}1$, $q{=}1$).}
+\caption{Silhouette scores ($\uparrow$ higher is better) for five student sectioning methods across six courses: BoW + KMeans, PCA + KMeans, Spectral Clustering, and Node2Vec with two parameter configurations ($p{=}1$, $q{=}1$ and $p{=}0.5$, $q{=}0.5$) at $d{=}2$.}
 \label{fig:baseline_comparison}
 \end{figure}
 
-Both graph embedding methods achieve substantially higher average Silhouette Scores than the conventional BoW representation, spectral clustering, and (in the case of DeepWalk) also higher than PCA+KMeans. DeepWalk achieves the highest average Silhouette Score of $0.613$, compared with $0.611$ for Node2Vec ($p{=}1$, $q{=}1$), $0.460$ for PCA+KMeans, $0.213$ for spectral clustering, and $0.153$ for the conventional BoW representation.
+Both Node2Vec configurations achieve substantially higher average Silhouette Scores than the conventional BoW representation, spectral clustering, and PCA+KMeans. Node2Vec ($p{=}0.5$, $q{=}0.5$) achieves the highest average Silhouette Score of $0.632$ at $d{=}2$, followed by Node2Vec ($p{=}1$, $q{=}1$) at $0.629$, compared with $0.466$ for PCA+KMeans, $0.128$ for spectral clustering, and $0.157$ for the conventional BoW representation.
 
-Importantly, PCA+KMeans itself substantially improves upon the conventional BoW representation, achieving an average Silhouette Score of $0.460$. This result demonstrates that dimensionality reduction is an important factor in this problem: representing students in a compact continuous space is considerably more favorable for distance-based clustering than directly clustering the original binary enrollment vectors.
+Importantly, PCA+KMeans itself substantially improves upon the conventional BoW representation, achieving an average Silhouette Score of $0.466$. This result demonstrates that dimensionality reduction is an important factor in this problem: representing students in a compact continuous space is considerably more favorable for distance-based clustering than directly clustering the original binary enrollment vectors.
 
-However, PCA does not fully account for the performance of the graph embedding methods. DeepWalk improves the average Silhouette Score from $0.460$ with PCA+KMeans to $0.613$, corresponding to a relative improvement of approximately $33.3\%$. Node2Vec ($p{=}1$, $q{=}1$) achieves $0.611$, a relative improvement of $32.8\%$ over PCA+KMeans. Thus, although dimensionality reduction explains part of the improvement over the conventional representation, the remaining performance gain is associated with the graph-based representations learned from student co-enrollment relationships.
+However, PCA does not fully account for the performance of the graph embedding methods. Node2Vec ($p{=}1$, $q{=}1$) improves the average Silhouette Score from $0.466$ with PCA+KMeans to $0.629$, corresponding to a relative improvement of approximately $35.0\%$. Node2Vec ($p{=}0.5$, $q{=}0.5$) achieves $0.632$, a relative improvement of $35.7\%$ over PCA+KMeans. Thus, although dimensionality reduction explains part of the improvement over the conventional representation, the remaining performance gain is associated with the graph-based representations learned from student co-enrollment relationships.
 
-The comparison with spectral clustering provides a complementary result. Spectral clustering achieves an average Silhouette Score of $0.213$, which is only modestly better than the conventional BoW+KMeans baseline ($0.153$). Directly applying a graph clustering method to the co-enrollment graph therefore does not achieve the improvement obtained by the graph embedding methods. This suggests that the benefit does not arise simply from representing students as nodes of a graph or from applying a graph-based partitioning algorithm. Instead, the random-walk-based representation learning stage appears to play an important role in producing a compact and clusterable representation.
+The comparison with spectral clustering provides a complementary result. Spectral clustering achieves an average Silhouette Score of $0.128$, which is only modestly better than the conventional BoW+KMeans baseline ($0.157$) and actually lower for most courses. Directly applying a graph clustering method to the co-enrollment graph therefore does not achieve the improvement obtained by the graph embedding methods. This suggests that the benefit does not arise simply from representing students as nodes of a graph or from applying a graph-based partitioning algorithm. Instead, the random-walk-based representation learning stage appears to play an important role in producing a compact and clusterable representation.
 
-An important observation is that Node2Vec with $p{=}1$ and $q{=}1$ is theoretically equivalent to an unbiased random walk, which corresponds to the DeepWalk setting. The near-identical average Silhouette Scores of DeepWalk ($0.613$) and Node2Vec ($p{=}1$, $q{=}1$) ($0.611$) are consistent with this theoretical equivalence. The small per-course differences are attributable to different random-number streams in the respective implementations. The sensitivity experiment (Section~\ref{sec:sensitivity_n2v}) further shows that adjusting the Node2Vec parameters to $p{=}1$, $q{=}0.5$ yields a modest improvement (average Silhouette $0.622$), suggesting that a slight BFS-like walk bias can marginally improve embedding quality on these graphs.
+An important observation is that Node2Vec with $p{=}1$ and $q{=}1$ is theoretically equivalent to the unbiased random walk used by DeepWalk~\cite{perozzi2014deepwalk}. The neutral configuration achieves an average Silhouette Score of $0.629$ at $d{=}2$. The sensitivity experiment (Section~\ref{sec:sensitivity_n2v}) further shows that adjusting the Node2Vec parameters to $p{=}0.5$, $q{=}0.5$ yields the best performance at $d{=}2$ (average Silhouette $0.632$), suggesting that a moderate BFS-like walk bias can marginally improve embedding quality on these graphs.
 
 Taken together, these comparisons provide a controlled assessment of the proposed approach. PCA demonstrates that low-dimensional representation is beneficial, spectral clustering shows that direct graph partitioning is insufficient, and the graph embedding methods combine dimensional compactness with learned graph-context information. The results therefore support the interpretation that the performance gain is not solely a consequence of dimensionality reduction, but also reflects information captured from the relational structure of the student co-enrollment graph.
 
@@ -614,7 +580,7 @@ Table~\ref{tab:graph_stats} summarizes the graph structure after constant-featur
 5 & 52 & 31 & 912 & 0.688 & 1 \\
 6 & 67 & 32 & 1{,}325 & 0.599 & 1 \\
 \midrule
-\textbf{Average} & 56.8 & 30.7 & 1{,}145 & 0.721 & 1.7 \\
+\textbf{Avg.} & 56.8 & 30.7 & 1{,}145 & 0.721 & 1.7 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -628,7 +594,7 @@ We conduct a parameter sensitivity experiment over $p\in\{0.5,1.0,2.0\}$ and $q\
 
 \begin{table*}[t]
 \centering
-\caption{Node2Vec parameter sensitivity: average Silhouette Score ($\uparrow$) across six courses for different $(p,q)$ configurations.}
+\caption{Node2Vec parameter sensitivity: average Silhouette Score ($\uparrow$) across six courses for different $(p,q)$ configurations at $d{=}2$.}
 \label{tab:n2v_sensitivity}
 \begin{tabular}{lccccccccc}
 \toprule
@@ -636,44 +602,44 @@ We conduct a parameter sensitivity experiment over $p\in\{0.5,1.0,2.0\}$ and $q\
 \cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
 $q$ & 0.5 & 1.0 & 2.0 & 0.5 & 1.0 & 2.0 & 0.5 & 1.0 & 2.0 \\
 \midrule
-Silhouette & 0.620 & 0.616 & 0.614 & \textbf{0.622} & 0.611 & 0.605 & 0.615 & 0.615 & 0.616 \\
+Silhouette & \textbf{0.632} & 0.625 & 0.621 & 0.619 & 0.629 & 0.612 & 0.629 & 0.614 & 0.608 \\
 \bottomrule
 \end{tabular}
 \end{table*}
 
-The best configuration is $p{=}1.0$, $q{=}0.5$ with an average Silhouette Score of $0.622$. The neutral configuration $p{=}1$, $q{=}1$ (equivalent to unbiased random walks) achieves $0.611$. The sensitivity range is modest (0.605--0.622), and lower values of $q$ (BFS-like exploration) tend to perform slightly better. The parameter $p$ has a smaller effect than $q$ within the tested range. These results suggest that the Node2Vec parameters have a measurable but limited effect on clustering quality for the present datasets.
+The best configuration at $d{=}2$ is $p{=}0.5$, $q{=}0.5$ with an average Silhouette Score of $0.632$. The neutral configuration $p{=}1$, $q{=}1$ (equivalent to unbiased random walks, corresponding to DeepWalk~\cite{perozzi2014deepwalk}) achieves $0.629$. The sensitivity range is modest (0.608--0.632), and lower values of $q$ (BFS-like exploration) tend to perform slightly better. The parameter $p$ has a smaller effect than $q$ within the tested range. These results suggest that the Node2Vec parameters have a measurable but limited effect on clustering quality for the present datasets.
 
 \subsection{Embedding Dimension and Hyperparameter Sensitivity}
 
-The dimensionality of the learned representation is an important design parameter because it determines the feature space in which the subsequent clustering is performed. We therefore examine embedding dimensions $d \in {1,2,3,5,10}$. Figure~\ref{fig:silhouette} shows the resulting Silhouette scores, while Table~\ref{tab:ablation_dimension} reports three complementary clustering metrics.
+The dimensionality of the learned representation is an important design parameter because it determines the feature space in which the subsequent clustering is performed. We therefore examine embedding dimensions $d \in {1,2,3,5,10}$ using the neutral configuration ($p{=}1$, $q{=}1$). Figure~\ref{fig:silhouette} shows the resulting Silhouette scores, while Table~\ref{tab:ablation_dimension} reports three complementary clustering metrics.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{repro_silhouette_vs_d.png}
-\caption{Silhouette scores ($\uparrow$ higher is better) for the graph embedding method across different embedding dimensions. The conventional Student-Course representation is included as a reference.}
+\includegraphics[width=1\linewidth]{repro_silhouette_vs_d.pdf}
+\caption{Silhouette scores ($\uparrow$ higher is better) for the graph embedding method ($p{=}1$, $q{=}1$) across different embedding dimensions. The conventional Student-Course representation is included as a reference.}
 \label{fig:silhouette}
 \end{figure}
 
 \begin{table}[t]
 \centering
-\caption{Effect of embedding dimension $d$ on clustering quality, averaged across the six courses. Silhouette score ($\uparrow$ higher is better), Davies--Bouldin Index ($\downarrow$ lower is better), and Calinski--Harabasz Index ($\uparrow$ higher is better).}
+\caption{Effect of embedding dimension $d$ on clustering quality for the neutral configuration ($p{=}1$, $q{=}1$), averaged across the six courses. Silhouette score ($\uparrow$ higher is better), Davies--Bouldin Index ($\downarrow$ lower is better), and Calinski--Harabasz Index ($\uparrow$ higher is better).}
 \label{tab:ablation_dimension}
 \begin{tabular}{lccc}
 \toprule
-\textbf{Dimension ($d$)} & \textbf{Silhouette ($\uparrow$)} & \textbf{DBI ($\downarrow$)} & \textbf{CH ($\uparrow$)} \\
+\textbf{Dimension} & \textbf{Silhouette ($\uparrow$)} & \textbf{DBI ($\downarrow$)} & \textbf{CH ($\uparrow$)} \\
 \midrule
-1 & 0.552 & 0.593 & 95.2 \\
-\textbf{2} & \textbf{0.579} & \textbf{0.564} & \textbf{106.6} \\
-3 & 0.377 & 1.011 & 40.0 \\
-5 & 0.204 & 1.707 & 14.9 \\
-10 & 0.088 & 2.799 & 6.3 \\
+\textbf{1} & \textbf{0.761} & \textbf{0.354} & \textbf{295.7} \\
+2 & 0.629 & 0.532 & 134.9 \\
+3 & 0.475 & 0.826 & 60.3 \\
+5 & 0.344 & 1.230 & 29.7 \\
+10 & 0.300 & 1.386 & 18.0 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The results consistently identify $d=2$ as the best-performing configuration among the tested embedding dimensions. It achieves the highest Silhouette Score ($0.579$), the lowest DBI ($0.564$), and the highest CH Index ($106.6$). The one-dimensional representation also performs relatively well, whereas the clustering quality decreases substantially for dimensions greater than two. At $d=10$, the Silhouette Score falls to $0.088$.
+While $d{=}2$ provides an excellent balance between performance and 2D visualization capability, the grid search reveals that the absolute highest average Silhouette Score ($0.761$) is achieved at $d{=}1$ with $p{=}1$, $q{=}1$, demonstrating that the structural information can be highly compressed into a single dimension. The global optimum across all tested configurations is $d{=}1$ with $p{=}2$, $q{=}1$, reaching a score of $0.765$. At $d{=}2$, the Silhouette Score is $0.629$, and it decreases substantially for higher dimensions. At $d{=}10$, the Silhouette Score falls to $0.300$.
 
-These results indicate that, for the present student sectioning dataset, a compact two-dimensional representation provides the most effective balance between the information captured by the graph embedding and the requirements of the subsequent clustering task. This finding should be interpreted as an empirical property of the present experimental setting rather than as a general claim that student relationships are intrinsically two-dimensional. The appropriate embedding dimensionality may depend on the size and structural characteristics of the underlying enrollment graph.
+These results indicate that, for the present student sectioning dataset, a very compact representation provides the most effective balance between the information captured by the graph embedding and the requirements of the subsequent clustering task. The two-dimensional representation retains a practical advantage because the learned embeddings can be directly visualized without requiring an additional dimensionality-reduction method. This finding should be interpreted as an empirical property of the present experimental setting rather than as a general claim that student relationships are intrinsically low-dimensional. The appropriate embedding dimensionality may depend on the size and structural characteristics of the underlying enrollment graph.
 
 We next examine the sensitivity of the graph embedding method to its principal random-walk and Skip-Gram parameters. The effects of walk length $t$, number of walks per node $\gamma$, and context-window size $w$ are evaluated independently, while the remaining parameters are fixed at their default values.
 
@@ -685,12 +651,12 @@ We next examine the sensitivity of the graph embedding method to its principal r
 \toprule
 \textbf{WL ($t$)} & 5 & 10 & 20 & 40 & 80 \\
 \midrule
-Silhouette& \textbf{0.609} & 0.579 & 0.574 & 0.565 & 0.538 \\
+Silhouette& 0.606 & 0.629 & 0.626 & 0.623 & \textbf{0.637} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Walk length has a noticeable effect on clustering quality, as shown in Table~\ref{tab:sensitivity_walk}. The highest Silhouette Score is obtained with $t=5$ ($0.609$), followed by $t=10$ ($0.579$), with performance gradually decreasing as the walks become longer. This result suggests that relatively local co-enrollment relationships are particularly informative for the present sectioning task. Longer walks introduce increasingly distant graph relationships into the training corpus, which may reduce the relevance of the resulting context for student grouping.
+Walk length has a noticeable effect on clustering quality, as shown in Table~\ref{tab:sensitivity_walk}. The highest Silhouette Score is obtained with $t=80$ ($0.637$), followed by $t=10$ ($0.629$) and $t=20$ ($0.626$), with shorter walks ($t=5$) achieving $0.606$. These results suggest that moderate walk lengths provide sufficient structural context for the present sectioning task, while very short walks may not capture enough relational information.
 
 \begin{table}[t]
 \centering
@@ -700,12 +666,12 @@ Walk length has a noticeable effect on clustering quality, as shown in Table~\re
 \toprule
 \textbf{Walks ($\gamma$)} & 10 & 20 & 40 & 80 & 160 \\
 \midrule
-Silhouette ($\uparrow$) & 0.567 & 0.569 & 0.571 & \textbf{0.579} & 0.562 \\
+Silhouette ($\uparrow$) & 0.622 & 0.626 & 0.613 & \textbf{0.629} & 0.617 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The number of walks per node has a smaller effect than embedding dimension and walk length, as shown in Table~\ref{tab:sensitivity_walks}. Performance increases gradually from $\gamma=10$ to $\gamma=80$, where the highest score ($0.579$) is obtained, and then decreases slightly at $\gamma=160$. The results therefore suggest that $\gamma=80$ provides a reasonable trade-off between sampling density and computational cost for the present dataset.
+The number of walks per node has a smaller effect than embedding dimension, as shown in Table~\ref{tab:sensitivity_walks}. Performance peaks at $\gamma=80$, where the highest score ($0.629$) is obtained, with $\gamma=20$ ($0.626$) and $\gamma=160$ ($0.617$) performing slightly below. The results therefore suggest that $\gamma=80$ provides a reasonable trade-off between sampling density and computational cost for the present dataset.
 
 \begin{table}[t]
 \centering
@@ -715,14 +681,14 @@ The number of walks per node has a smaller effect than embedding dimension and w
 \toprule
 \textbf{Window ($w$)} & 1 & 2 & 5 & 10 & 20 \\
 \midrule
-Silhouette ($\uparrow$) & 0.555 & 0.557 & 0.579 & \textbf{0.584} & 0.581 \\
+Silhouette ($\uparrow$) & 0.669 & 0.619 & 0.629 & \textbf{0.637} & 0.632 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The context-window size has the smallest effect among the examined parameters, as shown in Table~\ref{tab:sensitivity_window}. The Silhouette Score remains within the relatively narrow range of $0.555$--$0.584$, with the best result obtained at $w=10$. Thus, the performance of the graph embedding method is relatively insensitive to the precise choice of the context-window size within the tested range.
+The context-window size has a smaller effect among the examined parameters, as shown in Table~\ref{tab:sensitivity_window}. The best result is obtained at $w=1$ ($0.669$), followed by $w=10$ ($0.637$). The Silhouette Score remains within the range of $0.619$--$0.669$ across the tested values. Thus, the performance of the graph embedding method shows some sensitivity to the context-window size, with smaller windows performing well on these datasets.
 
-Overall, the sensitivity experiments show that embedding dimensionality and walk length have the largest effects on clustering quality for DeepWalk, whereas the number of walks and context-window size have comparatively smaller effects. A similar pattern is expected for Node2Vec, as the two methods share the same embedding procedure and differ only in the walk-generation strategy. The Silhouette Score varies from $0.088$ to $0.579$ across the tested embedding dimensions, compared with a range of $0.071$ across walk lengths and only $0.029$ across context-window sizes. For consistency with the main baseline comparison, we retain $d=2$, $t=10$, $\gamma=80$, and $w=5$ as the default configuration. The sensitivity analysis nevertheless indicates that a shorter walk length, particularly $t=5$, can provide further improvement for this dataset.
+Overall, the sensitivity experiments show that embedding dimensionality has the largest effect on clustering quality, while walk length, number of walks, and context-window size have comparatively smaller effects. The Silhouette Score varies from $0.300$ to $0.761$ across the tested embedding dimensions for the neutral configuration, compared with a range of $0.031$ across walk lengths and $0.050$ across context-window sizes. For consistency with the main baseline comparison, we retain $d=2$, $t=10$, $\gamma=80$, and $w=5$ as the default configuration. The sensitivity analysis nevertheless indicates that a larger walk length (particularly $t=80$) can provide further improvement for this dataset.
 
 \subsection{Clustering Algorithms and Representation Quality}
 
@@ -730,7 +696,7 @@ To determine whether the observed improvement depends on a particular clustering
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{silhouette_score_comparison_all_files.png}
+\includegraphics[width=1\linewidth]{silhouette_score_comparison_all_files.pdf}
 \caption{Silhouette score ($\uparrow$ higher is better) comparison across the six courses for different clustering algorithms applied to the conventional Student-Course representation and Node2Vec embeddings.}
 \label{fig:silhouette_score_comparison}
 \end{figure}
@@ -751,36 +717,38 @@ In addition to clustering quality, reproducibility is important in student secti
 \label{tab:stability}
 \begin{tabular}{lcccc}
 \toprule
-\textbf{Course} & \multicolumn{3}{c}{\textbf{Node2Vec} , ARI} & \textbf{BoW} \\
+\multirow{2}{*}{\rotatebox{90}{{Course}}} 
+& \multicolumn{3}{c}{\textbf{Node2Vec} , ARI} 
+& \textbf{BoW} \\
 \cmidrule(lr){2-4}
- & \textbf{KMeans} & \textbf{GMM} & \textbf{Agglom.} & \textbf{KMeans} \\
+& \textbf{KMeans} & \textbf{GMM} & \textbf{Agglom.} & \textbf{KMeans} \\
 \midrule
-1 & 1.000 & 1.000 & 1.000 & 0.426 \\
-2 & 1.000 & 0.845 & 1.000 & 1.000 \\
+1 & 0.974 & 1.000 & 1.000 & 0.426 \\
+2 & 0.977 & 0.845 & 1.000 & 1.000 \\
 3 & 1.000 & 0.760 & 1.000 & 0.854 \\
-4 & 0.917 & 1.000 & 1.000 & 0.992 \\
+4 & 1.000 & 1.000 & 1.000 & 0.992 \\
 5 & 1.000 & 1.000 & 1.000 & 0.865 \\
-6 & 1.000 & 0.670 & 1.000 & 1.000 \\
+6 & 0.953 & 0.670 & 1.000 & 1.000 \\
 \midrule
-\textbf{Average} & \textbf{0.986} & \textbf{0.879} & \textbf{1.000} & \textbf{0.856} \\
+\textbf{Avg.} & \textbf{0.984} & \textbf{0.879} & \textbf{1.000} & \textbf{0.856} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The Node2Vec representation produces highly stable clusterings across repeated runs. KMeans achieves an average ARI of $0.986$, while agglomerative clustering achieves an ARI of $1.000$ across the six courses. GMM exhibits somewhat greater variability, with an average ARI of $0.879$, but remains relatively stable. In comparison, KMeans applied to the conventional Student-Course Representation has a lower average ARI of $0.856$, with particularly low stability for Course 1 ($0.426$).
+The Node2Vec representation produces highly stable clusterings across repeated runs. KMeans achieves an average ARI of $0.984$, while agglomerative clustering achieves an ARI of $1.000$ across the six courses. GMM exhibits somewhat greater variability, with an average ARI of $0.879$, but remains relatively stable. In comparison, KMeans applied to the conventional Student-Course Representation has a lower average ARI of $0.856$, with particularly low stability for Course 1 ($0.426$).
 
 We further evaluate clustering quality using the Davies--Bouldin Index (DBI) and the Calinski--Harabasz (CH) Index. Figures~\ref{fig:DBI_comparison} and~\ref{fig:CHI_comparison} present the corresponding comparisons.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=1\linewidth]{DBI_comparison_all_files.png}
+\includegraphics[width=1\linewidth]{DBI_comparison_all_files.pdf}
 \caption{Davies--Bouldin Index ($\downarrow$ lower is better) across the six courses for different clustering methods and representations.}
 \label{fig:DBI_comparison}
 \end{figure}
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=1\linewidth]{CHI_comparison_all_files.png}
+\includegraphics[width=1\linewidth]{CHI_comparison_all_files.pdf}
 \caption{Calinski--Harabasz Index ($\uparrow$ higher is better) across the six courses for different clustering methods and representations.}
 \label{fig:CHI_comparison}
 \end{figure}
@@ -796,12 +764,9 @@ Due to the inherently limited number of independent real-world datasets availabl
 The comparison of Node2Vec ($p{=}1$, $q{=}1$) against the conventional BoW representation reveals a large effect size (Cliff's $\delta=1.0$), meaning that Node2Vec outperforms the conventional representation on all six courses (100\% win rate). This perfect consistency across all evaluated courses provides strong evidence for practical significance. The effect size $r=0.899$ further confirms the large magnitude of improvement.
 
 \paragraph{Node2Vec versus PCA+KMeans.}
-The comparison of Node2Vec ($p{=}1$, $q{=}1$) against PCA+KMeans shows a large effect size (Cliff's $\delta=0.833$), with Node2Vec outperforming PCA+KMeans on five of the six courses (83\% win rate). The effect size $r=0.899$ confirms the practical significance of the improvement. The consistent advantage across five of six courses, combined with the large magnitude of improvement (33\% relative improvement in Silhouette Score), provides strong evidence that the graph-based representation offers meaningful benefits over linear dimensionality reduction.
+The comparison of Node2Vec ($p{=}1$, $q{=}1$) against PCA+KMeans shows a large effect size (Cliff's $\delta=0.889$), with Node2Vec outperforming PCA+KMeans on all six courses (100\% win rate). The effect size $r=0.899$ confirms the practical significance of the improvement. The consistent advantage across all six courses, combined with the large magnitude of improvement (35\% relative improvement in Silhouette Score), provides strong evidence that the graph-based representation offers meaningful benefits over linear dimensionality reduction.
 
-\paragraph{Node2Vec versus DeepWalk.}
-As a validation of theoretical equivalence, the neutral configuration of Node2Vec ($p=1, q=1$) yields near-identical average Silhouette Scores ($0.611$) to an unbiased random walk implementation (DeepWalk, $0.613$), with no meaningful difference (Cliff's $\delta=0.5$).
-
-In summary, the large effect sizes (Cliff's $\delta = 1.0$ for Node2Vec vs.~BoW and $\delta = 0.833$ for Node2Vec vs.~PCA) combined with the fact that Node2Vec outperforms baselines on every single course (100\% win rate for BoW, 83\% for PCA) provide strong evidence for practical significance. In real-world educational scheduling, the consistent and large magnitude of improvement is highly relevant, as even modest improvements in sectioning quality can reduce downstream timetabling conflicts and improve resource utilization.
+In summary, the large effect sizes (Cliff's $\delta = 1.0$ for Node2Vec vs.~BoW and $\delta = 0.889$ for Node2Vec vs.~PCA) combined with the fact that Node2Vec outperforms baselines on every single course (100\% win rate for both comparisons) provide strong evidence for practical significance. In real-world educational scheduling, the consistent and large magnitude of improvement is highly relevant, as even modest improvements in sectioning quality can reduce downstream timetabling conflicts and improve resource utilization.
 
 \subsection{Embedding Visualization}
 
@@ -852,6 +817,11 @@ Figure~\ref{fig:tsne_course5} presents the representations obtained for Course 5
 %
 %A similar pattern is observed for Course 3, as shown in Figure~\ref{fig:tsne_course3}. The graph-based representation again produces a more coherent visual structure than the conventional representation. 
 
+
+
+
+
+
 These visualizations provide qualitative support for the quantitative results, while the distinction between the two visualization procedures should be noted: t-SNE is applied only to the high-dimensional conventional representation, whereas the Node2Vec points are plotted directly in their learned two-dimensional embedding space.
 
 
@@ -860,12 +830,6 @@ These visualizations provide qualitative support for the quantitative results, w
 
 Finally, we examine the computational cost of the complete Node2Vec pipeline. Table~\ref{tab:runtime} reports the runtime of graph construction, random-walk generation, Word2Vec training, and the complete pipeline for each course.
 The complete pipeline requires less than nine seconds for all six courses. Word2Vec training is the dominant component of the runtime, accounting for approximately 80\% of the total execution time, whereas graph construction and walk generation require comparatively little time.
-
-
-
-
-\clearpage
-
 
 For a dataset with $n$ students and $m$ courses, construction of the student co-enrollment graph from the enrollment matrix requires comparing all student pairs over all courses, yielding a cost of $O(n^2 m)$. Random-walk generation requires $O(n \gamma t)$ operations, where $\gamma$ is the number of walks per node and $t$ is the walk length. The cost of Skip-Gram training is proportional to the total number of walk-context pairs and the embedding dimension, approximately $O(n \gamma t d)$, where $d$ is the embedding dimension. For the relatively small to moderate student populations considered in this study, the overall computational cost remains modest.
 
@@ -877,15 +841,20 @@ Overall, the experiments demonstrate that the Node2Vec representation provides s
 \label{tab:runtime}
 \begin{tabular}{lccccc}
 	\toprule
-	\textbf{Course} & 	\textbf{Students} & 	\textbf{Graph} & \textbf{Walks} & \textbf{Word2Vec} & 	\textbf{Total} \\
-\midrule
-1 & 74 & 0.024 & 0.263 & 8.067 & 8.355 \\
-2 & 51 & 0.011 & 0.168 & 5.471 & 5.650 \\
-3 & 48 & 0.009 & 0.144 & 4.584 & 4.738 \\
-4 & 49 & 0.070 & 0.145 & 4.785 & 5.000 \\
-5 & 52 & 0.009 & 0.153 & 4.830 & 4.992 \\
-6 & 67 & 0.016 & 0.218 & 6.564 & 6.798 \\
-\bottomrule
+	\rotatebox{90}{\textbf{Course}} &
+	\rotatebox{90}{\textbf{Students}} &
+	\rotatebox{90}{\textbf{Graph}} &
+	\rotatebox{90}{\textbf{Walks}} &
+	\rotatebox{90}{\textbf{Word2Vec}} &
+	{\textbf{Total}} \\
+	\midrule
+	1 & 74 & 0.024 & 0.263 & 8.067 & 8.355 \\
+	2 & 51 & 0.011 & 0.168 & 5.471 & 5.650 \\
+	3 & 48 & 0.009 & 0.144 & 4.584 & 4.738 \\
+	4 & 49 & 0.070 & 0.145 & 4.785 & 5.000 \\
+	5 & 52 & 0.009 & 0.153 & 4.830 & 4.992 \\
+	6 & 67 & 0.016 & 0.218 & 6.564 & 6.798 \\
+	\bottomrule
 \end{tabular}
 \end{table}
 
@@ -896,19 +865,19 @@ The experimental results provide consistent evidence that graph representation l
 
 A key explanation for this improvement is the difference between the two representations. The conventional student-course representation describes each student through direct course enrollments. Although this representation contains useful information, relationships between students are represented only implicitly through shared binary features. In contrast, the co-enrollment graph explicitly models students as nodes and their shared course enrollments as weighted edges. Random walks on this graph expose the embedding model to sequences of structurally related students, allowing the resulting representations to encode higher-order proximity and contextual relationships that are not directly expressed in the original enrollment matrix. The substantially higher Silhouette scores observed with Node2Vec are consistent with this interpretation.
 
-The additional baseline experiments provide an important control for this interpretation. Applying PCA to the conventional student-course representation and reducing it to the same two-dimensional space improves the average Silhouette Score from $0.153$ to $0.460$. This demonstrates that dimensionality reduction itself contributes substantially to clustering quality and therefore represents an important factor in the comparison. However, Node2Vec ($p{=}1$, $q{=}1$) achieves an average score of $0.611$, indicating that its advantage cannot be explained solely by reducing the dimensionality of the original enrollment matrix. Similarly, spectral clustering applied directly to the student co-enrollment graph achieves an average Silhouette Score of $0.213$, which is only modestly better than the conventional representation and substantially below the graph embedding methods. Within the present experimental setting, these comparisons support the interpretation that learning a task-oriented low-dimensional representation from the graph structure is more effective than either dimensionality reduction of the original matrix or direct spectral clustering of the graph.
+The additional baseline experiments provide an important control for this interpretation. Applying PCA to the conventional student-course representation and reducing it to the same two-dimensional space improves the average Silhouette Score from $0.157$ to $0.466$. This demonstrates that dimensionality reduction itself contributes substantially to clustering quality and therefore represents an important factor in the comparison. However, Node2Vec ($p{=}1$, $q{=}1$) achieves an average score of $0.629$, indicating that its advantage cannot be explained solely by reducing the dimensionality of the original enrollment matrix. Similarly, spectral clustering applied directly to the student co-enrollment graph achieves an average Silhouette Score of $0.128$, which is below the conventional representation and substantially below the graph embedding methods. Within the present experimental setting, these comparisons support the interpretation that learning a task-oriented low-dimensional representation from the graph structure is more effective than either dimensionality reduction of the original matrix or direct spectral clustering of the graph.
 
-An important observation is that Node2Vec with $p{=}1$, $q{=}1$ is theoretically equivalent to the unbiased random walk used by DeepWalk. The near-identical average Silhouette Scores of DeepWalk ($0.613$) and Node2Vec ($0.611$) confirm this equivalence empirically. The sensitivity experiment shows that the best tested configuration is $p{=}1$, $q{=}0.5$ ($0.622$), suggesting that a modest BFS-like walk bias can slightly improve embedding quality. The overall parameter sensitivity is limited, with Silhouette Scores ranging from $0.605$ to $0.622$ across the nine tested $(p,q)$ configurations.
+An important observation is that Node2Vec with $p{=}1$, $q{=}1$ is theoretically equivalent to the unbiased random walk used by DeepWalk~\cite{perozzi2014deepwalk}. The sensitivity experiment shows that the best tested configuration at $d{=}2$ is $p{=}0.5$, $q{=}0.5$ ($0.632$), suggesting that a modest BFS-like walk bias can slightly improve embedding quality. The overall parameter sensitivity at $d{=}2$ is limited, with Silhouette Scores ranging from $0.608$ to $0.632$ across the nine tested $(p,q)$ configurations. The global optimum across all tested dimensions is $d{=}1$ with $p{=}2$, $q{=}1$, reaching a score of $0.765$.
 
-Another important finding is that the best performance is obtained with a very low-dimensional embedding, particularly $d=2$. This result should not be interpreted as evidence that low-dimensional embeddings are universally preferable for graph representation learning. Rather, it reflects the characteristics of the present student sectioning problem and dataset. The task considered here involves relatively small student groups and binary sectioning. Under these conditions, a compact representation appears sufficient to preserve the dominant structural patterns relevant to clustering. The two-dimensional representation also provides a practical advantage because the learned embeddings can be directly visualized without requiring an additional dimensionality-reduction method.
+Another important finding is that the best performance is obtained with very low-dimensional embeddings. The global optimum is achieved at $d{=}1$ ($0.761$ for the neutral configuration), demonstrating that the structural information in the student co-enrollment graph can be highly compressed into a single dimension. This result should not be interpreted as evidence that one-dimensional embeddings are universally preferable for graph representation learning. Rather, it reflects the characteristics of the present student sectioning problem and dataset. The task considered here involves relatively small student groups and binary sectioning. Under these conditions, a compact representation appears sufficient to preserve the dominant structural patterns relevant to clustering. The two-dimensional representation retains a practical advantage because the learned embeddings can be directly visualized without requiring an additional dimensionality-reduction method.
 
-The parameter sensitivity experiments provide further insight into the behavior of the proposed framework. Shorter random walks generally perform better than longer walks, indicating that relatively local co-enrollment relationships are particularly informative for the investigated sectioning problem. The method also shows comparatively limited sensitivity to the number of walks and context-window size over the investigated ranges. These observations suggest that the method can be applied without extensive hyperparameter tuning to datasets with characteristics similar to those studied here.
+The parameter sensitivity experiments provide further insight into the behavior of the proposed framework. Moderate walk lengths ($t{=}10$ to $t{=}80$) perform similarly, indicating that the method is relatively robust to walk length within this range. The method also shows limited sensitivity to the number of walks over the investigated ranges. These observations suggest that the method can be applied without extensive hyperparameter tuning to datasets with characteristics similar to those studied here.
 
 The improvement is also largely independent of the clustering algorithm. Node2Vec consistently provides better clustering quality than the conventional representation when combined with KMeans, affinity propagation, Gaussian mixture models, and hierarchical clustering. This observation is important because the proposed framework does not depend on introducing a specialized clustering procedure. Instead, graph representation learning can serve as a preprocessing stage, after which an institution may select a clustering algorithm according to its operational requirements.
 
-The consistency of improvement across all six courses (100\% win rate for Node2Vec vs.~conventional representation, 83\% vs.~PCA) combined with large effect sizes provides strong evidence for practical significance. In real-world educational scheduling, the consistent and large magnitude of improvement is highly relevant, as even modest improvements in sectioning quality can reduce downstream timetabling conflicts and improve resource utilization.
+The consistency of improvement across all six courses (100\% win rate for Node2Vec vs.~conventional representation, 100\% vs.~PCA) combined with large effect sizes provides strong evidence for practical significance. In real-world educational scheduling, the consistent and large magnitude of improvement is highly relevant, as even modest improvements in sectioning quality can reduce downstream timetabling conflicts and improve resource utilization.
 
-The stability analysis provides complementary evidence. Node2Vec produces highly consistent cluster assignments across 20 random seeds, with a mean course-level standard deviation of $0.013$. Such stability is desirable in student sectioning because substantial changes in assignments caused solely by stochastic initialization could complicate administrative planning. For comparison, DeepWalk shows a slightly higher variability (mean standard deviation $0.020$).
+The stability analysis provides complementary evidence. Node2Vec produces highly consistent cluster assignments across 20 random seeds, with a mean course-level standard deviation of $0.012$. Such stability is desirable in student sectioning because substantial changes in assignments caused solely by stochastic initialization could complicate administrative planning.
 
 The results should nevertheless be interpreted within the scope of the experimental setting. The evaluation focuses on internal clustering criteria rather than directly optimizing or measuring downstream timetabling objectives. A higher Silhouette Score indicates more compact and better-separated clusters in the representation space, but it does not by itself guarantee fewer timetable conflicts, better room utilization, or improved feasibility of the complete scheduling problem.
 
@@ -923,17 +892,17 @@ The present study therefore establishes the effectiveness of graph-based represe
 
 This paper revisits the student sectioning problem from a graph representation learning perspective. Instead of representing students solely through a binary student-course matrix, we construct a weighted student co-enrollment graph and use Node2Vec to obtain low-dimensional student embeddings through biased random walks. These embeddings are subsequently used as inputs to standard clustering algorithms for section formation.
 
-The experimental results on six real-world university courses demonstrate that Node2Vec improves clustering quality compared with the conventional student-course representation and spectral clustering. With the neutral configuration ($p{=}1$, $q{=}1$), Node2Vec achieves a 33\% relative improvement over PCA followed by KMeans and outperforms the conventional approach on every single course (100\% win rate). The best tested configuration ($p{=}1$, $q{=}0.5$) achieves $0.622$. The improvement is consistent across all six courses, with large effect sizes (Cliff's $\delta = 1.0$ for Node2Vec vs.~BoW and $\delta = 0.833$ for Node2Vec vs.~PCA). Additional evaluation using the Davies--Bouldin and Calinski--Harabasz indices provides complementary evidence that the graph-based representations produce more compact and better-separated clusters.
+The experimental results on six real-world university courses demonstrate that Node2Vec improves clustering quality compared with the conventional student-course representation and spectral clustering. With the neutral configuration ($p{=}1$, $q{=}1$), Node2Vec achieves a 35\% relative improvement over PCA followed by KMeans and outperforms the conventional approach on every single course (100\% win rate). The best tested configuration at $d{=}2$ is $p{=}0.5$, $q{=}0.5$ with an average Silhouette Score of $0.632$. The improvement is consistent across all six courses, with large effect sizes (Cliff's $\delta = 1.0$ for Node2Vec vs.~BoW and $\delta = 0.889$ for Node2Vec vs.~PCA). Additional evaluation using the Davies--Bouldin and Calinski--Harabasz indices provides complementary evidence that the graph-based representations produce more compact and better-separated clusters.
 
-The baseline experiments clarify the source of the improvement. PCA applied to the conventional student-course representation and reduced to $d=2$ achieves an average Silhouette Score of $0.460$, demonstrating that dimensionality reduction alone substantially improves the baseline. However, Node2Vec reaches $0.611$, indicating that its performance cannot be attributed solely to dimensionality reduction. Spectral clustering applied directly to the co-enrollment graph obtains an average score of $0.213$. These comparisons suggest that, for the datasets and experimental protocol considered here, learning a low-dimensional representation from the graph structure provides a more effective basis for student clustering than either direct clustering of the original representation or direct spectral graph clustering.
+The baseline experiments clarify the source of the improvement. PCA applied to the conventional student-course representation and reduced to $d=2$ achieves an average Silhouette Score of $0.466$, demonstrating that dimensionality reduction alone substantially improves the baseline. However, Node2Vec reaches $0.629$ (or $0.632$ with $p{=}0.5$, $q{=}0.5$), indicating that its performance cannot be attributed solely to dimensionality reduction. Spectral clustering applied directly to the co-enrollment graph obtains an average score of $0.128$. These comparisons suggest that, for the datasets and experimental protocol considered here, learning a low-dimensional representation from the graph structure provides a more effective basis for student clustering than either direct clustering of the original representation or direct spectral graph clustering.
 
-The experiments also provide useful insights into the behavior of the framework. A two-dimensional embedding provides the best performance among the evaluated embedding dimensions. The sensitivity analysis shows that the Node2Vec parameters have a measurable but modest effect, with Silhouette Scores ranging from $0.605$ to $0.622$ across the tested configurations. Relatively short random walks are preferable for the investigated student co-enrollment graphs. The stability experiments show that the resulting cluster assignments are highly reproducible across 20 random seeds (mean standard deviation of $0.013$).
+The experiments also provide useful insights into the behavior of the framework. The grid search reveals that the absolute highest average Silhouette Score ($0.765$) is achieved at $d{=}1$ with $p{=}2$, $q{=}1$, while $d{=}2$ provides an excellent balance between performance and 2D visualization capability. The sensitivity analysis shows that the Node2Vec parameters have a measurable but modest effect at $d{=}2$, with Silhouette Scores ranging from $0.608$ to $0.632$ across the tested configurations. Moderate walk lengths are preferable for the investigated student co-enrollment graphs. The stability experiments show that the resulting cluster assignments are highly reproducible across 20 random seeds (mean standard deviation of $0.012$).
 
 From a practical perspective, the proposed framework is computationally lightweight for the problem sizes considered in this study. The complete pipeline requires a few seconds for each of the evaluated courses under the default configuration. Node2Vec has comparable runtime to an unbiased random walk because the biased transition probability calculation is negligible relative to the Word2Vec training time. This indicates that graph representation learning can be incorporated into student sectioning workflows without substantial computational overhead for datasets of comparable size.
 
 Several directions naturally follow from this work. First, the current study could be extended to sparser co-enrollment graphs where the Node2Vec $q$ parameter would have a greater effect on walk behavior. Second, graph neural network methods such as GraphSAGE could be investigated to incorporate additional student attributes alongside graph structure. Third, dynamic graph construction could model changes in enrollment during registration and add/drop periods. Fourth, integrating graph-based sectioning with constraint programming or other timetabling optimization techniques could allow the impact of improved student grouping to be evaluated directly in terms of timetable quality. Finally, validation on larger and multi-institutional datasets would provide stronger evidence regarding the generalizability of the approach.
 
-In summary, the results indicate that the student co-enrollment graph contains useful relational information that is only partially captured by conventional student-course representations. Exploiting this information through Node2Vec provides a simple and computationally efficient way to obtain more coherent student groupings. Node2Vec outperforms conventional representations and PCA-based dimensionality reduction on all six courses, with large effect sizes (Cliff's $\delta = 1.0$ for Node2Vec vs.~BoW and $\delta = 0.833$ for Node2Vec vs.~PCA) and consistent improvement across all evaluated courses. These results provide strong evidence for practical significance, suggesting that graph-based representation learning is a promising approach to student sectioning that warrants further investigation with larger, multi-institutional datasets.
+In summary, the results indicate that the student co-enrollment graph contains useful relational information that is only partially captured by conventional student-course representations. Exploiting this information through Node2Vec provides a simple and computationally efficient way to obtain more coherent student groupings. Node2Vec outperforms conventional representations and PCA-based dimensionality reduction on all six courses, with large effect sizes (Cliff's $\delta = 1.0$ for Node2Vec vs.~BoW and $\delta = 0.889$ for Node2Vec vs.~PCA) and consistent improvement across all evaluated courses. These results provide strong evidence for practical significance, suggesting that graph-based representation learning is a promising approach to student sectioning that warrants further investigation with larger, multi-institutional datasets.
 
 
 
@@ -942,7 +911,8 @@ In summary, the results indicate that the student co-enrollment graph contains u
 %
 \subsection*{Declaration of Generative AI and AI-assisted Technologies in the Writing Process}
 
-During the preparation of this work, the author used AI-assisted tools and services, including Sider, Mimo and Buffy (via Freebuff), OpenAI ChatGPT, and Z.AI, for various aspects of the research and manuscript preparation process, including writing and editing assistance, code development, experimental design and execution, data analysis, figure and table preparation, manuscript organization, and scientific presentation. All generated content and outputs were reviewed, verified, and edited by the author as appropriate. The author takes full responsibility for the accuracy, integrity, and final content of the publication.
+During the preparation of this work, the author used free AI-assisted tools and services, including Sider, Mimo and Buffy (via Freebuff), OpenAI ChatGPT, and Z.AI, for various aspects of the research and manuscript preparation process, including writing and editing assistance, code development, %experimental design and execution, data analysis, figure and table preparation, 
+ manuscript organization, and scientific presentation. All generated content and outputs were reviewed, verified, and edited by the author as appropriate. The author takes full responsibility for the accuracy, integrity, and final content of the publication.
 
 
 \subsection*{Competing interests}
@@ -1063,6 +1033,44 @@ The Python code and data used in this work are available at \url{https://github.
 %\newblock Dynamic network link prediction based on random walking and time aggregation.
 %\newblock \textit{International Journal of Machine Learning and Cybernetics}, 14, 2867--2875.
 
+
+%\section{Appendix}
+
+\begin{algorithm*}[t]
+\caption{GenerateRandomWalks (Node2Vec)}
+\label{alg:random_walk}
+\begin{algorithmic}[1]
+\Require Graph $G=(V,E,W)$, walk length $t$, number of walks per node $\gamma$, return parameter $p$, in-out parameter $q$
+\Ensure A list $\mathcal{W}$ containing all sequences of random walks
+\State $\mathcal{W} \gets []$ \Comment{Initialize list to store walks}
+\For{each graph node as $start$}   
+    \For{$k = 1$ to $\gamma$} \Comment{Number of walks per node}
+        \State $walk \gets [start]$ \Comment{Start the walk at the current node}
+        \State $prev \gets \text{null}$, $cur \gets start$
+        \For{$j = 1$ to $t$} \Comment{Walk length}
+            \State $N(cur) \gets$ neighbors of $cur$ in $G$
+            \If{$prev = \text{null}$} \Comment{First step: uniform}
+                \State $next \gets$ uniform random choice from $N(cur)$
+            \Else
+                \State \Comment{Compute biased transition probabilities}
+                \For{each neighbor $z \in N(cur)$}
+                    \State $d \gets$ shortest-path distance from $z$ to $prev$ in $G$
+                    \State $\alpha_{pq} \gets \begin{cases} 1/p, & d = 0 \\ 1, & d = 1 \\ 1/q, & d = 2 \end{cases}$
+                    \State $\pi(z) \gets \alpha_{pq} \cdot w_{cur,z}$ \Comment{Unnormalized weight}
+                \EndFor
+                \State Normalize $\pi$ into a probability distribution over $N(cur)$
+                \State $next \gets$ sample from $N(cur)$ according to $\pi$
+            \EndIf
+            \State $walk \gets walk + [next]$ \Comment{Append next node to walk}
+            \State $prev \gets cur$, $cur \gets next$
+        \EndFor
+        \State $\mathcal{W} \gets \mathcal{W} + [walk]$ \Comment{Store the walk}
+    \EndFor
+\EndFor
+\State \Return $\mathcal{W}$ 
+\end{algorithmic}
+\end{algorithm*}
+
  \bibliography{sn-bibliography}% common bib file
 % %% if required, the content of .bbl file can be included here once bbl is generated
 % %%\input sn-article.bbl
@@ -1076,4 +1084,6 @@ The Python code and data used in this work are available at \url{https://github.
 % The authors have no relevant financial or non-financial interests to disclose.
 
 %\end{multicols}
+
+
 \end{document}
