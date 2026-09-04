@@ -1,149 +1,10 @@
-%Version 3.1 December 2024
-% See section 11 of the User Manual for version history
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%                                                                 %%
-%% Please do not use \input{...} to include other tex files.       %%
-%% Submit your LaTeX manuscript as one .tex document.              %%
-%%                                                                 %%
-%% All additional figures and files should be attached             %%
-%% separately and not embedded in the \TeX\ document itself.       %%
-%%                                                                 %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%\documentclass[referee,sn-basic]{sn-jnl}% referee option is meant for double line spacing
-
-%%=======================================================%%
-%% to print line numbers in the margin use lineno option %%
-%%=======================================================%%
-
-%%\documentclass[lineno,pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
-
-%%=========================================================================================%%
-%% the documentclass is set to pdflatex as default. You can delete it if not appropriate.  %%
-%%=========================================================================================%%
-
-%%\documentclass[sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
-
-%%Note: the following reference styles support Namedate and Numbered referencing. By default the style follows the most common style. To switch between the options you can add or remove �Numbered� in the optional parenthesis. 
-%%The option is available for: sn-basic.bst, sn-chicago.bst%  
- 
-%%\documentclass[pdflatex,sn-nature]{sn-jnl}% Style for submissions to Nature Portfolio journals
-%%\documentclass[pdflatex,sn-basic]{sn-jnl}% Basic Springer Nature Reference Style/Chemistry Reference Style
-\documentclass[pdflatex,sn-mathphys-num,iicol]{sn-jnl}% Math and Physical Sciences Numbered Reference Style
-%%\documentclass[pdflatex,sn-mathphys-ay]{sn-jnl}% Math and Physical Sciences Author Year Reference Style
-%%\documentclass[pdflatex,sn-aps]{sn-jnl}% American Physical Society (APS) Reference Style
-%%\documentclass[pdflatex,sn-vancouver-num]{sn-jnl}% Vancouver Numbered Reference Style
-%%\documentclass[pdflatex,sn-vancouver-ay]{sn-jnl}% Vancouver Author Year Reference Style
-%%\documentclass[pdflatex,sn-apa]{sn-jnl}% APA Reference Style
-%%\documentclass[pdflatex,sn-chicago]{sn-jnl}% Chicago-based Humanities Reference Style
-
-%%%% Standard Packages
-%%<additional latex packages if required can be included here>
-
-\usepackage{graphicx}%
-\usepackage{multirow}%
-\usepackage{amsmath,amssymb,amsfonts}%
-\usepackage{amsthm}%
-\usepackage{mathrsfs}%
-\usepackage[title]{appendix}%
-\usepackage{xcolor}%
-\usepackage{textcomp}%
-\usepackage{manyfoot}%
-\usepackage{booktabs}%
-\usepackage{algorithm}%
-\usepackage{algorithmicx}%
-\usepackage{algpseudocode}%
-\usepackage{listings}%
-\usepackage{subcaption}%
-%\usepackage{multicol}
-%\usepackage[margin=1.5cm]{geometry}
-% Paper width: 21cm (A4)
-% Desired left margin: 1.5cm
-% Desired right margin: 1.5cm
-% Therefore, textwidth = 21 - 1.5 - 1.5 = 18cm
-
-%\setlength{\textwidth}{18cm}
-%
-%% For ODD pages (left margin = 1.5cm):
-%% Left margin = 1in + \oddsidemargin => 2.54cm + \oddsidemargin = 1.5cm
-%% => \oddsidemargin = 1.5 - 2.54 = -1.04cm
-%\setlength{\oddsidemargin}{-1.04cm}
-%
-%% For EVEN pages (if twoside is active, right margin becomes the left margin on even pages):
-%\setlength{\evensidemargin}{-1.04cm} % If you want 1.5cm margins on both sides for both pages.
-%
-%% Remove extra horizontal offset
-%\setlength{\hoffset}{0pt}
-% \headheight、\headsep、\footskip
-%%%%
-
-%%%%%=============================================================================%%%%
-%%%%  Remarks: This template is provided to aid authors with the preparation
-%%%%  of original research articles intended for submission to journals published 
-%%%%  by Springer Nature. The guidance has been prepared in partnership with 
-%%%%  production teams to conform to Springer Nature technical requirements. 
-%%%%  Editorial and presentation requirements differ among journal portfolios and 
-%%%%  research disciplines. You may find sections in this template are irrelevant 
-%%%%  to your work and are empowered to omit any such section if allowed by the 
-%%%%  journal you intend to submit to. The submission guidelines and policies 
-%%%%  of the journal take precedence. A detailed User Manual is available in the 
-%%%%  template package for technical guidance.
-%%%%%=============================================================================%%%%
-
-%% as per the requirement new theorem styles can be included as shown below
-\theoremstyle{thmstyleone}%
-\newtheorem{theorem}{Theorem}%  meant for continuous numbers
-%%\newtheorem{theorem}{Theorem}[section]% meant for sectionwise numbers
-%% optional argument [theorem] produces theorem numbering sequence instead of independent numbers for Proposition
-\newtheorem{proposition}[theorem]{Proposition}% 
-%%\newtheorem{proposition}{Proposition}% to get separate numbers for theorem and proposition etc.
-
-\theoremstyle{thmstyletwo}%
-\newtheorem{example}{Example}%
-\newtheorem{remark}{Remark}%
-
-\theoremstyle{thmstylethree}%
-\newtheorem{definition}{Definition}%
-
-\raggedbottom
-%%\unnumbered% uncomment this for unnumbered level heads
 
 \begin{document}
 
 \title{Revisiting Student Sectioning via Node2Vec: A Graph Representation Learning Framework}
 
-%%=============================================================%%
-%% GivenName	-> \fnm{Joergen W.}
-%% Particle	-> \spfx{van der} -> surname prefix
-%% FamilyName	-> \sur{Ploeg}
-%% Suffix	-> \sfx{IV}
-%% \author*[1,2]{\fnm{Joergen W.} \spfx{van der} \sur{Ploeg} 
-%%  \sfx{IV}}\email{iauthor@gmail.com}
-%%=============================================================%%
 
-\author*[1,2]{\fnm{Mahmood} \sur{Amintoosi}}\email{m.amintoosi@um.ac.ir}
-
-\affil[1]{\orgdiv{Computer Science Division, Department of Applied Mathematics, Faculty of Mathematical Sciences}, \orgname{Ferdowsi University of Mashhad}, \orgaddress{
-%\street{Street}, 
-\city{P. O. Box 1159, Mashhad 91775}, %\postcode{100190}, \state{State}, 
-\country{Iran}}}
-
-\affil[2]{\orgdiv{Graph Theory and its Applications Lab.}, \orgname{Faculty of Mathematical Sciences, Ferdowsi University of Mashhad},  \orgaddress{
-%\street{Street}, 
-\city{Mashhad}, 
-%\postcode{10587}, \state{State},
- \country{Iran}}
- %\orcid
- {ORCID: 0000-0001-9640-6475}
- }
-
-
-
-
-%%==================================%%
-%% Sample for unstructured abstract %%
-%%==================================%%
 \abstract{Student sectioning is a fundamental subproblem of university course timetabling that aims to partition students into balanced sections while preserving scheduling flexibility and efficient resource utilization. Classical clustering-based approaches typically represent students using binary student--course enrollment matrices, which may not adequately capture the relational structure induced by shared course participation.
 
 This paper revisits student sectioning from the perspective of graph representation learning, a powerful technique in artificial intelligence for learning low-dimensional representations from relational data. We construct a weighted student co-enrollment graph after removing constant features, and employ Node2Vec to learn low-dimensional student embeddings from biased random-walk contexts. The learned representations are then provided to standard clustering algorithms for section formation. To distinguish graph-based representation learning from dimensionality reduction and direct graph clustering, we compare the proposed approach with the conventional enrollment representation, PCA followed by KMeans, and spectral clustering on the co-enrollment graph.
@@ -893,121 +754,12 @@ During the preparation of this work, the author used free AI-assisted tools and 
 
 \subsection*{Competing interests}
 The author has no relevant financial or non-financial interests to disclose.
-%
-%\subsection*{Funding}
-%No funding was received to assist with the preparation of this manuscript.
-%
-%\subsection*{Ethics approval}
-%Not applicable.
-%
-%\subsection*{Consent to participate}
-%Not applicable.
-%
-%\subsection*{Consent for publication}
-%Not applicable.
+
 
 \subsection*{Code and Data availability}
 The Python code and data used in this work are available at \url{https://github.com/mamintoosi/Node2Vec-SSP}.
 
-%\section*{Acknowledgment}
-%I would like to thank Mr. Hasan Fahimian and Mrs. Samira Shahraeeni for their contributions in inputting student and course information.
 
-
-
-%\begin{thebibliography}{18}
-%\providecommand{\url}[1]{\texttt{#1}}
-%
-%\bibitem{Alvarez-Valdes2000}
-%Alvarez-Valdes, R., Crespo, E., Tamarit, J.M. (2000).
-%\newblock Assigning students to course sections using tabu search.
-%\newblock \textit{Annals of Operations Research}, 96, 1--16.
-%
-%\bibitem{Amintoosi2005Feature}
-%Amintoosi, M., Haddadnia, J. (2005).
-%\newblock Feature selection in a fuzzy student sectioning algorithm.
-%\newblock In E.~Burke, M.~Trick (Eds.), \textit{Practice and Theory of Automated Timetabling V} (pp.~147--160). Springer Berlin Heidelberg.
-%
-%\bibitem{Amintoosi2004Fuzzy}
-%Amintoosi, M., Yazdi, H.S., Haddadnnia, J. (2004).
-%\newblock Fuzzy student sectioning.
-%\newblock In \textit{PATAT04: Practice and Theory of Automated Timetabling} (pp.~421--424).
-%
-%\bibitem{Amintoosi2007FishSchool}
-%Amintoosi, M., Fathy, M., Mozayani, N., Rahmani, A. (2007).
-%\newblock A fish school clustering algorithm: Applied to student sectioning problem.
-%\newblock In \textit{Proceedings of 2007 International Conference on Life System Modelling and Simulation (LSMS)}, Published as a Supplementary Volume to Dynamics of Continuous Discrete and Impulse Systems, Series B: Applications and Algorithms.
-%
-%\bibitem{aubin1989large}
-%Aubin, J., Ferland, J.A. (1989).
-%\newblock A large scale timetabling problem.
-%\newblock \textit{Computers \& Operations Research}, 16, 67--77.
-%
-%\bibitem{Carter2001Comprehensive}
-%Carter, M.W. (2001).
-%\newblock A comprehensive course timetabling and student scheduling system at the University of Waterloo.
-%\newblock In E.~Burke, W.~Erben (Eds.), \textit{Practice and Theory of Automated Timetabling III} (pp.~64--82). Springer Berlin Heidelberg.
-%
-%\bibitem{feldman1990optimization}
-%Feldman, R., Golumbic, M.C. (1990).
-%\newblock Optimization algorithms for student scheduling via constraint satisfaction.
-%\newblock \textit{The Computer Journal}, 33, 356--364.
-%
-%\bibitem{hertz1998constructing}
-%Hertz, A., Robert, V. (1998).
-%\newblock Constructing a course schedule by solving a series of assignment type problems.
-%\newblock \textit{European Journal of Operational Research}, 108, 585--603.
-%
-%\bibitem{KAZEMI2020101794}
-%Kazemi, B., Abhari, A. (2020).
-%\newblock Content-based node2vec for representation of papers in the scientific literature.
-%\newblock \textit{Data \& Knowledge Engineering}, 127, 101794.
-%
-%\bibitem{mikolov2013efficient}
-%Mikolov, T., Chen, K., Corrado, G., Dean, J. (2013).
-%\newblock Efficient estimation of word representations in vector space.
-%\newblock In \textit{1st International Conference on Learning Representations (ICLR 2013)}, Workshop Track Proceedings.
-%
-%\bibitem{Muller2010}
-%M\"{u}ller, T., Murray, K. (2010).
-%\newblock Comprehensive approach to student sectioning.
-%\newblock \textit{Annals of Operations Research}, 181, 249--269.
-%
-%\bibitem{perozzi2014deepwalk}
-%Perozzi, B., Al-Rfou, R., Skiena, S. (2014).
-%\newblock DeepWalk: Online learning of social representations.
-%\newblock In \textit{Proceedings of the 20th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining} (pp.~701--710).
-%
-%\bibitem{Qi2024Weighted}
-%Qi, X. (2024).
-%\newblock Weighted jump in random walk graph sampling.
-%\newblock \textit{Neurocomputing}, 586, 127581.
-%
-%\bibitem{XU2022102024}
-%Xu, X., Hong, Q., Wang, Y., Jin, J., Xuan, X., Fu, T. (2022).
-%\newblock A random walk sampling on knowledge graphs for semantic-oriented statistical tasks.
-%\newblock \textit{Data \& Knowledge Engineering}, 140, 102024.
-%
-%\bibitem{zaki2020data}
-%Zaki, M., Meira, W., Meira, W. (2020).
-%\newblock \textit{Data Mining and Machine Learning: Fundamental Concepts and Algorithms}.
-%\newblock Cambridge University Press.
-%
-%
-%\end{thebibliography}
-
-%%======================================================================
-%% References
-%%======================================================================
-
-%\bibitem{Du2026}
-%Du, W., Ji, S., Lv, J., Zhang, Y., Lu, J. (2026).
-%\newblock Structure-aware walking: contrastive learning method for graph clustering.
-%\newblock \textit{International Journal of Machine Learning and Cybernetics}, 17, 311.
-%
-%\bibitem{Zhang2023}
-%Zhang, M., Xu, B., Wang, L. (2023).
-%\newblock Dynamic network link prediction based on random walking and time aggregation.
-%\newblock \textit{International Journal of Machine Learning and Cybernetics}, 14, 2867--2875.
 
 
 \appendix
@@ -1052,18 +804,7 @@ Algorithm~\ref{alg:random_walk} details the generation of biased random walks us
 \end{algorithm*}
 
  \bibliography{sn-bibliography}% common bib file
-% %% if required, the content of .bbl file can be included here once bbl is generated
-% %%\input sn-article.bbl
 
-% \section*{Statements \& Declarations}
-
-% \subsection*{Funding}
-% The authors declare that no funds, grants, or other support were received during the preparation of this manuscript.
-
-% \subsection*{Competing Interests}
-% The authors have no relevant financial or non-financial interests to disclose.
-
-%\end{multicols}
 
 
 \end{document}
