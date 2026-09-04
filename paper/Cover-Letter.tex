@@ -51,11 +51,11 @@ IRAN,\\
 
 Dear Editor,
 
-I am submitting our manuscript, ``Revisiting Student Sectioning via Node2Vec: A Graph Representation Learning Framework'' for consideration for publication in the \textit{Progress in Artificial Intelligence}.
+I am submitting our manuscript, ``Graph Representation Learning for Student Sectioning: A Node2Vec-Based Approach'' for consideration for publication in the \textit{Progress in Artificial Intelligence}.
 
 Student sectioning is a classical problem in university course timetabling. We investigate whether the relational structure implicit in student--course enrollments can provide a more informative representation for student grouping. We construct a weighted student co-enrollment graph and apply Node2Vec to learn low-dimensional student representations. The learned representations are then supplied to standard clustering algorithms without modifying the clustering stage.
 
-A central aspect of the study is a controlled comparison with both conventional representation and alternative graph/dimensionality-reduction approaches. On six real-world university courses involving 341 students, Node2Vec achieves an average Silhouette Score of 0.629 with the neutral configuration ($p{=}1$, $q{=}1$), compared with 0.466 for PCA+KMeans, 0.157 for the conventional enrollment representation, and 0.128 for spectral clustering. These results indicate that graph representation learning provides an improvement beyond the benefit of dimensionality reduction alone.
+A central aspect of the study is a controlled comparison with both conventional representation and alternative graph/dimensionality-reduction approaches. On six real-world university courses comprising 341 student-course enrollments from an underlying dataset of 210 students, Node2Vec achieves an average Silhouette Score of 0.629 with the neutral configuration ($p{=}1$, $q{=}1$), compared with 0.466 for PCA+KMeans, 0.157 for the conventional enrollment representation, and 0.128 for spectral clustering. These results indicate that graph representation learning provides an improvement beyond the benefit of dimensionality reduction alone.
 
 The manuscript further evaluates multiple clustering algorithms, Node2Vec parameters, clustering stability, practical significance through effect sizes and consistency, additional clustering metrics, visualization, and computational cost. The proposed pipeline remains computationally lightweight for the datasets considered.
 
