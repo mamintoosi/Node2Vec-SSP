@@ -590,29 +590,30 @@ Courses 1 and 3 contain a small number of isolated students (two and one, respec
 
 \subsection{Section Balance Analysis}
 
-To characterize the practical suitability of the resulting sections, we compute the section balance metric $B = \min(|S_1|,|S_2|) / \max(|S_1|,|S_2|)$ for the two sections produced by Node2Vec ($p{=}1$, $q{=}1$) with KMeans clustering. Table~\ref{tab:section_balance} reports the section sizes and balance values for each course.
+To characterize the practical suitability of the resulting sections, we compute the section balance metric $B = \min(|S_1|,|S_2|) / \max(|S_1|,|S_2|)$ for the two sections produced by each method with KMeans clustering (or spectral clustering for the Spectral baseline). Table~\ref{tab:section_balance} compares the section balance across all five methods.
 
-\begin{table}[t]
+\begin{table*}[t]
 \centering
-\caption{Section balance analysis for Node2Vec ($p{=}1$, $q{=}1$) with KMeans clustering. $B = \min(|S_1|,|S_2|) / \max(|S_1|,|S_2|)$ measures how balanced the resulting sections are ($B{=}1$ means perfectly balanced).}
+\caption{Section balance analysis ($B = \min(|S_1|,|S_2|) / \max(|S_1|,|S_2|)$) across five methods for student sectioning with $k{=}2$ sections at $d{=}2$. $B{=}1$ indicates perfectly balanced sections. Bold values indicate the highest balance per course.}
 \label{tab:section_balance}
-\begin{tabular}{lcccr}
+\begin{tabular}{lccccc}
 \toprule
-\textbf{Course} & $|S_1|$ & $|S_2|$ & \textbf{Balance} ($B$) & \textbf{Silhouette} \\
+\textbf{Course} & \textbf{BoW + KMeans} & \textbf{PCA + KMeans} & \textbf{Spectral} & \multicolumn{2}{c}{\textbf{Node2Vec ($d{=}2$)}} \\
+\cmidrule(lr){5-6}
+ & & & & $p{=}1$, $q{=}1$ & $p{=}0.5$, $q{=}0.5$ \\
 \midrule
-1 & 49 & 25 & 0.510 & 0.599 \\
-2 & 30 & 21 & 0.700 & 0.614 \\
-3 & 31 & 17 & 0.548 & 0.605 \\
-4 & 19 & 30 & 0.633 & 0.628 \\
-5 & 41 & 11 & 0.268 & 0.745 \\
-6 & 44 & 23 & 0.523 & 0.583 \\
-\midrule
-\textbf{Avg.} & -- & -- & 0.530 & 0.629 \\
+1 & 0.423 & 0.480 & 0.542 & 0.542 & \textbf{0.609} \\
+2 & 0.275 & 0.275 & 0.378 & \textbf{0.645} & 0.594 \\
+3 & 0.548 & 0.548 & 0.655 & 0.600 & \textbf{0.714} \\
+4 & 0.581 & 0.581 & 0.581 & 0.633 & \textbf{0.815} \\
+5 & \textbf{0.405} & 0.368 & 0.182 & 0.333 & 0.368 \\
+6 & 0.558 & 0.558 & 0.489 & 0.595 & \textbf{0.811} \\
+\textbf{Avg.} & 0.465 & 0.468 & 0.471 & 0.558 & \textbf{0.652} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
-The section balance values range from $0.268$ to $0.700$ (average $0.530$). Course~2 achieves the most balanced split ($30$ vs. $21$ students, $B{=}0.700$), while Course~5 shows the most imbalanced sections ($41$ vs. $11$ students, $B{=}0.268$). These results indicate that while the Node2Vec representation produces high-quality clusters in terms of Silhouette Score, the resulting sections are not necessarily balanced in terms of size. In practice, a balancing constraint would need to be incorporated into the clustering stage to ensure balanced section sizes.
+Node2Vec ($p{=}0.5$, $q{=}0.5$) achieves the highest average balance ($B{=}0.652$), outperforming Node2Vec ($p{=}1$, $q{=}1$) ($0.558$), spectral clustering ($0.471$), PCA+KMeans ($0.468$), and BoW+KMeans ($0.465$). The best-performing configuration also achieves the most balanced sections on four of six courses (Courses~1, 3, 4, and 6), with balance values ranging from $0.609$ to $0.815$. Course~5 presents the most challenging sectioning scenario for all methods, with balance values below $0.41$. Notably, the graph-based methods (both Node2Vec configurations) generally produce more balanced sections than the conventional baselines, suggesting that the learned representations capture structural patterns that lead to more equitable student groupings. In practice, a balancing constraint would need to be incorporated into the clustering stage to ensure balanced section sizes across all courses.
 
 \subsection{Node2Vec Parameter Sensitivity}
 \label{sec:sensitivity_n2v}

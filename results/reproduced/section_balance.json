@@ -1,0 +1,302 @@
+[
+  {
+    "course": 1,
+    "method": "bow",
+    "method_name": "BoW + KMeans",
+    "s1": 52,
+    "s2": 22,
+    "balance": 0.4231,
+    "silhouette": 0.0898,
+    "n_students": 74
+  },
+  {
+    "course": 1,
+    "method": "pca",
+    "method_name": "PCA + KMeans",
+    "s1": 50,
+    "s2": 24,
+    "balance": 0.48,
+    "silhouette": 0.376,
+    "n_students": 74
+  },
+  {
+    "course": 1,
+    "method": "spec",
+    "method_name": "Spectral",
+    "s1": 48,
+    "s2": 26,
+    "balance": 0.5417,
+    "silhouette": 0.0833,
+    "n_students": 74
+  },
+  {
+    "course": 1,
+    "method": "n11",
+    "method_name": "Node2Vec (1,1)",
+    "s1": 48,
+    "s2": 26,
+    "balance": 0.5417,
+    "silhouette": 0.5993,
+    "n_students": 74
+  },
+  {
+    "course": 1,
+    "method": "n105",
+    "method_name": "Node2Vec (1,0.5)",
+    "s1": 46,
+    "s2": 28,
+    "balance": 0.6087,
+    "silhouette": 0.5937,
+    "n_students": 74
+  },
+  {
+    "course": 2,
+    "method": "bow",
+    "method_name": "BoW + KMeans",
+    "s1": 40,
+    "s2": 11,
+    "balance": 0.275,
+    "silhouette": 0.2313,
+    "n_students": 51
+  },
+  {
+    "course": 2,
+    "method": "pca",
+    "method_name": "PCA + KMeans",
+    "s1": 40,
+    "s2": 11,
+    "balance": 0.275,
+    "silhouette": 0.6032,
+    "n_students": 51
+  },
+  {
+    "course": 2,
+    "method": "spec",
+    "method_name": "Spectral",
+    "s1": 37,
+    "s2": 14,
+    "balance": 0.3784,
+    "silhouette": 0.2052,
+    "n_students": 51
+  },
+  {
+    "course": 2,
+    "method": "n11",
+    "method_name": "Node2Vec (1,1)",
+    "s1": 31,
+    "s2": 20,
+    "balance": 0.6452,
+    "silhouette": 0.6142,
+    "n_students": 51
+  },
+  {
+    "course": 2,
+    "method": "n105",
+    "method_name": "Node2Vec (1,0.5)",
+    "s1": 32,
+    "s2": 19,
+    "balance": 0.5938,
+    "silhouette": 0.608,
+    "n_students": 51
+  },
+  {
+    "course": 3,
+    "method": "bow",
+    "method_name": "BoW + KMeans",
+    "s1": 31,
+    "s2": 17,
+    "balance": 0.5484,
+    "silhouette": 0.1542,
+    "n_students": 48
+  },
+  {
+    "course": 3,
+    "method": "pca",
+    "method_name": "PCA + KMeans",
+    "s1": 31,
+    "s2": 17,
+    "balance": 0.5484,
+    "silhouette": 0.4253,
+    "n_students": 48
+  },
+  {
+    "course": 3,
+    "method": "spec",
+    "method_name": "Spectral",
+    "s1": 29,
+    "s2": 19,
+    "balance": 0.6552,
+    "silhouette": 0.1347,
+    "n_students": 48
+  },
+  {
+    "course": 3,
+    "method": "n11",
+    "method_name": "Node2Vec (1,1)",
+    "s1": 30,
+    "s2": 18,
+    "balance": 0.6,
+    "silhouette": 0.6045,
+    "n_students": 48
+  },
+  {
+    "course": 3,
+    "method": "n105",
+    "method_name": "Node2Vec (1,0.5)",
+    "s1": 28,
+    "s2": 20,
+    "balance": 0.7143,
+    "silhouette": 0.5686,
+    "n_students": 48
+  },
+  {
+    "course": 4,
+    "method": "bow",
+    "method_name": "BoW + KMeans",
+    "s1": 31,
+    "s2": 18,
+    "balance": 0.5806,
+    "silhouette": 0.128,
+    "n_students": 49
+  },
+  {
+    "course": 4,
+    "method": "pca",
+    "method_name": "PCA + KMeans",
+    "s1": 31,
+    "s2": 18,
+    "balance": 0.5806,
+    "silhouette": 0.4278,
+    "n_students": 49
+  },
+  {
+    "course": 4,
+    "method": "spec",
+    "method_name": "Spectral",
+    "s1": 31,
+    "s2": 18,
+    "balance": 0.5806,
+    "silhouette": 0.128,
+    "n_students": 49
+  },
+  {
+    "course": 4,
+    "method": "n11",
+    "method_name": "Node2Vec (1,1)",
+    "s1": 30,
+    "s2": 19,
+    "balance": 0.6333,
+    "silhouette": 0.6283,
+    "n_students": 49
+  },
+  {
+    "course": 4,
+    "method": "n105",
+    "method_name": "Node2Vec (1,0.5)",
+    "s1": 27,
+    "s2": 22,
+    "balance": 0.8148,
+    "silhouette": 0.5968,
+    "n_students": 49
+  },
+  {
+    "course": 5,
+    "method": "bow",
+    "method_name": "BoW + KMeans",
+    "s1": 37,
+    "s2": 15,
+    "balance": 0.4054,
+    "silhouette": 0.1372,
+    "n_students": 52
+  },
+  {
+    "course": 5,
+    "method": "pca",
+    "method_name": "PCA + KMeans",
+    "s1": 38,
+    "s2": 14,
+    "balance": 0.3684,
+    "silhouette": 0.4374,
+    "n_students": 52
+  },
+  {
+    "course": 5,
+    "method": "spec",
+    "method_name": "Spectral",
+    "s1": 44,
+    "s2": 8,
+    "balance": 0.1818,
+    "silhouette": 0.0737,
+    "n_students": 52
+  },
+  {
+    "course": 5,
+    "method": "n11",
+    "method_name": "Node2Vec (1,1)",
+    "s1": 39,
+    "s2": 13,
+    "balance": 0.3333,
+    "silhouette": 0.745,
+    "n_students": 52
+  },
+  {
+    "course": 5,
+    "method": "n105",
+    "method_name": "Node2Vec (1,0.5)",
+    "s1": 38,
+    "s2": 14,
+    "balance": 0.3684,
+    "silhouette": 0.7464,
+    "n_students": 52
+  },
+  {
+    "course": 6,
+    "method": "bow",
+    "method_name": "BoW + KMeans",
+    "s1": 43,
+    "s2": 24,
+    "balance": 0.5581,
+    "silhouette": 0.2025,
+    "n_students": 67
+  },
+  {
+    "course": 6,
+    "method": "pca",
+    "method_name": "PCA + KMeans",
+    "s1": 43,
+    "s2": 24,
+    "balance": 0.5581,
+    "silhouette": 0.5238,
+    "n_students": 67
+  },
+  {
+    "course": 6,
+    "method": "spec",
+    "method_name": "Spectral",
+    "s1": 45,
+    "s2": 22,
+    "balance": 0.4889,
+    "silhouette": 0.1425,
+    "n_students": 67
+  },
+  {
+    "course": 6,
+    "method": "n11",
+    "method_name": "Node2Vec (1,1)",
+    "s1": 42,
+    "s2": 25,
+    "balance": 0.5952,
+    "silhouette": 0.5828,
+    "n_students": 67
+  },
+  {
+    "course": 6,
+    "method": "n105",
+    "method_name": "Node2Vec (1,0.5)",
+    "s1": 37,
+    "s2": 30,
+    "balance": 0.8108,
+    "silhouette": 0.6021,
+    "n_students": 67
+  }
+]
