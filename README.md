@@ -6,7 +6,37 @@ A Python framework for solving the student sectioning problem in course timetabl
 **Target Journal:** Progress in Artificial Intelligence (Springer)
 **Repository:** <https://github.com/mamintoosi/Node2Vec-SSP>
 
-## Key Results (Reproduced with seed=42)
+## Reproducing the Results
+
+All results in this repository were reproduced from the saved artifacts under `results/`. The key scripts are in `scripts/`.
+
+### Section balance for Table 3
+
+Table 3 (tab:section_balance) in the manuscript reports section balance for the primary Node2Vec configuration (d=1, p=2.0, q=1.0) and the neutral configuration (d=2, p=1.0, q=1.0). These values were computed directly from the saved cluster label artifacts:
+
+- Primary d=1: `results/grid_search/labels_p2.0_q1.0_d1_course{1..6}.json`
+- Neutral d=2: `results/grid_search/labels_p1.0_q1.0_d2_course{1..6}.json`
+
+The script `scripts/fill_section_balance_table.py` recomputes these values exactly as used in the manuscript:
+
+```bash
+python scripts/fill_section_balance_table.py
+```
+
+It reads each course label file, computes the balance B = min(|S1|,|S2|)/max(|S1|,|S2|) from the saved cluster labels, and prints both per-course values and averages. The manuscript values are the rounded outputs of this script.
+
+### General result artifacts
+
+- `results/reproduced/`: central reproduced results, including `all_methods.json`, `section_balance.json`, `grid_search_pqd.json`, and others.
+- `results/grid_search/`: grid search results and saved labels/embeddings for each $(p,q,d)$ configuration.
+- `results/final_d1/` and `results/final_d2/`: final experiment artifacts for the $d=1$ and $d=2$ main experiments, including `all_methods.json`, cluster label files, and saved embeddings.
+
+### Reproducibility notes
+
+- All runs use a fixed random seed (seed=42) unless otherwise noted.
+- The primary Node2Vec configuration is the grid-search-selected best configuration: `p=2.0, q=1.0, d=1`.
+- For matched-dimensionality comparison with PCA and for 2D visualization, results are also reported for the neutral configuration: `p=1.0, q=1.0, d=2`.
+- Section balance values are computed from saved cluster label artifacts.aved KMeans cluster labels with $k{=}2$ sections.
 
 | Method | Silhouette ↑ | DBI ↓ | CHI ↑ |
 |--------|-------------|-------|-------|
