@@ -2,7 +2,7 @@
 # run_section_balance.sh - Section balance analysis for all 5 methods
 # Re-runs clustering with seed=42 to capture section sizes (~1-2 min)
 
-cd /data/git/mamintoosi/Deepwalk-SSP || exit 1
+cd /data/git/mamintoosi/Node2Vec-SSP || exit 1
 
 CPU_CORES="0,1"
 COOLDOWN_TIME=10
