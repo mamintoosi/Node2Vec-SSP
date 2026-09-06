@@ -1,0 +1,152 @@
+[
+  {
+    "course": 1,
+    "method": "BoW+KMeans",
+    "time_seconds": 0.046038771004532464
+  },
+  {
+    "course": 1,
+    "method": "PCA+KMeans",
+    "time_seconds": 0.011706158999004401
+  },
+  {
+    "course": 1,
+    "method": "Spectral",
+    "time_seconds": 0.010210886001004837
+  },
+  {
+    "course": 1,
+    "method": "Node2Vec(p=1.0,q=1.0)",
+    "time_seconds": 7.599213847002829
+  },
+  {
+    "course": 1,
+    "method": "Node2Vec(p=1.0,q=0.5)",
+    "time_seconds": 7.558797056000913
+  },
+  {
+    "course": 2,
+    "method": "BoW+KMeans",
+    "time_seconds": 0.008783112003584392
+  },
+  {
+    "course": 2,
+    "method": "PCA+KMeans",
+    "time_seconds": 0.008533002997864969
+  },
+  {
+    "course": 2,
+    "method": "Spectral",
+    "time_seconds": 0.008296811996842735
+  },
+  {
+    "course": 2,
+    "method": "Node2Vec(p=1.0,q=1.0)",
+    "time_seconds": 4.960069130000193
+  },
+  {
+    "course": 2,
+    "method": "Node2Vec(p=1.0,q=0.5)",
+    "time_seconds": 4.889929651006241
+  },
+  {
+    "course": 3,
+    "method": "BoW+KMeans",
+    "time_seconds": 0.007832150993635878
+  },
+  {
+    "course": 3,
+    "method": "PCA+KMeans",
+    "time_seconds": 0.007716103005805053
+  },
+  {
+    "course": 3,
+    "method": "Spectral",
+    "time_seconds": 0.008031388992094435
+  },
+  {
+    "course": 3,
+    "method": "Node2Vec(p=1.0,q=1.0)",
+    "time_seconds": 4.483298363993526
+  },
+  {
+    "course": 3,
+    "method": "Node2Vec(p=1.0,q=0.5)",
+    "time_seconds": 4.488962489005644
+  },
+  {
+    "course": 4,
+    "method": "BoW+KMeans",
+    "time_seconds": 0.007677134999539703
+  },
+  {
+    "course": 4,
+    "method": "PCA+KMeans",
+    "time_seconds": 0.007859270001063123
+  },
+  {
+    "course": 4,
+    "method": "Spectral",
+    "time_seconds": 0.008044625006732531
+  },
+  {
+    "course": 4,
+    "method": "Node2Vec(p=1.0,q=1.0)",
+    "time_seconds": 4.7698244560015155
+  },
+  {
+    "course": 4,
+    "method": "Node2Vec(p=1.0,q=0.5)",
+    "time_seconds": 4.7678044339991175
+  },
+  {
+    "course": 5,
+    "method": "BoW+KMeans",
+    "time_seconds": 0.007948116006446071
+  },
+  {
+    "course": 5,
+    "method": "PCA+KMeans",
+    "time_seconds": 0.007835611992049962
+  },
+  {
+    "course": 5,
+    "method": "Spectral",
+    "time_seconds": 0.00823957400280051
+  },
+  {
+    "course": 5,
+    "method": "Node2Vec(p=1.0,q=1.0)",
+    "time_seconds": 5.041223389998777
+  },
+  {
+    "course": 5,
+    "method": "Node2Vec(p=1.0,q=0.5)",
+    "time_seconds": 4.998562523003784
+  },
+  {
+    "course": 6,
+    "method": "BoW+KMeans",
+    "time_seconds": 0.00776624699938111
+  },
+  {
+    "course": 6,
+    "method": "PCA+KMeans",
+    "time_seconds": 0.007928472012281418
+  },
+  {
+    "course": 6,
+    "method": "Spectral",
+    "time_seconds": 0.008114123993436806
+  },
+  {
+    "course": 6,
+    "method": "Node2Vec(p=1.0,q=1.0)",
+    "time_seconds": 6.853679969004588
+  },
+  {
+    "course": 6,
+    "method": "Node2Vec(p=1.0,q=0.5)",
+    "time_seconds": 6.700566161001916
+  }
+]

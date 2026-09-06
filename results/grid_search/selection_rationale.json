@@ -1,0 +1,23 @@
+{
+  "selected_configuration": {
+    "p": 2.0,
+    "q": 1.0,
+    "d": 1,
+    "avg_silhouette": 0.7653811772664388
+  },
+  "selection_criterion": "Maximum average Silhouette Score across all 6 courses",
+  "rationale": "The Silhouette Score is the primary evaluation metric as it balances intra-cluster cohesion and inter-cluster separation. The selected configuration achieves the highest average Silhouette Score across all six course sectioning instances.",
+  "alternative_considerations": {
+    "d1_best": {
+      "p": 2.0,
+      "q": 1.0,
+      "avg_silhouette": 0.7653811772664388
+    },
+    "d2_best": {
+      "p": 0.5,
+      "q": 0.5,
+      "avg_silhouette": 0.6321330765883127
+    },
+    "note": "If d=1 is preferred for visualization/simple reasons, the best d=1 configuration (p=2.0, q=1.0) achieves avg Silhouette = 0.7654"
+  }
+}

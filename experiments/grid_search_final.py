@@ -5,7 +5,7 @@ Runs all 3×3×5 = 45 configurations across 6 courses with seed=42.
 Saves complete results including cluster labels and embeddings.
 
 Usage:
-    cd /path/to/Deepwalk-SSP
+    cd /path/to/Node2Vec-SSP
     python experiments/grid_search_final.py 2>&1 | tee results/grid_search/grid_search.log
 """
 
@@ -310,8 +310,8 @@ selection_info = {
     "selection_criterion": "Maximum average Silhouette Score across all 6 courses",
     "rationale": "The Silhouette Score is the primary evaluation metric as it balances "
                  "intra-cluster cohesion and inter-cluster separation. The selected "
-                  "configuration achieves the highest average Silhouette Score across "
-                  "all six course sectioning instances.",
+                 "configuration achieves the highest average Silhouette Score across "
+                 "all six course sectioning instances.",
     "alternative_considerations": {
         "d1_best": {
             "p": float(best_d1["p"]),
@@ -413,20 +413,13 @@ fig.suptitle("Node2Vec (p, q, d) Grid Search — Average Silhouette Score\n"
 fig.tight_layout()
 
 for ext in ("pdf", "png"):
-    fig.savefig(os.path.join(FIG, "grid_heatmap_all_d_independent.{ext}"),  # Will be fixed below
+    # اصلاح: استفاده از f-string برای جایگذاری ext
+    fig.savefig(os.path.join(FIG, f"grid_heatmap_all_d_independent.{ext}"),
                 dpi=300, bbox_inches="tight")
 plt.close(fig)
 print(f"  [fig grid_heatmap_all_d_independent]")
 
-# Fix the filename (the f-string above had a bug)
-for ext in ("pdf", "png"):
-    old_path = os.path.join(FIG, f"grid_heatmap_all_d_independent.{{ext}}")
-    new_path = os.path.join(FIG, f"grid_heatmap_all_d_independent.{ext}")
-    if os.path.exists(old_path.format(ext=ext)):
-        os.rename(old_path.format(ext=ext), new_path)
-
 # ── Also create combined heatmap with common scale for comparison ──
-# This addresses Part 10: preserve the option to compare absolute scores
 plt.rcParams.update(PS)
 global_min = df["silhouette"].min()
 global_max = df["silhouette"].max()
@@ -487,7 +480,8 @@ ax.yaxis.grid(True, alpha=0.3)
 ax.set_axisbelow(True)
 fig.tight_layout()
 for ext in ("pdf", "png"):
-    fig.savefig(os.path.join(FIG, "sil_vs_dim.{ext}"),
+    # اصلاح: استفاده از f-string
+    fig.savefig(os.path.join(FIG, f"sil_vs_dim.{ext}"),
                 dpi=300, bbox_inches="tight")
 plt.close(fig)
 print(f"  [fig sil_vs_dim]")

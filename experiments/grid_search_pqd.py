@@ -10,7 +10,7 @@ Usage:
     cd /data/git/mamintoosi/Deepwalk-SSP
     /data/python-envs/pytorch/bin/python experiments/grid_search_pqd.py 2>&1 | tee results/reproduced/grid_search.log
 """
-import os, sys, time, json, warnings
+import os, sys, time, json, warnings, argparse
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -33,7 +33,12 @@ from gensim.models import Word2Vec
 import networkx as nx
 
 COURSES = [1, 2, 3, 4, 5, 6]
-SEED = 42
+
+# ── Parse seed from CLI ──
+_parser = argparse.ArgumentParser(add_help=False)
+_parser.add_argument("--seed", type=int, default=42)
+_args, _ = _parser.parse_known_args()
+SEED = _args.seed
 
 # ── Grid ──
 P_VALUES = [0.5, 1.0, 2.0]
@@ -130,7 +135,7 @@ def silhouette(data, labels):
 # Load & preprocess data
 # ══════════════════════════════════════════════════════════════════════
 print("=" * 70)
-print("  COMPREHENSIVE (p, q, d) GRID SEARCH — seed=42")
+print(f"  COMPREHENSIVE (p, q, d) GRID SEARCH — seed={SEED}")
 print(f"  Grid: {len(P_VALUES)}×{len(Q_VALUES)}×{len(D_VALUES)} = "
       f"{len(P_VALUES)*len(Q_VALUES)*len(D_VALUES)} configs × {len(COURSES)} courses")
 print("=" * 70)
@@ -234,6 +239,14 @@ print(f"  Average: {best['avg_silhouette']:.4f}")
 # ══════════════════════════════════════════════════════════════════════
 # Save results
 # ══════════════════════════════════════════════════════════════════════
+# Use seed-specific output directory
+OUT_SEED = os.path.join(ROOT, "results", f"reproduced_seed{SEED}")
+os.makedirs(OUT_SEED, exist_ok=True)
+os.makedirs(os.path.join(OUT_SEED, "figures"), exist_ok=True)
+# Override OUT and FIG for this run
+OUT = OUT_SEED
+FIG = os.path.join(OUT_SEED, "figures")
+
 output = {
     "grid": {
         "p_values": P_VALUES,

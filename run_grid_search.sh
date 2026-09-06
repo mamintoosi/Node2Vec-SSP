@@ -6,20 +6,58 @@
 # ============================================================
 set -e
 
-cd /data/git/mamintoosi/Deepwalk-SSP
+cd /data/git/mamintoosi/Deepwalk-SSP || exit 1
 
+CPU_CORES="0,1"
+COOLDOWN_TIME=10
+
+run_with_limits() {
+    local cmd="$1"
+    local log_file="$2"
+    
+    echo "========================================="
+    echo "Running: $cmd"
+    echo "Log: $log_file"
+    echo "Start time: $(date)"
+    echo "========================================="
+    
+    taskset -c $CPU_CORES $cmd 2>&1 | tee "$log_file"
+    
+    local exit_code=$?
+    if [ $exit_code -ne 0 ]; then
+        echo "ERROR: Command failed with exit code $exit_code"
+        exit $exit_code
+    fi
+    
+    echo "Finished at: $(date)"
+    if [ $COOLDOWN_TIME -gt 0 ]; then
+        echo "Cooling down for $COOLDOWN_TIME seconds..."
+        sleep $COOLDOWN_TIME
+    fi
+}
+
+# Create output directory
+mkdir -p results/reproduced/figures
+
+# ============================================================
+# Run grid search with seed=42
+# ============================================================
 echo "=============================================="
-echo "  Node2Vec (p, q, d) Grid Search"
-echo "  45 configs × 6 courses, seed=42"
+echo "  Node2Vec (p, q, d) Grid Search — seed=42"
+echo "  45 configs × 6 courses"
 echo "=============================================="
 echo ""
-echo "Start time: $(date)"
-echo ""
 
-/data/python-envs/pytorch/bin/python experiments/grid_search_pqd.py 2>&1 | tee results/reproduced/grid_search.log
+run_with_limits \
+    "/data/python-envs/pytorch/bin/python experiments/grid_search_pqd.py --seed 42" \
+    "results/reproduced/grid_search.log"
 
 echo ""
+echo "========================================="
+echo "GRID SEARCH (seed=42) COMPLETED!"
 echo "End time: $(date)"
-echo "Log saved to: results/reproduced/grid_search.log"
-echo "Results saved to: results/reproduced/grid_search_pqd.json"
-echo "Figures saved to: results/reproduced/figures/grid_heatmap_*.pdf"
+echo "========================================="
+echo ""
+echo "Results: results/reproduced/grid_search_pqd.json"
+echo "Figures: results/reproduced/figures/"
+echo "Log:     results/reproduced/grid_search.log"
