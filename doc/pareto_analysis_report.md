@@ -27,6 +27,7 @@ A configuration is *dominated* if another is ≥ in both objectives and > in at 
 | Baseline section balances | `results/reproduced/section_balance.json` |
 | 20-seed stability, (1,1,1) — **not** (2,1,1) | `results/final_d1/stability.json`, `ari_stability.json` |
 | 20-seed stability, (1,1,2) | `results/reproduced/stability.json`, `ari_stability.json` |
+| **20-seed stability, (2,1,1) primary — DONE 2026-09-06** | `results/final_d1_primary/stability.json`, `ari_stability.json`, `ari_stability_all_clusterers.json` |
 | Old d=2 sweeps for L, γ, w (seed 42) | `results/reproduced/sensitivity_wl.json`, `_nw.json`, `_ws.json` |
 
 **Consequences:**
@@ -87,7 +88,7 @@ Best quality/balance trade-off overall: **(1, 0.5, 2)** (AvgSil 0.6193, AvgB 0.6
 
 ## E. Manuscript items that need attention (report only — nothing edited)
 
-1. **`tab:stability` + §"Clustering Stability"** (claim: "grid-search-selected primary configuration (p=2.0,q=1.0,d=1)"). The underlying `results/final_d1/stability.json` is (1,1,1). Fix by rerunning (script provided, §G) or by relabeling the text to the neutral d=1 configuration.
+1. **`tab:stability` + §"Clustering Stability"** — ✅ **RESOLVED 2026-09-06.** The 20-seed run at the true primary (2,1,1) completed (`run_stability_primary_d1.sh` → `results/final_d1_primary/`). GMM/Agglomerative/BoW columns were recomputed from the saved seed-42 embeddings via `scripts/fill_stability_table.py` → `ari_stability_all_clusterers.json`. `paper/sn-article.tex` now carries the real primary-config numbers: KMeans 0.980 (course 6: 0.881), GMM 0.907 (course 6: 0.442), Agglomerative 1.000, BoW 0.846 (course 1: 0.381); protocol sentence and caption updated accordingly. (The `.txt` mirror is intentionally left untouched per user instruction.)
 2. **`tab:sensitivity_walk`, `tab:sensitivity_walks`, `tab:sensitivity_window`**: captions claim d=1, p=2, q=1; the values are the **old p=1, q=1, d=2 sweeps** (verified against `sensitivity_wl/nw/ws.json`, e.g. L=80 → 0.637). Either rerun the sweeps at (2,1,1) or restore captions to the neutral configuration. Note the current summary sentence ("we adopt d=1, p=2.0, q=1.0 … L=80 can provide further improvement") mixes two different configurations.
 3. **`tab:n2v_sensitivity` caption** says "at d=2" while the row contains the d=1 averages (0.7634 … 0.7654). Caption-only fix.
 4. **`fig:baseline_comparison`** (`paper/baseline_comparison.pdf` is byte-identical to the old `results/reproduced/figures/baseline_comparison.pdf`): bars show (1,1,d=2)/(1,0.5,d=2); the adjacent table's Node2Vec d=1 column has no visual counterpart. Regenerate from `final_d1` + `reproduced` data or adjust the caption.
@@ -103,14 +104,17 @@ Figure check (todo §8): `paper/grid_heatmap_all_d_independent.pdf` is identical
 
 **NO ADDITIONAL EXPERIMENTS REQUIRED** for the Pareto analysis, the configuration recommendation, or the balance table — everything above is derived from saved artifacts.
 
-**One optional rerun** (only if you want `tab:stability` to truly describe the primary configuration): 20-seed stability at (p=2, q=1, d=1), ≈5–10 min on 2 cores. Provided as `run_stability_primary_d1.sh`; writes to a new folder `results/final_d1_primary/` and never deletes or overwrites existing results. If you skip it, apply fix #1 by relabeling instead.
+**The previously optional rerun is DONE** (2026-09-06, on the user's Linux system): 20-seed stability at (p=2, q=1, d=1) completed via `run_stability_primary_d1.sh`, writing only into `results/final_d1_primary/` (no existing result touched). Per-seed Silhouette: 0.941/0.620/0.960/0.570/0.825/0.616 (avg 0.755). ARI on seed-42 embeddings: 1.000 for courses 1–5, 0.881 ± 0.114 for course 6. Fix #1 is applied in the manuscript; remaining §E items 2–9 are still open.
 
-## G. Bash script (manual execution, ≤ 2 cores)
+## G. Bash script (executed 2026-09-06)
 
 ```bash
 ./run_stability_primary_d1.sh
 ```
 
-- Sets `OMP/MKL/OPENBLAS/NUMEXPR_NUM_THREADS=2` and, where available, `taskset -c 0,1` (Linux) or `START /AFFINITY 3` (Windows) as a second enforcement layer.
+- Targets the Linux repo path `/data/git/mamintoosi/Node2Vec-SSP` (falls back to the script's own directory); interpreter `/data/python-envs/pytorch/bin/python` (override with `PYTHON_BIN=...`).
+- Limits to ≤ 2 cores: `OMP/MKL/OPENBLAS/NUMEXPR_NUM_THREADS=2` + `taskset -c 0,1`.
 - Reuses the existing pipeline (`experiments/final_d1_d2_experiments.py`) with `P=2.0, Q=1.0` — no parallel implementation.
-- Saves labels per course/seed (`labels_course{i}_n11_seed{s}.json`), metrics (`stability.json`, `ari_stability.json`), and seed-42 embeddings under `results/final_d1_primary/`. Protocol is identical to the existing stability analysis (per-seed walks/Word2Vec/KMeans; all-pairs ARI on seed-42 embeddings).
+- Saved per-seed labels (`labels_course{i}_n11_seed{0..19}.json`), `stability.json`, `ari_stability.json`, and seed-42 embeddings under `results/final_d1_primary/`. Protocol identical to the existing stability analysis (per-seed walks/Word2Vec/KMeans; all-pairs ARI on seed-42 embeddings).
+- Resume support: if `stability.json` already exists, the 20-seed step is skipped and only the ARI step runs.
+- Follow-up table filler: `python scripts/fill_stability_table.py` recomputes GMM/Agglomerative/BoW ARI columns from the saved embeddings + data and prints LaTeX rows → `ari_stability_all_clusterers.json`.

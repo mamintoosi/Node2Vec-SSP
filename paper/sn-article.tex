@@ -790,11 +790,11 @@ Combined with the PCA comparison reported in Table~\ref{tab:baseline_comparison}
 
 \subsection{Clustering Stability and Additional Evaluation Metrics}
 
-In addition to clustering quality, reproducibility is important in student sectioning because unstable assignments may lead to inconsistent student groups across repeated runs. We therefore evaluate clustering stability across 20 random seeds using the Adjusted Rand Index (ARI). Using the grid-search-identified primary configuration ($p=2.0$, $q=1.0$, $d=1$), the results are presented in Table~\ref{tab:stability}.
+In addition to clustering quality, reproducibility is important in student sectioning because unstable assignments may lead to inconsistent student groups across repeated runs. We therefore evaluate clustering stability across 20 random initializations using the Adjusted Rand Index (ARI): the Node2Vec embeddings are computed once with the grid-search-identified primary configuration ($p=2.0$, $q=1.0$, $d=1$) at the reference seed, and the clustering stage is re-run under 20 random seeds. The results are presented in Table~\ref{tab:stability}.
 
 \begin{table}[t]
 \centering
-\caption{Clustering stability measured by Adjusted Rand Index (ARI) across 20 random seeds ($\uparrow$ higher is better).}
+\caption{Clustering stability measured by Adjusted Rand Index (ARI) across 20 random initializations ($\uparrow$ higher is better). Node2Vec columns use the primary configuration ($p=2.0$, $q=1.0$, $d=1$); BoW applies KMeans directly to the raw enrollment representation.}
 \label{tab:stability}
 \begin{tabular}{lcccc}
 \toprule
@@ -804,19 +804,19 @@ In addition to clustering quality, reproducibility is important in student secti
 \cmidrule(lr){2-4}
 & \textbf{KMeans} & \textbf{GMM} & \textbf{Agglom.} & \textbf{KMeans} \\
 \midrule
-1 & 0.974 & 1.000 & 1.000 & 0.426 \\
-2 & 0.977 & 0.845 & 1.000 & 1.000 \\
-3 & 1.000 & 0.760 & 1.000 & 0.854 \\
-4 & 1.000 & 1.000 & 1.000 & 0.992 \\
-5 & 1.000 & 1.000 & 1.000 & 0.865 \\
-6 & 0.953 & 0.670 & 1.000 & 1.000 \\
+1 & 1.000 & 1.000 & 1.000 & 0.381 \\
+2 & 1.000 & 1.000 & 1.000 & 1.000 \\
+3 & 1.000 & 1.000 & 1.000 & 0.852 \\
+4 & 1.000 & 1.000 & 1.000 & 0.985 \\
+5 & 1.000 & 1.000 & 1.000 & 0.860 \\
+6 & 0.881 & 0.442 & 1.000 & 1.000 \\
 \midrule
-\textbf{Avg.} & \textbf{0.984} & \textbf{0.879} & \textbf{1.000} & \textbf{0.856} \\
+\textbf{Avg.} & \textbf{0.980} & \textbf{0.907} & \textbf{1.000} & \textbf{0.846} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The Node2Vec representation produces highly stable clusterings across repeated runs. Using the grid-search-selected primary configuration ($p=2.0$, $q=1.0$, $d=1$), KMeans achieves an average ARI of $0.984$, while agglomerative clustering achieves an ARI of $1.000$ across the six courses. GMM exhibits somewhat greater variability, with an average ARI of $0.879$, but remains relatively stable. In comparison, KMeans applied to the conventional Student-Course Representation has a lower average ARI of $0.856$, with particularly low stability for Course 1 ($0.426$).
+The Node2Vec representation produces highly stable clusterings across repeated runs. Using the grid-search-selected primary configuration ($p=2.0$, $q=1.0$, $d=1$), KMeans achieves an average ARI of $0.980$, while agglomerative clustering, which is deterministic given the embeddings, achieves an ARI of $1.000$ across the six courses. GMM remains perfectly stable on five courses ($1.000$) but exhibits noticeably greater variability on Course~6 ($0.442$), yielding an average ARI of $0.907$; this reflects the genuinely bimodal structure of that course at $d=1$, where the one-dimensional embedding admits two competing near-optimal partitions. In comparison, KMeans applied to the conventional Student-Course Representation has a lower average ARI of $0.846$, with particularly low stability for Course~1 ($0.381$).
 
 We further evaluate clustering quality using the Davies--Bouldin Index (DBI) and the Calinski--Harabasz (CH) Index. Figures~\ref{fig:DBI_comparison} and~\ref{fig:CHI_comparison} present the corresponding comparisons.
 
