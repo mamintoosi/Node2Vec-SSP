@@ -118,3 +118,48 @@ Figure check (todo §8): `paper/grid_heatmap_all_d_independent.pdf` is identical
 - Saved per-seed labels (`labels_course{i}_n11_seed{0..19}.json`), `stability.json`, `ari_stability.json`, and seed-42 embeddings under `results/final_d1_primary/`. Protocol identical to the existing stability analysis (per-seed walks/Word2Vec/KMeans; all-pairs ARI on seed-42 embeddings).
 - Resume support: if `stability.json` already exists, the 20-seed step is skipped and only the ARI step runs.
 - Follow-up table filler: `python scripts/fill_stability_table.py` recomputes GMM/Agglomerative/BoW ARI columns from the saved embeddings + data and prints LaTeX rows → `ari_stability_all_clusterers.json`.
+
+---
+
+## H. Paper restructure (2026-09-07): Pareto winner promoted to primary
+
+### H.1 Multi-seed verdict (20 seeds × 6 courses, identical protocol; `scripts/pareto_final_comparison.py` → `results/final_pareto_validation/comparison_3candidates.json`)
+
+| Config | Sil (20 seeds) | B (20 seeds) | worst-course B | KMeans ARI |
+|---|---|---|---|---|
+| (2,1,1) quality-optimal | **0.755 ± 0.037** | 0.406 | 0.021 (degenerate) | 0.980 |
+| (1,1,2) neutral | 0.618 ± 0.012 | **0.606** | 0.292 | 0.984 |
+| **(1,0.5,2) balance-optimal** | 0.629 ± 0.018 | 0.602 | **0.349** | **0.994** |
+
+**(1,0.5,2) dominates (1,1,2)** on Silhouette, worst-course balance, and ARI (tied on mean balance) and avoids (2,1,1)'s degenerate sections → adopted as the **primary configuration**; (2,1,1) and (1,1,2) are now presented as ablations. Seed-42 per-course values for the primary: Sil 0.594/0.608/0.569/0.597/0.746/0.602 (avg 0.619, +33% over PCA, 100% win rate vs BoW and PCA); B 0.609/0.594/0.714/0.815/0.368/0.811 (avg 0.652 — best of all methods, no course below 0.368).
+
+### H.2 Manuscript changes (`paper/sn-article.tex` only)
+
+- Abstract/Intro/Contributions: 64%→33% improvement claim; Pareto-based selection replaces the "d=1 is best" framing.
+- Methods §grid_search: adoption paragraph rewritten to point to the trade-off analysis.
+- **New subsection §"Quality--Balance Trade-off and Primary Configuration Selection" (`sec:pareto`) with new Table `tab:pareto_selection`** (3 candidates, seed-42 + 20-seed Sil/B, min-course B, ARI).
+- Core tables now show a single Node2Vec column = primary (1,0.5,2): `tab:baseline_comparison` (avg 0.619), `tab:section_balance` (avg 0.652), `tab:stability` (KMeans 0.994, GMM 0.897, Agg 1.000, BoW 0.846 — recomputed at the primary config).
+- **New subsection §"Ablation: Alternative Node2Vec Configurations" (`sec:ablation`)**: quality-optimal (2,1,1) and neutral (1,1,2) analyses incl. degenerate splits and course-6 bimodality.
+- Sensitivity captions corrected: `tab:n2v_sensitivity` d=2→**d=1** (values are the d=1 grid row); `tab:sensitivity_walk/walks/window` d=1,p=2,q=1 → **d=2, p=1, q=1** (values are the neutral sweeps — resolves report items E2/E3).
+- Figure: `fig:baseline_comparison` now uses the newly generated `baseline_comparison_primary.pdf` (4 methods, primary config) — resolves E4. Balance narrative (E5), Limitations range (E6: 0.368–0.815, avg 0.652), Abstract/Intro/Conclusion (E7), and the default-configuration sentence (E9) all updated. Visualization section simplified (primary is itself d=2) and the **pre-existing broken `\ref{fig:visualization}` fixed** to `fig:tsne_course5`.
+- Verified: compiles with pdflatex, zero errors; the only remaining overfull boxes (≤10pt) are pre-existing.
+
+### H.3 Scripts created/used in this phase — status and what YOU need to run
+
+**You do NOT need to run anything.** All scripts below were already executed locally against saved artifacts; their outputs are committed under `results/` and `paper/`.
+
+| Script | Purpose | Status | Output |
+|---|---|---|---|
+| `run_pareto_validation.sh` | 20-seed validation of (1,0.5,2) | ✅ run by user on Linux | `results/final_pareto_validation/` |
+| `scripts/pareto_final_comparison.py` | 3-candidate comparison on identical footing | ✅ run locally (light) | `results/final_pareto_validation/comparison_3candidates.json` |
+| `scripts/fill_stability_table_pareto.py` | KMeans/GMM/Agg/BoW ARI at the primary config from saved seed-42 embeddings | ✅ run locally (light, no Node2Vec) | `results/final_pareto_validation/ari_stability_all_clusterers.json` |
+| `scripts/plot_baseline_comparison_primary.py` | Regenerate baseline figure with the primary config | ✅ run locally (light) | `paper/baseline_comparison_primary.{pdf,png}` + `results/final_pareto_validation/figures/` |
+
+Optional reproduction (only if you want to regenerate on Linux; each takes < 1 min on 2 cores and writes only the files above):
+
+```bash
+python scripts/fill_stability_table_pareto.py
+python scripts/plot_baseline_comparison_primary.py
+```
+
+No experiment reruns are needed anywhere: every number in the revised manuscript traces to an existing artifact (grid labels, `final_d1_primary/`, `final_d2/`, `final_pareto_validation/`, `reproduced/`).
