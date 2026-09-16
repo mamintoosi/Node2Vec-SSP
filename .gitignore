@@ -168,3 +168,5 @@ cython_debug/
 /Deepwalk-SSP
 *.stt
 *.blg
+*.fdb_latexmk
+*.fls

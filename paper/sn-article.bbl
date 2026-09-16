@@ -1,6 +1,6 @@
 %% BioMed_Central_Bib_Style_v1.01
 
-\begin{thebibliography}{17}
+\begin{thebibliography}{18}
 % BibTex style file: bmc-mathphys.bst (version 2.1), 2014-07-24
 \ifx \bisbn   \undefined \def \bisbn  #1{ISBN #1}\fi
 \ifx \binits  \undefined \def \binits#1{#1}\fi
@@ -44,20 +44,6 @@
 \csname PreBibitemsHook\endcsname
 
 %%% 1
-\bibitem[\protect\citeauthoryear{Amintoosi et~al.}{2004}]{Amintoosi2004Fuzzy}
-\begin{bchapter}
-\bauthor{\bsnm{Amintoosi}, \binits{M.}},
-\bauthor{\bsnm{Yazdi}, \binits{H.S.}},
-\bauthor{\bsnm{Haddadnnia}, \binits{J.}}:
-\bctitle{Fuzzy student sectioning}.
-In: \bbtitle{PATAT04: Practice and Theory of Automated Timetabling},
-\bconflocation{USA},
-pp. \bfpage{421}--\blpage{424}
-(\byear{2004})
-\end{bchapter}
-\endbibitem
-
-%%% 2
 \bibitem[\protect\citeauthoryear{Amintoosi and
   Haddadnia}{2005}]{Amintoosi2005Feature}
 \begin{bchapter}
@@ -75,7 +61,7 @@ pp. \bfpage{147}--\blpage{160}.
 \end{bchapter}
 \endbibitem
 
-%%% 3
+%%% 2
 \bibitem[\protect\citeauthoryear{Amintoosi
   et~al.}{2007}]{Amintoosi2007FishSchool}
 \begin{barticle}
@@ -95,7 +81,7 @@ pp. \bfpage{147}--\blpage{160}.
 \end{barticle}
 \endbibitem
 
-%%% 4
+%%% 3
 \bibitem[\protect\citeauthoryear{Aubin and Ferland}{1989}]{aubin1989large}
 \begin{barticle}
 \bauthor{\bsnm{Aubin}, \binits{J.}},
@@ -108,7 +94,7 @@ pp. \bfpage{147}--\blpage{160}.
 \end{barticle}
 \endbibitem
 
-%%% 5
+%%% 4
 \bibitem[\protect\citeauthoryear{Hertz and
   Robert}{1998}]{hertz1998constructing}
 \begin{barticle}
@@ -123,7 +109,7 @@ pp. \bfpage{147}--\blpage{160}.
 \end{barticle}
 \endbibitem
 
-%%% 6
+%%% 5
 \bibitem[\protect\citeauthoryear{Carter}{2001}]{Carter2001Comprehensive}
 \begin{bchapter}
 \bauthor{\bsnm{Carter}, \binits{M.W.}}:
@@ -139,7 +125,7 @@ pp. \bfpage{64}--\blpage{82}.
 \end{bchapter}
 \endbibitem
 
-%%% 7
+%%% 6
 \bibitem[\protect\citeauthoryear{Alvarez-Valdes
   et~al.}{2000}]{Alvarez-Valdes2000}
 \begin{barticle}
@@ -154,7 +140,7 @@ pp. \bfpage{64}--\blpage{82}.
 \end{barticle}
 \endbibitem
 
-%%% 8
+%%% 7
 \bibitem[\protect\citeauthoryear{M{\"u}ller and Murray}{2010}]{Muller2010}
 \begin{barticle}
 \bauthor{\bsnm{M{\"u}ller}, \binits{T.}},
@@ -168,7 +154,7 @@ pp. \bfpage{64}--\blpage{82}.
 \end{barticle}
 \endbibitem
 
-%%% 9
+%%% 8
 \bibitem[\protect\citeauthoryear{Perozzi et~al.}{2014}]{perozzi2014deepwalk}
 \begin{bchapter}
 \bauthor{\bsnm{Perozzi}, \binits{B.}},
@@ -182,7 +168,7 @@ pp. \bfpage{701}--\blpage{710}
 \end{bchapter}
 \endbibitem
 
-%%% 10
+%%% 9
 \bibitem[\protect\citeauthoryear{Grover and
   Leskovec}{2016}]{node2vec_grover2016}
 \begin{bchapter}
@@ -197,7 +183,7 @@ pp. \bfpage{855}--\blpage{864}
 \end{bchapter}
 \endbibitem
 
-%%% 11
+%%% 10
 \bibitem[\protect\citeauthoryear{Feldman and
   Golumbic}{1990}]{feldman1990optimization}
 \begin{barticle}
@@ -212,7 +198,7 @@ pp. \bfpage{855}--\blpage{864}
 \end{barticle}
 \endbibitem
 
-%%% 12
+%%% 11
 \bibitem[\protect\citeauthoryear{Qi}{2024}]{Qi2024Weighted}
 \begin{barticle}
 \bauthor{\bsnm{Qi}, \binits{X.}}:
@@ -224,7 +210,7 @@ pp. \bfpage{855}--\blpage{864}
 \end{barticle}
 \endbibitem
 
-%%% 13
+%%% 12
 \bibitem[\protect\citeauthoryear{Al~Jreidy
   et~al.}{2024}]{AlJreidy2024Clustering}
 \begin{barticle}
@@ -236,7 +222,7 @@ pp. \bfpage{855}--\blpage{864}
 \end{barticle}
 \endbibitem
 
-%%% 14
+%%% 13
 \bibitem[\protect\citeauthoryear{Solgi
   et~al.}{2022}]{Solgi2022GraphPrototypical}
 \begin{barticle}
@@ -248,7 +234,7 @@ pp. \bfpage{855}--\blpage{864}
 \end{barticle}
 \endbibitem
 
-%%% 15
+%%% 14
 \bibitem[\protect\citeauthoryear{Luo et~al.}{2022}]{Luo2022LinkPrediction}
 \begin{barticle}
 \bauthor{\bsnm{Luo}, \binits{Z.}}, \betal:
@@ -262,7 +248,39 @@ pp. \bfpage{855}--\blpage{864}
 \end{barticle}
 \endbibitem
 
+%%% 15
+\bibitem[\protect\citeauthoryear{Khoshraftar and An}{2024}]{Khoshraftar2024GRL}
+\begin{botherref}
+\oauthor{\bsnm{Khoshraftar}, \binits{S.}},
+\oauthor{\bsnm{An}, \binits{A.}}:
+A survey on graph representation learning methods.
+ACM Transactions on Intelligent Systems and Technology
+\textbf{15}(1)
+(2024)
+\doiurl{10.1145/3633518}
+\end{botherref}
+\endbibitem
+
 %%% 16
+\bibitem[\protect\citeauthoryear{Lin et~al.}{2025}]{Lin2025EDM}
+\begin{barticle}
+\bauthor{\bsnm{Lin}, \binits{Y.}},
+\bauthor{\bsnm{Chen}, \binits{H.}},
+\bauthor{\bsnm{Xia}, \binits{W.}},
+\bauthor{\bsnm{Lin}, \binits{F.}},
+\bauthor{\bsnm{Wang}, \binits{Z.}},
+\bauthor{\bsnm{Liu}, \binits{Y.}}:
+\batitle{A comprehensive survey on deep learning techniques in educational data
+  mining}.
+\bjtitle{Data Science and Engineering}
+\bvolume{10}(\bissue{4}),
+\bfpage{564}--\blpage{590}
+(\byear{2025})
+\doiurl{10.1007/s41019-025-00303-z}
+\end{barticle}
+\endbibitem
+
+%%% 17
 \bibitem[\protect\citeauthoryear{Mikolov et~al.}{2013}]{mikolov2013efficient}
 \begin{bchapter}
 \bauthor{\bsnm{Mikolov}, \binits{T.}},
@@ -276,7 +294,7 @@ In: \bbtitle{1st International Conference on Learning Representations, {ICLR}
 \end{bchapter}
 \endbibitem
 
-%%% 17
+%%% 18
 \bibitem[\protect\citeauthoryear{Zaki et~al.}{2020}]{zaki2020data}
 \begin{bbook}
 \bauthor{\bsnm{Zaki}, \binits{M.J.}},

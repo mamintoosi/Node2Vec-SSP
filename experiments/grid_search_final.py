@@ -394,26 +394,19 @@ for idx, d in enumerate(D_VALUES):
         axes[idx].set_yticklabels([f"{p:.1f}" for p in P_VALUES])
         axes[idx].set_ylabel("p")
     axes[idx].set_xlabel("q")
-    axes[idx].set_title(f"d={d}\n[{vmin_d:.3f}–{vmax_d:.3f}]")
-    
+    axes[idx].set_title(f"d={d}\n[{vmin_d:.3f}–{vmax_d:.3f}]", fontsize=22)
+
     # Annotate cells
     for i, p in enumerate(P_VALUES):
         for j, q in enumerate(Q_VALUES):
             val = pivot.values[i, j]
             axes[idx].text(j, i, f"{val:.3f}", ha="center", va="center",
-                           fontsize=8, color="white" if val > pivot.values.mean() else "black")
+                           fontsize=16, color="white" if val > pivot.values.mean() else "black")
 
-# Add a single colorbar for reference
-cbar = fig.colorbar(im, ax=axes, label="Avg Silhouette Score", shrink=0.8, pad=0.02)
-cbar.set_ticks([0, 0.25, 0.5, 0.75, 1.0])
-
-fig.suptitle("Node2Vec (p, q, d) Grid Search — Average Silhouette Score\n"
-             "Each panel uses independent color normalization", 
-             fontsize=14, y=1.02)
+# Each panel uses independent color normalization, so a shared colorbar is omitted.
 fig.tight_layout()
 
 for ext in ("pdf", "png"):
-    # اصلاح: استفاده از f-string برای جایگذاری ext
     fig.savefig(os.path.join(FIG, f"grid_heatmap_all_d_independent.{ext}"),
                 dpi=300, bbox_inches="tight")
 plt.close(fig)

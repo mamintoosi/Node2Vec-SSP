@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Cover Letter - 1 page
+% Cover Letter - Progress in Artificial Intelligence
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \documentclass{article}
@@ -44,6 +44,7 @@ Department of Applied Mathematics \&\\
 Faculty of Mathematical Sciences,\\
 Ferdowsi University of Mashhad,\\
 IRAN,\\
+Email: m.amintoosi@um.ac.ir\\
 \url{https://mamintoosi.github.io/}
 \end{tabular}
 
@@ -51,24 +52,17 @@ IRAN,\\
 
 Dear Editor,
 
-I am submitting our manuscript, ``Graph Representation Learning for Student Sectioning: A Node2Vec-Based Approach'' for consideration for publication in the \textit{Progress in Artificial Intelligence}.
+I am pleased to submit the manuscript entitled ``Graph Representation Learning for Student Sectioning: A Node2Vec-Based Approach'' for consideration as a research article in \textit{Progress in Artificial Intelligence}.
 
-Student sectioning is a classical problem in university course timetabling. We investigate whether the relational structure implicit in student--course enrollments can provide a more informative representation for student grouping. We construct a weighted student co-enrollment graph and apply Node2Vec to learn low-dimensional student representations. The learned representations are then supplied to standard clustering algorithms without modifying the clustering stage.
+Student sectioning partitions enrolled students into instructional sections while preserving scheduling flexibility for subsequent course timetabling. Classical clustering approaches often represent students by binary enrollment vectors, which may miss relational structure from shared courses. We build a weighted student co-enrollment graph (after removing constant courses) and learn Node2Vec embeddings, then apply standard clustering without changing the downstream stage. The primary configuration ($p=1.0$, $q=0.5$, $d=2$) is selected by a quality--balance Pareto analysis validated over 20 seeds.
 
-A central aspect of the study is a controlled comparison with both conventional representation and alternative graph/dimensionality-reduction approaches. On six real-world university courses comprising 341 student-course enrollments from an underlying dataset of 210 students, Node2Vec achieves an average Silhouette Score of 0.629 with the neutral configuration ($p{=}1$, $q{=}1$), compared with 0.466 for PCA+KMeans, 0.157 for the conventional enrollment representation, and 0.128 for spectral clustering. These results indicate that graph representation learning provides an improvement beyond the benefit of dimensionality reduction alone.
+On six real-world courses (341 enrollments from 210 students), this setting reaches average Silhouette $0.619$, about $33\%$ above PCA+KMeans ($0.466$), the strongest baseline; the conventional representation ($0.157$) and spectral clustering ($0.128$) are weaker. Matched-$d$ PCA isolates graph learning from generic dimensionality reduction. Silhouette-optimal $d=1$ settings can collapse into imbalanced sections; the adopted setting improves quality and section balance together. The paper also reports grid search, sensitivity, stability, visualization, and runtime (under nine seconds per course). Limitations, including in-sample configuration selection on one institution, are stated.
 
-The manuscript further evaluates multiple clustering algorithms, Node2Vec parameters, clustering stability, practical significance through effect sizes and consistency, additional clustering metrics, visualization, and computational cost. The proposed pipeline remains computationally lightweight for the datasets considered.
+The study is closely aligned with graph-learning topics previously published in the journal, including graph convolutional networks for clustering \cite{AlJreidy2024Clustering}, graph prototypical networks with active learning \cite{Solgi2022GraphPrototypical}, and link prediction based on local and global structure \cite{Luo2022LinkPrediction}. Our contribution complements these lines of work by applying random-walk-based graph representation learning to a classical educational clustering problem, with a controlled comparison against dimensionality reduction and direct graph clustering.
 
-The work is closely related to recent graph-learning research published in the journal, including graph convolution networks for clustering \cite{AlJreidy2024Clustering}, graph prototypical networks with active learning \cite{Solgi2022GraphPrototypical}, and link prediction using local and global structure \cite{Luo2022LinkPrediction}. Our study complements these directions by investigating graph representation learning in an educational data-mining application and by examining whether learned graph representations can improve a classical clustering-based problem.
+We believe the manuscript fits the journal's scope at the intersection of representation learning, clustering, graph-based machine learning, and AI applications in education. The manuscript is original, has not been published previously, and is not under consideration elsewhere. Source code, data, and experimental artifacts are available at \url{https://github.com/mamintoosi/Node2Vec-SSP}.
 
-We believe the manuscript fits the journal's scope at the intersection of graph learning, representation learning, clustering, and applied machine learning in education. The work aligns with the journal's focus on machine learning algorithms and techniques, as well as AI applications in education.
-
-The manuscript is original, has not been published previously, and is not under consideration elsewhere. 
-The source code and datasets used in this paper are available as supplementary material for reviewers.
-Source code and experimental materials are available at
-\url{https://github.com/mamintoosi/Node2Vec-SSP}.
-
-Thank you for considering our manuscript.
+Thank you for considering this submission.
 
 \bigskip
 
@@ -76,7 +70,7 @@ Sincerely,
 
 Mahmood Amintoosi
 
-\bibliographystyle{plain}% such as plain-fa
+\bibliographystyle{plain}
 \bibliography{sn-bibliography}
 
 \end{document}

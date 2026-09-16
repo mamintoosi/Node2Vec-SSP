@@ -1,24 +1,19 @@
 \begin{thebibliography}{1}
 
-\bibitem{Cen2024NetworkEmbedding}
-Ke-Ting Cen, Hua-Wei Shen, Qi~Cao, Bing-Bing Xu, and Xue-Qi Cheng.
-\newblock Identity-preserving adversarial training for robust network
-  embedding.
-\newblock {\em Journal of Computer Science and Technology}, 39(1):177--191,
-  2024.
+\bibitem{AlJreidy2024Clustering}
+M.~Al~Jreidy et~al.
+\newblock Clustering using graph convolution networks.
+\newblock {\em Progress in Artificial Intelligence}, 2024.
 
-\bibitem{Niu2021SOOP}
-Songjie Niu and Dongyan Zhou.
-\newblock Soop: Efficient distributed graph computation supporting second-order
-  random walks.
-\newblock {\em Journal of Computer Science and Technology}, 36(5):985--1001,
-  2021.
+\bibitem{Luo2022LinkPrediction}
+Zhiping Luo et~al.
+\newblock Improving link prediction in social networks using local and global
+  structure.
+\newblock {\em Progress in Artificial Intelligence}, 11(1):79--92, 2022.
 
-\bibitem{Yang2024CAGCN}
-Jun Yang, Yi-Qiang Sheng, Jin-Lin Wang, and Hong Ni.
-\newblock Cagcn: Centrality-aware graph convolution network for anomaly
-  detection in industrial control systems.
-\newblock {\em Journal of Computer Science and Technology}, 39(4):967--983,
-  2024.
+\bibitem{Solgi2022GraphPrototypical}
+M.~Solgi et~al.
+\newblock Improving graph prototypical network using active learning.
+\newblock {\em Progress in Artificial Intelligence}, 2022.
 
 \end{thebibliography}
