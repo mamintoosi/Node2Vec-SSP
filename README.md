@@ -14,13 +14,13 @@ A Python framework for student sectioning in course timetabling using graph repr
 
 ## Primary configuration
 
-Configuration is selected by a **quality–balance Pareto analysis** (Silhouette vs. section balance \(B=\min/\max\) section sizes), validated over 20 seeds.
+Configuration is selected by a **quality–balance Pareto analysis** (Silhouette vs. section balance \(B=min/max\) section sizes), validated over 20 seeds.
 
 | Role | \((p,q,d)\) | Notes |
 |------|-------------|--------|
-| **Primary (core tables)** | **\(p=1.0,\ q=0.5,\ d=2\)** | Pareto-selected; matched dimensionality with PCA |
-| Quality-optimal (ablation) | \(p=2.0,\ q=1.0,\ d=1\) | Highest Silhouette; severely imbalanced sections |
-| Neutral / DeepWalk-equivalent (ablation) | \(p=1.0,\ q=1.0,\ d=2\) | Unbiased walks |
+| **Primary (core tables)** | **(p=1.0,q=0.5,d=2)** | Pareto-selected; matched dimensionality with PCA |
+| Quality-optimal (ablation) | (p=2,q=1,d=1) | Highest Silhouette; severely imbalanced sections |
+| Neutral / DeepWalk-equivalent (ablation) | (p=1.0,q=1.0,d=2) | Unbiased walks |
 
 Fixed walk/Skip-gram settings: walk length \(L=10\), walks per node \(\gamma=80\), window \(w=5\), epochs \(\epsilon=30\), \(k=2\) sections. Default seed **42**.
 
@@ -33,10 +33,10 @@ Silhouette scores averaged over six courses:
 | BoW + KMeans | 0.157 | — | — |
 | PCA + KMeans | 0.466 | — | — |
 | Spectral | 0.128 | — | — |
-| **Node2Vec (\(p{=}1.0,q{=}0.5,d{=}2\))** | **0.619** | — | — |
-| Node2Vec (\(p{=}1.0,q{=}1.0,d{=}2\), ablation) | 0.629 | — | — |
+| **Node2Vec (p=1.0,q=0.5,d=2)** | **0.619** | — | — |
+| Node2Vec (p=1.0,q=1.0,d=2), ablation) | 0.629 | — | — |
 
-- About **33%** relative Silhouette improvement over PCA (strongest baseline) at matched \(d=2\).
+- About **33%** relative Silhouette improvement over PCA (strongest baseline) at matched d=2.
 - Primary config wins on all six courses at the reference seed (Course 2 margin over PCA is small).
 - Section balance for the primary config averages **0.652**, higher than all baselines (~0.47).
 - KMeans ARI on fixed primary embeddings averages **0.994** over 20 initializations.
@@ -102,7 +102,7 @@ All numerical claims in the paper are tied to artifacts under `results/` (`all_m
   author  = {Amintoosi, Mahmood},
   year    = {2026},
   journal = {Progress in Artificial Intelligence},
-  note    = {Under review},
+  note    = {Submitted},
   url     = {https://github.com/mamintoosi/Node2Vec-SSP}
 }
 ```
