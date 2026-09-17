@@ -3,7 +3,7 @@
 A Python framework for student sectioning in course timetabling using graph representation learning. The code builds weighted student co-enrollment graphs, learns low-dimensional student embeddings with Node2Vec, and clusters the embeddings into instructional sections.
 
 **Paper:** *Graph Representation Learning for Student Sectioning: A Node2Vec-Based Approach*  
-**Target journal:** Progress in Artificial Intelligence (Springer)  
+**Status:** Submitted to Progress in Artificial Intelligence (Springer)  
 **Repository:** <https://github.com/mamintoosi/Node2Vec-SSP>
 
 ## Method (short)
@@ -42,7 +42,7 @@ Silhouette scores averaged over six courses:
 - KMeans ARI on fixed primary embeddings averages **0.994** over 20 initializations.
 - Runtime: **&lt; 9 s** per course (Word2Vec dominates).
 
-See the paper for DBI/CH tables, Pareto multi-seed validation, sensitivity, and ablations.
+See the manuscript and `results/` artifacts for DBI/CH tables, Pareto multi-seed validation, sensitivity, and ablations. The LaTeX source was removed from this repository after journal submission.
 
 ## Repository structure
 
@@ -55,14 +55,12 @@ Node2Vec-SSP/
 │   ├── evaluation.py         # Clustering and metrics
 │   ├── run_all.py            # Full reproduction (seed=42)
 │   └── …
-├── paper/                    # Manuscript (sn-article.tex), figures, cover letter
 ├── results/
 │   ├── reproduced/           # Baseline + sensitivity + stability artifacts
 │   ├── grid_search/          # (p,q,d) grid, labels, embeddings, heatmaps
 │   ├── final_d1/ final_d2/   # Dimension-specific experiment outputs
 │   └── final_pareto_validation/  # 20-seed Pareto validation for primary config
 ├── scripts/                  # Table fillers, Pareto helpers, figure regeneration
-├── doc/                      # Audit / research notes
 └── README.md
 ```
 
@@ -94,7 +92,7 @@ Useful entry points (see `run_*.sh` at the repo root):
 | `scripts/fill_section_balance_table.py` | Recompute section balance from saved labels |
 | `scripts/pareto_final_comparison.py` | Aggregate 20-seed Pareto validation |
 
-All numerical claims in the paper are tied to artifacts under `results/` (SOURCE comments in `paper/sn-article.tex`).
+All numerical claims in the paper are tied to artifacts under `results/` (`all_methods.json`, `comparison_3candidates.json`, `grid_search_complete.json`, etc.).
 
 ## Citation
 
